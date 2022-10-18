@@ -1,0 +1,136 @@
+body {
+  background-color: #FAFAFA;
+  margin: 0px;
+  width: 100vw;
+  color: #262626;
+}
+
+a {
+  text-decoration: none;
+  color: #262626;
+}
+
+li {
+  list-style: none;
+}
+
+.header {
+  background-color: white;
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #DBDBDB;
+}
+
+.wrap_nav {
+  /* background-color: yellow; */
+  width: 90%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wrap_nav>h1 {
+  float: left;
+  margin: 0vh 2vh;
+}
+
+.wrap_nav>nav {
+  float: right;
+}
+
+.gnb>li {
+  float: left;
+  margin: 0vh 1vh
+}
+
+.logs {
+  /* background-color: green; */
+  width: 100vw;
+  height: 20vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1vh 0vh;
+}
+
+.wrap_logs {
+  background-color: white;
+  width: 80%;
+  height: 100%;
+  border: 1px solid #DBDBDB;
+}
+
+.wrap_logs>h1 {
+  margin: 1vh 1vh;
+}
+
+.wrap_logs>ul {
+  margin: 1vh 0vh;
+}
+
+.user__btn {
+  /* background-color: white; */
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #DBDBDB;
+  margin: 3vh 0vh;
+}
+
+.wrap_user__btn {
+  /* background-color: Green; */
+  width: 90%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wrap_user {
+  /* background-color: blue; */
+  float: left;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.profile {
+  background-color: yellow;
+  height: 8vh;
+  width: 8vh;
+  border-radius: 70%;
+  overflow: hidden;
+  border-bottom: 1px solid #DBDBDB;
+  margin: 0 1vh;
+}
+
+.user_name {
+  margin: 0 1vh;
+}
+
+.profile>img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wrap_btn {
+  /* background-color: yellow; */
+  width: 40%;
+  height: 100%;
+  float: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.wrap_btn>button {
+  margin: 2vh;
+}
