@@ -3,6 +3,7 @@ body {
   margin: 0px;
   width: 100vw;
   color: #262626;
+  min-width:
 }
 
 a {
@@ -17,7 +18,7 @@ li {
 .header {
   background-color: white;
   width: 100vw;
-  height: 10vh;
+  height: 7vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,7 +27,7 @@ li {
 
 .wrap_nav {
   /* background-color: yellow; */
-  width: 90%;
+  width: 70%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -36,6 +37,7 @@ li {
 .wrap_nav>h1 {
   float: left;
   margin: 0vh 2vh;
+  font-size: 3vh;
 }
 
 .wrap_nav>nav {
@@ -44,74 +46,43 @@ li {
 
 .gnb>li {
   float: left;
-  margin: 0vh 1vh
+  margin: 0vh 2vh;
+  font-size: 3vh;
 }
 
-.logs {
-  /* background-color: green; */
-  width: 100vw;
-  height: 20vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 1vh 0vh;
-}
-
-.wrap_logs {
-  background-color: white;
-  width: 80%;
-  height: 100%;
-  border: 1px solid #DBDBDB;
-}
-
-.wrap_logs>h1 {
-  margin: 1vh 1vh;
-}
-
-.wrap_logs>ul {
-  margin: 1vh 0vh;
-}
-
-.user__btn {
-  /* background-color: white; */
-  width: 100vw;
-  height: 10vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid #DBDBDB;
-  margin: 3vh 0vh;
-}
-
-.wrap_user__btn {
+.user__log {
   /* background-color: Green; */
-  width: 90%;
-  height: 100%;
+  width: 100vw;
+  height: 40vh;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+.wrap_user__log {
+  /* background-color: blue; */
+  width: 70%;
+  height: 30vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .wrap_user {
-  /* background-color: blue; */
   float: left;
-  width: 50%;
+  width: 30%;
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .profile {
-  background-color: yellow;
-  height: 8vh;
-  width: 8vh;
+  height: 23vh;
+  width: 23vh;
   border-radius: 70%;
   overflow: hidden;
   border-bottom: 1px solid #DBDBDB;
-  margin: 0 1vh;
-}
-
-.user_name {
   margin: 0 1vh;
 }
 
@@ -121,16 +92,92 @@ li {
   object-fit: cover;
 }
 
-.wrap_btn {
+.wrap_logs {
   /* background-color: yellow; */
-  width: 40%;
-  height: 100%;
   float: right;
+  width: 60%;
+  height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.wrap_btn>button {
-  margin: 2vh;
+.wrap_logs>h1 {
+  font-size: 5vh;
+  font-weight: lighter;
+  color: #262626;
+  white-space: nowrap;
+}
+
+.list_logs {
+  /* background-color: green; */
+  width: 100%;
+  height: 70%;
+}
+
+.list_logs>h3 {
+  font-size: 3vh;
+  font-weight: lighter;
+  color: #262626;
+  white-space: nowrap;
+}
+
+.list_logs>ul {
+  /* background-color: green; */
+  width: 100%;
+  height: 90%;
+  font-size: 2vh;
+  white-space: nowrap;
+  overflow: scroll;
+  white-space: nowrap;
+  word-break: break-all
+}
+.list_logs>ul::-webkit-scrollbar {
+  width: 1vh;
+  background-color: #fafafa;
+}
+.list_logs>ul::-webkit-scrollbar-corner {
+  background-color: #fafafa;
+}
+.list_logs>ul::-webkit-scrollbar-thumb:horizontal {
+  background-color: #fafafa;
+  border-radius: 0.5vh;
+  background-clip: padding-box;
+  border: 0.1vh solid transparent;
+}
+.list_logs>ul::-webkit-scrollbar-track:horizontal {
+  background-color: #fafafa;
+  border-radius: 0.5vh;
+}
+.list_logs>ul::-webkit-scrollbar-thumb:vertical {
+  background-color: #DBDBDB;
+  border-radius: 1vh;
+  background-clip: padding-box;
+  border: 0.2vh solid transparent;
+}
+.list_logs>ul::-webkit-scrollbar-track:vertical {
+  background-color: #fafafa;
+  border-radius: 1vh;
+}
+.btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: green; */
+}
+
+.wrap_btn {
+  font-size: 2vh;
+  white-space: nowrap;
+  width: 70%;
+  border-top: 1px solid #DBDBDB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center_btn {
+  background-color: #fafafa;
+  border-style: none;
+  color: #DBDBDB;
 }
