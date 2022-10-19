@@ -122,6 +122,8 @@ li {
   font-weight: lighter;
   color: #262626;
   white-space: nowrap;
+  margin-bottom: 1vh
+  
 }
 
 .list_logs>ul {
@@ -218,7 +220,7 @@ li {
   justify-content: center;
 }
 .post>a:hover{
-  
+
 }
 .post>a>img {
   width: 23vw;

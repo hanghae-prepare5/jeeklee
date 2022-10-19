@@ -7,12 +7,72 @@ const bmBtn = document.getElementById('BOOKMARK_BTN');
 // function activates when DOMtree is organized
 $(document).ready(function() {
   console.log('login.js called');
+  showlog();
   showmp();
 });
 
 // function to print recent log
 function showlog(){
   console.log("function showlog() called");
+  let post = document.querySelector("#LOG");
+  while(post.firstChild){
+      post.removeChild(post.firstChild);
+  }
+
+  let test =
+    [
+      {like_flag: '1', comment_flag: '1',
+       like_user: ['sample14', 'sample2', 'sample3'],
+       comment_user: ['sample1', 'sample2']
+      },
+      {like_flag: '1', comment_flag: '0',
+       like_user: ['sample13', 'sample2', 'sample3'],
+       comment_user: ['sample17']
+      },
+      {like_flag: '1', comment_flag: '1',
+      like_user: ['sample18', 'sample2', 'sample3', 'sample4'],
+      comment_user: ['sample22', 'sample3', 'sample4']
+      },
+      {like_flag: '0', comment_flag: '0',
+      like_user: ['sample13', 'sample2', 'sample3'],
+      comment_user: ['sample19']
+      },
+    ]
+  to_html_comment(test, "#LOG");
+  to_html_like(test, "#LOG");
+}
+
+// function to print commtnet log list
+function to_html_comment(list, id){
+  // console.log('to_html called');
+  let post = document.querySelector(id);
+  let rows = list;
+  for (let i = 0; i<rows.length; i++){
+    if (rows[i]['comment_flag']==1){
+      let user = rows[i]['comment_user'][0];
+      let number = rows[i]['comment_user'].length - 1;
+
+      let tmp = '';
+      tmp = `<li><a href="#">${user}님 외 ${number}명이 회원님의 게시물에 댓글을 남겼습니다.</a></li>`
+      post.insertAdjacentHTML("beforeend", tmp);
+    }
+  }
+}
+// function to print like log list
+function to_html_like(list, id){
+  // console.log('to_html called');
+  let post = document.querySelector(id);
+  let rows = list;
+  for (let i = 0; i<rows.length; i++){
+    if (rows[i]['like_flag']==1){
+      let user = rows[i]['like_user'][0];
+      let number = rows[i]['like_user'].length - 1;
+
+      let tmp = '';
+      tmp = `<li><a href="#">${user}님 외 ${number}명이 회원님의 게시물을 좋아합니다.</a></li>`
+      post.insertAdjacentHTML("beforeend", tmp);
+    }
+  }
 }
 
 // function to print recent log
@@ -33,7 +93,7 @@ function showmp(){
     ]
 
 
-  to_html(test, '#WRAP_POST');
+  to_html_post(test, '#WRAP_POST');
 }
 
 // function to print bookmarks
@@ -52,11 +112,11 @@ function showbm(){
       {img: 'https://image.kmib.co.kr/online_image/2018/1125/611816110012868248_1.jpg',likes: '2'},
       {img: 'https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/107847148_2553451304872718_1540664845642208434_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Rgfxk1aCk-sAX9FDxcm&_nc_ht=scontent-ssn1-1.xx&oh=00_AT8GrTZtxoJz51DnGO5RM_ZS3hX_GEv3anewvGl_ms1X6w&oe=6376C3CF', likes: '4'},
     ]
-  to_html(test, '#WRAP_POST');
+  to_html_post(test, '#WRAP_POST');
 }
 
-// function to print list in html
-function to_html(list, id){
+// function to print post list in html
+function to_html_post(list, id){
   console.log('to_html called');
   let post = document.querySelector(id);
   while(post.firstChild){
@@ -65,7 +125,7 @@ function to_html(list, id){
   let rows = list;
   for (let i = 0; i<rows.length; i++){
     let img = rows[i]['img'];
-    console.log(img);
+    // console.log(img);
     let tmp = '';
     tmp = `<div class="post">
             <a href="#">
