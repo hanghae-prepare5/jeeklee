@@ -13,8 +13,8 @@ db = client.teamproj
 @bp.route('/')
 def index():
     # Variables for TEST
-    session['ID'] = "JeekLee"
-    session['img'] = "https://spnimage.edaily.co.kr/images/photo/files/NP/S/2019/03/PS19032200090.jpg"
+    session['ID'] = "userid_sample"
+    session['img'] = "https://miro.medium.com/max/640/1*xmotaE0PMsf3eCAM7mQCvA.jpeg"
 
     g.userid = session['ID']
     g.userimg = session['img']
