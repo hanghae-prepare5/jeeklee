@@ -37,6 +37,7 @@ function showlog(){
       like_user: ['sample13', 'sample2', 'sample3'],
       comment_user: ['sample19']
       },
+      
     ]
   to_html_comment(test, "#LOG");
   to_html_like(test, "#LOG");
