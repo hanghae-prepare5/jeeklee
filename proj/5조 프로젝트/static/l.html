@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let arr = '#테스트           #실험 #테스트임 #암튼그럼';
+
+
+    tagstest = arr;
+
+    let tagstest1
+        = tagstest.split(' ').filter((element) => element !== '');
+
+    for (let i = 0; i < tagstest1.length; i++) {
+        if (tagstest1[i].includes('#') ==true) {
+           tags = tagstest1;
+        }
+    }
+
+    document.writeln(tags);
+
+
+</script>
+</body>
+</html>
