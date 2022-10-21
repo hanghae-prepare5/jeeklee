@@ -21,3 +21,19 @@ def index():
     # if name == '':
     #     return render_template('login.index') # 나중에 로그인 페이지로 돌아가게 경로 설정
     return render_template('mypage.html')
+
+@bp.route('/userpost', methods=["GET"])
+def pass_user_posts() :
+    user_posts = list(db.users.find({'ID':session['ID']},{'_id':False}))
+    return jsonify(user_posts)
+
+@bp.route('/bookmark', methods=["GET"])
+def pass_user_bookmarks() :
+    user = db.users.find_one({'name':session['ID']})
+    bookmarks = user['bookmarks']
+    result = []
+    for num in range(len(bookmarks)):
+        tmp = db.users.find_one({'_id':bookmarks[num]})
+        result.append(tmp)
+
+    return jsonify(result)

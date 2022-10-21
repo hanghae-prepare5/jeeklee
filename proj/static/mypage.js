@@ -37,12 +37,36 @@ function showlog(){
       like_user: ['sample13', 'sample2', 'sample3'],
       comment_user: ['sample19']
       },
-      
     ]
   to_html_comment(test, "#LOG");
   to_html_like(test, "#LOG");
 }
-
+// function to bring login user's post
+function get_user_posts(){
+  $.ajax({
+      type: 'GET',
+      url: '/mypage/userpost',
+      data: {},
+      async: false,
+      success: function(response) {
+        let postlist = response;
+      }
+  });
+  return postlist
+}
+// function to bring login user's bookmarks
+function get_user_bookmarks(){
+  $.ajax({
+      type: 'GET',
+      url: '/mypage/bookmark',
+      data: {},
+      async: false,
+      success: function(response) {
+        let bookmarks = response;
+      }
+  });
+  return bookmarks
+}
 // function to print commtnet log list
 function to_html_comment(list, id){
   // console.log('to_html called');
@@ -96,7 +120,6 @@ function showmp(){
 
   to_html_post(test, '#WRAP_POST');
 }
-
 // function to print bookmarks
 function showbm(){
   console.log("function showbm() called");
@@ -115,7 +138,6 @@ function showbm(){
     ]
   to_html_post(test, '#WRAP_POST');
 }
-
 // function to print post list in html
 function to_html_post(list, id){
   console.log('to_html called');
