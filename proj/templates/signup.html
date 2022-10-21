@@ -14,35 +14,127 @@
 
     <script src="jquery-3.4.1.js"></script>
 </head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    body {
+        background: #dfe9f5;
+    }
+
+    .signup_wrapper {
+        width: 450px;
+        height: 550px;
+        padding: 50px 45px;
+        margin: 200px auto;
+        background-color: #fff;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 40px 45px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        font-size: 30px;
+        color: #07001f;
+        margin-bottom: 30px;
+
+    }
+
+    form input {
+        width: 92%;
+        outline: none;
+        border: 2px solid #fff;
+        padding: 12px 25px;
+        margin-bottom: 15px;
+        border-radius: 20px;
+        background: #e4e4e4;
+    }
+
+    .signup_btn {
+        font-size: 20px;
+        margin-top: -30px;
+        padding: 10px 0;
+        border-radius: 20px;
+        outline: none;
+        border: none;
+        width: 90%;
+        color: #fff;
+        cursor: pointer;
+        background: rgb(17, 107, 143);
+    }
+
+    button:hover {
+        background: rgba(17, 107, 143, 0.877);
+
+    }
+
+    input:focus {
+        border: 1px solid rgb(192, 192, 192)
+    }
+
+    .login {
+        font-size: 18px;
+        margin-top: 30px;
+        color: #636363;
+
+    }
+
+    .login a {
+        color: rgb(17, 107, 143);
+        text-decoration: none;
+    }
+
+    .button {
+        display: flex;
+        justify-content: center;
+    }
+
+    label {
+        coursor: pointer;
+        font-size: 15px;
+        margin-top: 20px;
+    }
+
+    #chooseFile {
+        visibility: hidden;
+    }
+
+</style>
 <body>
 <div class="signup_wrapper">
     <h1>회원가입</h1>
-    <form action="#">
-        <input type="text" placeholder="ID">
-        <input type="password" placeholder="PASSWORD">
-        <input type="password" placeholder="RE-ENTER PASSWORD">
+    <form class="signup_form" action="#">
+        <input type="text" id="sign_id" name="id" placeholder="ID">
+        <div id="veri_id" class="msg"></div>
+        <input type="password" id="sign_pw1" name="id" placeholder="PASSWORD">
+        <div id="veri_pw1" class="msg"></div>
+        <input type="password" id="sign_pw2" name="id" placeholder="RE-ENTER PASSWORD">
+        <div id="veri_pw2" class="msg"></div>
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="button">
+                <label for="chooseFile">
+                    프로필 사진 설정하기
+                </label>
+            </div>
+            <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+        </form>
+
+        <button id="sign_btn" class="signup_btn" disabled>가입하기</button>
     </form>
-
-    <form method="post" enctype="multipart/form-data">
-        <div class="button">
-            <label for="chooseFile">
-                프로필 사진 설정하기
-            </label>
-        </div>
-        <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
-    </form>
-
-    <button class="signup">가입하기</button>
-
     <div class="login">
         <a href="./login.html">
             로그인
         </a>
     </div>
 </div>
-  <!-- sha256을 사용하기 위해 콜(암호화) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='register.js') }}"></script>
+<!-- sha256을 사용하기 위해 콜(암호화) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='register.js') }}"></script>
 
 </body>
 </html>
