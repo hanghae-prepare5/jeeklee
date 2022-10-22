@@ -67,7 +67,6 @@
             border-radius: 100%;
             border: 1px solid black;
 
-            background-image: url("백지훈.jpg");
             background-position: center;
             background-size: cover;
 
@@ -81,7 +80,6 @@
 
             width: 500px;
             height: 502px;
-
 
 
             border-top: 1px solid black;
@@ -157,14 +155,16 @@
                 $("#imagepopup").fadeIn();
             });
         });
+
         //사진 팝업 닫기
         function image() {
             $("#imagepopup").fadeOut()
         }
 
         var fileNo = 0;
-        var filesArr = [];
+        var filesArr = new Array();
 
+        var dataURL
         /* 첨부파일 추가 */
         function addFile(obj) {
             var maxFileCnt = 1;   // 첨부파일 최대 개수
@@ -183,10 +183,11 @@
                         var reader = new FileReader();
                         reader.onload = function () {
                             filesArr.push(file);
-                            //이미지 파일 이미지화
-                            var dataURL = reader.result;
+                            // 이미지 파일 이미지화
+                            dataURL = reader.result;
                             var imagepopupshow = document.getElementById('imagepopupshow');
                             imagepopupshow.src = dataURL;
+
                         };
                         reader.readAsDataURL(file);
 
@@ -209,7 +210,7 @@
             }
             // 초기화
             document.querySelector("input[type=file]").value = "";
-        }
+        }console.log($('#imagepopupshow'))
 
 
         /* 첨부파일 검증 */
@@ -238,36 +239,41 @@
             filesArr[num].is_delete = true;
         }
 
-        /* 폼 전송 */
-        function submitForm() {
+
+        function save_Postwrite() {
+
+            // // tags 조건 배열
+            // let tagsget = $('#floatingTextarea').val();
+            // let tagsedit
+            //     = tagsget.split(' ');
+            // let tagss = new Array();
+            // for (let i=0;i<tagsedit.length;i++) {
+            //     if (tagsedit[i].includes('#')) {
+            //            tagss.push(tagsedit[i])
+            //     }
+            // }
+
+            /* 폼 전송 */
             // 폼데이터 담기
-            var form = document.querySelector("form");
-            var formData = new FormData(form);
-            for (var i = 0; i < filesArr.length; i++) {
-                // 삭제되지 않은 파일만 폼데이터에 담기
-                if (!filesArr[i].is_delete) {
-                    formData.append("attach_file", filesArr[i]);
-                }
-            }
+
+
+            let tags = $('#floatingTextarea').val()
+            let text = $('#floatingTextarea2').val()
+            let write_date = new Date();
+            let image =dataURL;
 
             $.ajax({
-                method: 'POST',
-                url: '/register',
-                dataType: 'json',
-                data: formData,
-                async: true,
-                timeout: 30000,
-                cache: false,
-                headers: {'cache-control': 'no-cache', 'pragma': 'no-cache'},
-                success: function () {
-                    alert("파일업로드 성공");
+                type: "POST",
+                url: "/Postwrite",
+                data: {image_give: image, tags_give: tags, text_give: text, write_date_give: write_date},
+
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.reload()
                 },
-                error: function (xhr, desc, err) {
-                    alert('에러가 발생 하였습니다.');
-                    return;
-                }
-            })
+            });
         }
+
 
     </script>
 </head>
@@ -286,7 +292,7 @@
             </div>
 
             <div class="noticepicture">
-                <form method="POST" onsubmit="return false;" enctype="multipart/form-data" >
+                <form method="POST" onsubmit="return false;" enctype="multipart/form-data">
                     <label for="chooseFile">
                         <div type="button" class="btn btn-outline-primary">사진첨부</div>
                     </label>
@@ -305,7 +311,7 @@
                     <div class="form-floating">
                         <textarea class="form-control" placeholder="Leave a comment here"
                                   id="floatingTextarea"></textarea>
-                        <label for="floatingTextarea">tag</label>
+                        <label for="floatingTextarea">tag(반드시 태그입력 후 띄어쓰고 태그입력ex.[#부산 #인천])</label>
                     </div>
                 </div>
                 <div>
@@ -316,7 +322,7 @@
                     </div>
                 </div>
                 <div class="noticebtn_upload">
-                    <button type="button" class="btn btn-outline-dark">게시하기</button>
+                    <button type="button" class="btn btn-outline-dark" onclick="save_Postwrite()">게시하기</button>
                 </div>
             </div>
         </div>
