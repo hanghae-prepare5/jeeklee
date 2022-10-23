@@ -43,7 +43,6 @@
             height: 100%;
 
 
-
             display: flex;
             flex-direction: column;
             justify-content: left;
@@ -73,12 +72,19 @@
             border-radius: 100%;
             border: 1px solid black;
 
-            background-image: url("백지훈.jpg");
+
             background-position: center;
             background-size: cover;
 
             margin-right: 10px;
 
+        }
+
+        .noticeuser {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
         }
 
         .noticepicture {
@@ -181,7 +187,7 @@
             border-radius: 100%;
             border: 1px solid black;
 
-            background-image: url("백지훈.jpg");
+
             background-position: center;
             background-size: cover;
 
@@ -210,12 +216,84 @@
                 $(this).parent().parent().parent().parent().parent().fadeOut();
             });
         });
+        //modal열기
         var myModal = document.getElementById('myModal')
         var myInput = document.getElementById('myInput')
 
         myModal.addEventListener('shown.bs.modal', function () {
             myInput.focus()
         })
+
+        function postaction() {
+            show_post();
+        };
+
+        function show_post() {
+            $.ajax({
+                type: "GET",
+                url: "/Post",
+                data: {},
+                success: function (response) {
+                    console.log(response['post_list'])
+                    let rows = response['post_list']
+                    for (let i = 0; i < rows.length; i++) {
+                        let id = rows[i]['user_pk']['id']
+                        let profile = rows[i]['user_pk']['profile']
+                        let tags = rows[i]['tags']
+                        let text = rows[i]['text']
+                        let image = rows[i]['image']
+                        let write_date = rows[i]['write_date']
+
+
+                        let temp_user = `<img src="${profile}" class="noticeprofile">
+                                         <div>${id}</div>`
+                        $('#noticeuser').append(temp_user)
+                        let temp_user_comment = `<img src="${profile}" class="noticecomment_profile">
+                                         <div>${id}</div>`
+                        $('#noticeuser_comment').append(temp_user_comment)
+
+
+                        for (let i = 0; i < tags.length; i++) {
+                            let temp_tag = `<a href="#">${tags[i]}</a>`
+
+                            $('#noticepostbottom_tag').append(temp_tag)
+                            $('#noticepostbottom_tag_comment').append(temp_tag)
+                        }
+
+                        let temp_text = `<p>${text}</p>`
+                        $('#noticetext').append(temp_text)
+                        $('#noticetext_comment').append(temp_text)
+
+                        let temp_image = `<img src="${image}" class="noticepicture_size">`
+                        $('#noticeimage').append(temp_image)
+
+
+                        let temp_time = ``
+                        let the_present_date = new Date();
+                        let write_time = new Date(write_date)
+
+                        let time_comparison = the_present_date.getTime() - write_time.getTime()
+
+                        if ((time_comparison / (1000 * 60)) <= 60) {
+                            time = (time_comparison / (1000 * 60))
+                            temp_time = `${parseInt(time)}분 전`
+                            $('#noticetime').append(temp_time)
+                            $('#noticetime_comment').append(temp_time)
+                        } else if ((time_comparison / (1000 * 60 * 60)) <= 24) {
+                            time = (time_comparison / (1000 * 60 * 60))
+                            temp_time = `${parseInt(time)}시간 전`
+                            $('#noticetime').append(temp_time)
+                            $('#noticetime_comment').append(temp_time)
+                        } else if ((time_comparison / (1000 * 60 * 60 * 24)) > 24) {
+                            time = (time_comparison / (1000 * 60 * 60 * 24))
+                            temp_time = `${parseInt(time)}일 전`
+                            $('#noticetime').append(temp_time)
+                            $('#noticetime_comment').append(temp_time)
+                        }
+                    }
+                }
+            });
+        }
 
     </script>
 </head>
@@ -225,35 +303,32 @@
 <div id="noticepopup">
     <div class="noticespace">
         <div class="noticepost">
-            <div class="noticeposttop">
-                <div class="noticeprofile"></div>
-                <div>닉네임</div>
+            <div class="noticeposttop" id="noticeuser">
+
             </div>
+            <div class="noticepicture" id="noticeimage">
 
-
-            <div class="noticepicture">
-                <img src="배경화면.jpg" class="noticepicture_size">
             </div>
-
-
             <div class="noticepostbottom">
                 <div class="noticebtn_bottom">
                     <button type="button" class="btn btn-light">🤍</button>
-                    <button type="button" class="btn btn-light">💬</button>
+                    <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">💬
+                    </button>
                 </div>
                 <div>좋아요갯수</div>
-                <p class="noticepostbottom_tag">
-                    태그<a href="#">#여행</a><a href="#">#부산</a><a href="#">#블루라인파크</a>
-                </p>
+                <div class="noticepostbottom_tag" id="noticepostbottom_tag">
+
+                </div>
                 <div class="noticecomment" type="button" id="noticecommentclick" data-bs-toggle="modal"
                      data-bs-target="#exampleModal"><!-- Button trigger modal -->
-                    <p>
-                        게시글--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    </p>
+                    <div id="noticetext">
+
+                    </div>
                     <div style="color: gray;">댓글 3개 모두 보기</div>
                 </div>
-                <div class="noticepostbottom_time" style="color: gray">
-                    2시간 전
+                <div class="noticepostbottom_time" style="color: gray" id="noticetime">
+
                 </div>
                 <div class="noticebtn_out">
                     <button type="button" class="btn btn-outline-dark" id="popupclose">나가기</button>
@@ -272,17 +347,20 @@
                         </div>
                         <div class="modal-body">
                             <div class="noticecommentprofile">
-                                <div class="noticecomment_profile"></div>
-                                <div>닉네임</div>
-                                <div style="color: gray; margin-left: 10px;">2시간 전</div>
+                                <div class="noticeuser" id="noticeuser_comment">
+
+                                </div>
+                                <div style="color: gray; margin-left: 10px;" id="noticetime_comment">
+
+                                </div>
                             </div>
                             <div>
                                 <div class="noticecommenttext">
-                                    <p>
-                                        게시글--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                                    </p>
-                                    <p class="noticepostbottom_tag">
-                                        태그<a href="#">#여행</a><a href="#">#부산</a><a href="#">#블루라인파크</a>
+                                    <div id="noticetext_comment">
+
+                                    </div>
+                                    <p class="noticepostbottom_tag" id="noticepostbottom_tag_comment">
+
                                     </p>
                                 </div>
                                 <div style="border-bottom: 1px solid gainsboro;margin-bottom: 10px"></div>
@@ -436,7 +514,7 @@
 </div>
 
 <section id="noticewrite">
-    <img src="배경화면.jpg" type="button" style="width: 500px; height: 500px;">
+    <img src="백지훈.jpg" type="button" style="width: 500px; height: 500px;" onclick="postaction()">
 </section>
 
 </body>

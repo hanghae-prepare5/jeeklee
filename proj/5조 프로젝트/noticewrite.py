@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('test.html')
+    return render_template('noticewrite.html')
 
 
 @app.route('/Postwrite', methods=["post"])
