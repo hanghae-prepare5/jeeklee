@@ -1,14 +1,16 @@
 from pymongo import MongoClient
+
 client = MongoClient('mongodb+srv://test:sparta@cluster0.bkcsdxn.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta
 
 from flask import Flask, render_template, request, jsonify
+
 app = Flask(__name__)
 
 
 @app.route('/')
 def home():
-    return render_template('test1.html')
+    return render_template('test.html')
 
 
 @app.route('/Postwrite', methods=["post"])
@@ -18,7 +20,7 @@ def Postwrite():
     text_receive = request.form['text_give']
     write_date_receive = request.form['write_date_give']
 
-    postwrite_pk_list = list(db.Postwrite.find({}, {'_pk': False}))
+    postwrite_pk_list = list(db.Postwrite.find({}, {'_id': False}))
     count = len(postwrite_pk_list) + 1
 
     doc = {
@@ -33,10 +35,11 @@ def Postwrite():
 
     return jsonify({'msg': '게시완료!'})
 
+
 @app.route("/Postwrite", methods=["GET"])
-def post_get():
-    all_users = list(db.Postwrite.find({},{'_id':False}))
-    return jsonify({'post_1': all_users})
+def bucket_get():
+    User_list = list(db.User.find({'user_pk': 5}, {'_id': False}))
+    return jsonify({'User' : User_list})
 
 
 if __name__ == '__main__':

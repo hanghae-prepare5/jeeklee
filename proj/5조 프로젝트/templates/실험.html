@@ -73,6 +73,12 @@
             margin-right: 10px;
 
         }
+        .noticeuser{
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+        }
 
         .noticepicture {
             background-color: white;
@@ -165,6 +171,7 @@
         var filesArr = new Array();
 
         var dataURL
+
         /* 첨부파일 추가 */
         function addFile(obj) {
             var maxFileCnt = 1;   // 첨부파일 최대 개수
@@ -210,7 +217,9 @@
             }
             // 초기화
             document.querySelector("input[type=file]").value = "";
-        }console.log($('#imagepopupshow'))
+        }
+
+        console.log($('#imagepopupshow'))
 
 
         /* 첨부파일 검증 */
@@ -260,7 +269,7 @@
             let tags = $('#floatingTextarea').val()
             let text = $('#floatingTextarea2').val()
             let write_date = new Date();
-            let image =dataURL;
+            let image = dataURL;
 
             $.ajax({
                 type: "POST",
@@ -274,6 +283,32 @@
             });
         }
 
+        $(document).ready(function () {
+            show_profile();
+        });
+
+        function show_profile() {
+            $.ajax({
+                type: "GET",
+                url: "/Postwrite",
+                data: {},
+                success: function (response) {
+                    console.log(response['User'])
+                    let rows = response['User']
+                    for (let i = 0; i < rows.length; i++) {
+                        let id = rows[i]['id']
+                        let profile = rows[i]['profile']
+
+
+                        let temp_html = `<img src="${profile}" class="noticeprofile">
+                                         <div>${id}</div>`
+
+                        $('#noticeuser').append(temp_html)
+                    }
+                }
+            });
+        }
+
 
     </script>
 </head>
@@ -284,8 +319,9 @@
     <div>
         <div class="noticepost">
             <div class="noticeposttop">
-                <div class="noticeprofile"></div>
-                <div>닉네임</div>
+                <div id="noticeuser" class="noticeuser">
+
+                </div>
                 <div id="popupclose" class="noticeposttop_btn">
                     <button type="button" class="btn-close" aria-label="Close"></button>
                 </div>

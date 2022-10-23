@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>게시물작성</title>
+    <title>게시물</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,8 +14,75 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <style>
+        #noticepopup {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        .black {
+            background: rgba(0, 0, 0, 0.6);;
+        }
+
+        body {
+            background-color: gray;
+        }
+
+        .noticespace {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .noticepost {
+
+            width: 504px;
+            max-height: 1000px;
+            height: 100%;
+
+
+
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            align-items: normal;
+
+            border: 2px solid black;
+            border-radius: 3%;
+            margin: auto;
+
+            background-color: white;
+        }
+
+        .noticeposttop {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+
+            margin: 10px;
+        }
+
+
+        .noticeprofile {
+            width: 70px;
+            height: 70px;
+
+            border-radius: 100%;
+            border: 1px solid black;
+
+            background-image: url("백지훈.jpg");
+            background-position: center;
+            background-size: cover;
+
+            margin-right: 10px;
+
+        }
+
         .noticepicture {
-            background-color: black;
+            background-color: white;
 
             width: 500px;
             height: 502px;
@@ -33,41 +100,344 @@
             width: 500px;
             height: 500px;
         }
+
+
+        .noticepostbottom {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: right;
+            align-items: normal;
+
+            margin: 10px;
+        }
+
+        .noticebtn_out {
+            margin-top: 10px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .noticebtn_bottom {
+            display: flex;
+            flex-direction: row;
+            align-items: normal;
+        }
+
+        .noticecomment {
+            width: 500px;
+            max-height: 200px;
+            min-height: 100px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            align-items: normal;
+
+            margin-left: -10px;
+            padding: 10px;
+        }
+
+        .noticepostbottom_tag {
+            display: flex;
+            flex-direction: row;
+            align-items: normal;
+        }
+
+        .noticepostbottom_tag > a {
+            margin-left: 10px;
+        }
+
+        .noticepostbottom_time {
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            align-items: normal;
+
+        }
+
+        .modal-content {
+            overflow-y: initial !important
+        }
+
+        .modal-body {
+            height: 10000px;
+            overflow-y: auto;
+        }
+
+        .noticecommentprofile {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+        }
+
+        .noticecomment_profile {
+            width: 50px;
+            height: 50px;
+
+            border-radius: 100%;
+            border: 1px solid black;
+
+            background-image: url("백지훈.jpg");
+            background-position: center;
+            background-size: cover;
+
+            margin-right: 10px;
+        }
+
+        .noticecommenttext {
+            max-height: 500px;
+            max-width: 465px;
+
+        }
+
+
     </style>
     <script>
+
+
+        //게시물 팝업 열기
         $(document).ready(function () {
-            show_post();
-        });
-
-        function show_post() {
-            $.ajax({
-                type: "GET",
-                url: "/Postwrite",
-                data: {},
-                success: function (response) {
-                    console.log(response['post_1'])
-                    let rows = response['post_1']
-                    for (let i = 0; i < rows.length; i++) {
-                        let id = rows[i]['user_pk']['id']
-                        let image = rows[i]['image']
-                        let write_date = rows[i]['write_date']
-
-                        let temp_html = `<div>${id}</div>
-                                        <img src = "${image}" class="noticepicture_size">
-                                        <div>${write_date}</div>`
-
-                        $('#show_post').append(temp_html)
-
-                    }
-                }
+            $("#noticewrite>img:first-of-type").click(function () {
+                $("#noticepopup").fadeIn();
+                $("#noticepopup").addClass("black");
             });
-        }
+            //게시물 팝업 닫기
+            $("#popupclose").click(function () {
+                $(this).parent().parent().parent().parent().parent().fadeOut();
+            });
+        });
+        var myModal = document.getElementById('myModal')
+        var myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', function () {
+            myInput.focus()
+        })
+
     </script>
 </head>
 <body>
-asd
-<div id="show_post" class="noticepicture">
 
+
+<div id="noticepopup">
+    <div class="noticespace">
+        <div class="noticepost">
+            <div class="noticeposttop">
+                <div class="noticeprofile"></div>
+                <div>닉네임</div>
+            </div>
+
+
+            <div class="noticepicture">
+                <img src="배경화면.jpg" class="noticepicture_size">
+            </div>
+
+
+            <div class="noticepostbottom">
+                <div class="noticebtn_bottom">
+                    <button type="button" class="btn btn-light">🤍</button>
+                    <button type="button" class="btn btn-light">💬</button>
+                </div>
+                <div>좋아요갯수</div>
+                <p class="noticepostbottom_tag">
+                    태그<a href="#">#여행</a><a href="#">#부산</a><a href="#">#블루라인파크</a>
+                </p>
+                <div class="noticecomment" type="button" id="noticecommentclick" data-bs-toggle="modal"
+                     data-bs-target="#exampleModal"><!-- Button trigger modal -->
+                    <p>
+                        게시글--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    </p>
+                    <div style="color: gray;">댓글 3개 모두 보기</div>
+                </div>
+                <div class="noticepostbottom_time" style="color: gray">
+                    2시간 전
+                </div>
+                <div class="noticebtn_out">
+                    <button type="button" class="btn btn-outline-dark" id="popupclose">나가기</button>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <!-- Scrollable modal -->
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">댓글</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="noticecommentprofile">
+                                <div class="noticecomment_profile"></div>
+                                <div>닉네임</div>
+                                <div style="color: gray; margin-left: 10px;">2시간 전</div>
+                            </div>
+                            <div>
+                                <div class="noticecommenttext">
+                                    <p>
+                                        게시글--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                    </p>
+                                    <p class="noticepostbottom_tag">
+                                        태그<a href="#">#여행</a><a href="#">#부산</a><a href="#">#블루라인파크</a>
+                                    </p>
+                                </div>
+                                <div style="border-bottom: 1px solid gainsboro;margin-bottom: 10px"></div>
+                            </div>
+                            <div style="margin-bottom: 30px">
+                                <div style="display: flex; flex-direction: row;">
+                                    <div>닉네임</div>
+                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
+                                    <div style="margin-left: auto">
+                                        <button type="button" class="btn btn-outline-light">❌</button>
+                                    </div>
+                                </div>
+                                <div class="noticecommenttext">
+                                    <p>
+                                        댓글--------------------------------------------------------
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 30px">
+                                <div style="display: flex; flex-direction: row;">
+                                    <div>닉네임</div>
+                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
+                                    <div style="margin-left: auto">
+                                        <button type="button" class="btn btn-outline-light">❌</button>
+                                    </div>
+                                </div>
+                                <div class="noticecommenttext">
+                                    <p>
+                                        댓글--------------------------------------------------------
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 30px">
+                                <div style="display: flex; flex-direction: row;">
+                                    <div>닉네임</div>
+                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
+                                    <div style="margin-left: auto">
+                                        <button type="button" class="btn btn-outline-light">❌</button>
+                                    </div>
+                                </div>
+                                <div class="noticecommenttext">
+                                    <p>
+                                        댓글--------------------------------------------------------
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 30px">
+                                <div style="display: flex; flex-direction: row;">
+                                    <div>닉네임</div>
+                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
+                                    <div style="margin-left: auto">
+                                        <button type="button" class="btn btn-outline-light">❌</button>
+                                    </div>
+                                </div>
+                                <div class="noticecommenttext">
+                                    <p>
+                                        댓글--------------------------------------------------------
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 30px">
+                                <div style="display: flex; flex-direction: row;">
+                                    <div>닉네임</div>
+                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
+                                    <div style="margin-left: auto">
+                                        <button type="button" class="btn btn-outline-light">❌</button>
+                                    </div>
+                                </div>
+                                <div class="noticecommenttext">
+                                    <p>
+                                        댓글--------------------------------------------------------
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 30px">
+                                <div style="display: flex; flex-direction: row;">
+                                    <div>닉네임</div>
+                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
+                                    <div style="margin-left: auto">
+                                        <button type="button" class="btn btn-outline-light">❌</button>
+                                    </div>
+                                </div>
+                                <div class="noticecommenttext">
+                                    <p>
+                                        댓글--------------------------------------------------------
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 30px">
+                                <div style="display: flex; flex-direction: row;">
+                                    <div>닉네임</div>
+                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
+                                    <div style="margin-left: auto">
+                                        <button type="button" class="btn btn-outline-light">❌</button>
+                                    </div>
+                                </div>
+                                <div class="noticecommenttext">
+                                    <p>
+                                        댓글--------------------------------------------------------
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 30px">
+                                <div style="display: flex; flex-direction: row;">
+                                    <div>닉네임</div>
+                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
+                                    <div style="margin-left: auto">
+                                        <button type="button" class="btn btn-outline-light">❌</button>
+                                    </div>
+                                </div>
+                                <div class="noticecommenttext">
+                                    <p>
+                                        댓글--------------------------------------------------------
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 30px">
+                                <div style="display: flex; flex-direction: row;">
+                                    <div>닉네임</div>
+                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
+                                    <div style="margin-left: auto">
+                                        <button type="button" class="btn btn-outline-light">❌</button>
+                                    </div>
+                                </div>
+                                <div class="noticecommenttext">
+                                    <p>
+                                        댓글--------------------------------------------------------
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form>
+                            <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here"
+                                              id="floatingTextarea2" style="height: 100px"></textarea>
+                                <label for="floatingTextarea2">Comments</label>
+                            </div>
+                        </form>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary">댓글달기</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+</div>
+
+<section id="noticewrite">
+    <img src="배경화면.jpg" type="button" style="width: 500px; height: 500px;">
+</section>
+
 </body>
 </html>
