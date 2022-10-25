@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" ,>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <title>OOTDGRAM</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+
+<style>
+    .all {
+
+
+    }
+
+    /*로고여백*/
+    .top {
+        margin: 20px 20px 20px 20px;
+        padding: 0px 0px 0px 0px;
+        border-bottom: solid 2px whitesmoke;
+
+
+    }
+
+    /*로고*/
+    .logo {
+        color: gray;
+        height: 60px;
+        margin: auto;
+        font-size: 35px;
+        text-align: center;
+        width: 400px;
+
+
+    }
+
+    /*뒤로가기버튼*/
+    .back-btn {
+        border: 10px solid transparent;
+        border-radius: 18px;
+        font-size: 30px;
+        position: fixed;
+    }
+
+    /*유저아이디*/
+    .userid {
+        float: right;
+        margin-right: 10%;
+        margin-top: 50px;
+        margin-left: 8px;
+        font-size: 25px;
+    }
+
+    /*프로필버튼 마이페이지 이동 */
+    .profile {
+        overflow: hidden;
+        float: right;
+        width: 135px;
+        height: 135px;
+        border-radius: 100%;
+        border:none;
+
+
+    }
+
+    /*프로필사진*/
+    .profile-photo {
+
+        width: 130px;
+
+        height: 135px;
+
+        color: red;
+
+        object-fit: cover;
+        border-radius: 100px;
+
+
+    }
+
+
+    /*사이여백*/
+    .middle {
+        margin-bottom: 255px;
+
+    }
+
+    /*정렬버튼*/
+    .npbutton {
+
+        margin-left: 125px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        width: 95%;
+    }
+
+    /*정렬버튼 상단 줄*/
+    .classificaftion {
+
+        width: 100%;
+        border-top: solid 2px whitesmoke;
+
+
+    }
+
+    /*게시버튼*/
+    .upload {
+        margin-left: 70%;
+
+
+        background-color: white;
+
+        border: none;
+        font-size: 28px;
+    }
+
+    /*게시물박스*/
+    .posts-box {
+
+
+
+    }
+
+    /*게시물*/
+    .post {
+        float: left;
+        margin-right: 2%;
+        margin-left: 8%;
+        margin-top:15px;
+        margin-bottom: 15px;
+        display: flex;
+        flex-wrap:wrap;
+
+
+
+
+
+    }
+
+    /*좋아요버튼*/
+    .like {
+        border: none;
+        background-color: white;
+        margin-left: 90%;
+        font-size: 23px;
+    }
+
+    /*게시물사진*/
+    .card {
+        width: 530px;
+        height: auto;
+
+
+    }
+
+
+</style>
+
+<script>
+    $(document).ready(function () {
+        show_post();
+    });
+
+    function show_post() {
+        $.ajax({
+            type: "GET",
+            url: "/Post",
+            data: {},
+            success: function (response) {
+                let rows = response['post_list']
+                    console.log(rows)
+                for (let i = 0; i < rows.length; i++) {
+                    let id = rows[i]['user_pk']
+                    let text = rows[i]['text']
+                    let tags = rows[i]['tags']
+                    let image = rows[i]['image']
+                    let time = rows[i]['write_date']
+
+                    let temp_post = `<div id="post" class="post">
+                                    <div class="card">
+                                <div class="postimg">
+                                    <img class="card-img-top" type="button" src=${image}
+                                          alt="...">  </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">${id}</h5>
+                                    <button class="like">♡️<h9>47</h9></button>
+                                    <p class="card-text">${text}</p>
+                                    <p class="card-text">  ${tags}   </p>
+                                    <p> ${time} </p>
+                                </div></div></div>
+                            `
+                    $('#post').append(temp_post)
+
+
+                }
+            }
+        });
+    }
+
+
+</script>
+
+
+<body>
+<div class="all">
+    <!--로고-->
+    <div style="float:top;" class='top'>
+        <h1 class='logo'>OOTD_GRAM</h1>
+    </div>
+    <!--뒤로가기 버튼-->
+    <div>
+        <button onclick="history.back()" type="button" class="back-btn">🔙</button>
+    </div>
+    <!--유저아이디 및 프로필-->
+    <div>
+        <h1 class="userid"> User_ID </h1> <!--comments_id -->
+        <!-- comments_profile / 마이페이지 이동 -->
+        <button onclick="location.href='test.html'" class="profile" type="button"><img class="profile-photo"
+                                                                                       src="https://newsimg.sedaily.com/2020/11/24/1ZAJ728KBG_1.jpg">
+            <!--프로필-->
+        </button>
+    </div>
+    <div class="middle"> <!--사이공백-->
+    </div>
+
+    <div class="classificaftion">
+        <div class="npbutton"> <!--정렬버튼-->
+            <button type="button" class="btn btn-success">NEW</button>
+            <button type="button" class="btn btn-danger">POPULAR</button>
+            <!--게시물 작성 페이지 이동-->
+            <button onclick="location.href='test.html'" class="upload" type="button" class="btn btn-dark">➕</button>
+        </div>
+    </div>
+    <!--게시물박스-->
+<div class="posts-box">
+    <div id="post" class="post">
+
+    </div>
+</div>
+
+
+</div>
+
+
+</div>
+
+</div>
+</body>
+</html>

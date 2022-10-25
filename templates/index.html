@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" ,>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <title>OOTDGRAM</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+
+<style>
+    .all {
+
+
+    }
+
+    /*로고여백*/
+    .top {
+        margin: 20px 20px 20px 20px;
+        padding: 0px 0px 0px 0px;
+        border-bottom: solid 2px whitesmoke;
+
+
+    }
+
+    /*로고*/
+    .logo {
+        color: gray;
+        height: 60px;
+        margin: auto;
+        font-size: 35px;
+        text-align: center;
+        width: 400px;
+
+
+    }
+
+    /*뒤로가기버튼*/
+    .back-btn {
+        border: 10px solid transparent;
+        border-radius: 18px;
+        font-size: 30px;
+        position: fixed;
+    }
+
+    /*유저아이디*/
+    .userid {
+        float: right;
+        margin-right: 10%;
+        margin-top: 50px;
+        margin-left: 8px;
+        font-size: 25px;
+    }
+
+    /*프로필버튼*/
+    .profile {
+        overflow: hidden;
+        float: right;
+        width: 135px;
+        height: 135px;
+        border-radius: 350px;
+        border: 0;
+
+
+    }
+
+    /*프로필사진*/
+    .profile-photo {
+
+        width: 130px;
+
+        height: 135px;
+
+        color: red;
+
+        object-fit: cover;
+        border-radius: 100px;
+
+
+    }
+
+
+    /*사이여백*/
+    .middle {
+        margin-bottom: 255px;
+
+    }
+
+    /*정렬버튼*/
+    .npbutton {
+
+        margin-left: 125px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        width: 95%;
+    }
+
+    /*정렬버튼 상단 줄*/
+    .classificaftion {
+
+        width: 100%;
+        border-top: solid 2px whitesmoke;
+
+
+    }
+
+    /*게시버튼*/
+    .upload {
+        margin-left: 70%;
+
+
+        background-color: white;
+
+        border: none;
+        font-size: 28px;
+    }
+
+    /*게시물박스*/
+    .posts-box {
+        padding: 100px 0px 30px 60px;
+
+
+
+
+    }
+
+    /*게시물*/
+    .post {
+    margin:auto;
+        padding-left: 100px;
+        background-color: white;
+
+        height : 850px;
+
+    }
+
+    .card-body {
+
+    }
+
+    /*좋아요버튼*/
+    .like {
+        border: none;
+        background-color: white;
+        margin-left: 1px;
+        font-size: 23px;
+    }
+
+    /*게시물사진*/
+    .card {
+        width: 530px;
+        height: auto;
+
+
+    }
+
+    /*게시물크기고정*/
+    .postimg {
+
+
+    }
+    .test-box{
+        border: 10px black;
+    }
+
+    .posttest {
+     float: left; width: 650px; padding:10px;
+
+        margin-right: 20px;
+        margin-left: 100px;
+        border: 10px black;
+
+
+
+    }
+
+    .postphoto {
+
+        margin-bottom: 20px;
+        width: 600px;
+        height: auto;
+    }
+    .card-bodytest{
+
+
+    }
+
+</style>
+
+<script>
+       function show_post() {
+            $.ajax({
+                type: "GET",
+                url: "/Post",
+                data: {},
+                success: function (response) {
+
+                        }
+
+
+</script>
+
+
+<body>
+<div class="all">
+    <!--로고-->
+    <div style="float:top;" class='top'>
+        <h1 class='logo'>OOTD_GRAM</h1>
+    </div>
+    <!--뒤로가기 버튼-->
+    <div>
+        <button onclick="history.back()" type="button" class="back-btn">🔙</button>
+    </div>
+    <!--유저아이디 및 프로필-->
+    <div>
+        <h1 class="userid"> winter_01 </h1> <!--유저 아이디-->
+        <!-- 마이페이지 이동-->
+        <button onclick="location.href='test.html'" class="profile" type="button"><img class="profile-photo"
+                                                   src="https://cdn.imweb.me/thumbnail/20220724/51a5a25fe9487.jpg">
+            <!--프로필-->
+        </button>
+    </div>
+    <div class="middle"> <!--사이공백-->
+
+    </div>
+
+
+    <div class="classificaftion">
+        <div class="npbutton"> <!--정렬버튼-->
+            <button type="button" class="btn btn-success">NEW</button>
+            <button type="button" class="btn btn-danger">POPULAR</button>
+            <!--게시물 작성 페이지 이동-->
+            <button onclick="location.href='test.html'" class="upload" type="button" class="btn btn-dark">➕</button>
+        </div>
+    </div>
+    <div class="posts-box"> <!--게시물박스-->
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="post">
+                <div class="card">
+                    <div class="postimg">
+                        <img type="button" src="https://idsn.co.kr/news/data/20211109/p179525852615648_495.jpg"
+                             class="card-img-top" alt="..."></div>
+                    <div class="card-body">
+                        <h5 class="card-title">winter_01</h5>
+                        <button class="like">♡️</button>
+                        <p class="card-text">게시내용</p>
+                    </div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="card">
+                    <div class="postimg">
+                        <img type="button" src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/01/28/O6491JUqhMXN637789968132785501.jpg"
+                             class="card-img-top" alt="..."></div>
+                    <div class="card-body">
+                        <h5 class="card-title">winter_01</h5>
+                        <button class="like">♡️</button>
+                        <p class="card-text">게시내용</p>
+                    </div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="card">
+                    <div class="postimg">
+                        <img type="button" src="https://cdn.imweb.me/thumbnail/20220724/51a5a25fe9487.jpg"
+                             class="card-img-top" alt="..."></div>
+                    <div class="card-body">
+                        <h5 class="card-title">winter_01</h5>
+                        <button class="like">♡️</button>
+                        <p class="card-text">게시내용</p>
+                    </div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="card">
+                    <div class="postimg">
+                        <img type="button" src="https://dimg.donga.com/wps/SPORTS/IMAGE/2021/12/02/110575183.4.jpg"
+                             class="card-img-top" alt="..."></div>
+                    <div class="card-body">
+                        <h5 class="card-title">winter_01</h5>
+                        <button class="like">♡️</button>
+                        <p class="card-text">게시내용</p>
+                    </div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="card">
+                    <div class="postimg">
+                        <img type="button" src="https://idsn.co.kr/news/data/20211109/p179525852615648_495.jpg"
+                             class="card-img-top" alt="..."></div>
+                    <div class="card-body">
+                        <h5 class="card-title">winter_01</h5>
+                        <button class="like">♡️</button>
+                        <p class="card-text">게시내용</p>
+                    </div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="card">
+                    <div class="postimg">
+                        <img type="button" src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/01/28/O6491JUqhMXN637789968132785501.jpg"
+                             class="card-img-top" alt="..."></div>
+                    <div class="card-body">
+                        <h5 class="card-title">winter_01</h5>
+                        <button class="like">♡️</button>
+                        <p class="card-text">게시내용</p>
+                    </div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="card">
+                    <div class="postimg">
+                        <img type="button" src="https://cdn.imweb.me/thumbnail/20220724/51a5a25fe9487.jpg"
+                             class="card-img-top" alt="..."></div>
+                    <div class="card-body">
+                        <h5 class="card-title">winter_01</h5>
+                        <button class="like">♡️</button>
+                        <p class="card-text">게시내용</p>
+                    </div>
+                </div>
+            </div>
+            <div class="post">
+                <div class="card">
+                    <div class="postimg">
+                        <img type="button" src="https://dimg.donga.com/wps/SPORTS/IMAGE/2021/12/02/110575183.4.jpg"
+                             class="card-img-top" alt="..."></div>
+                    <div class="card-body">
+                        <h5 class="card-title">winter_01</h5>
+                        <button class="like">♡️</button>
+                        <p class="card-text">게시내용</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- 테스트 포스트게시물
+    <div class="test-box">
+        <div class="posttest">
+            <div class="postingtest">
+                <img class="postphoto"
+                     src="https://cdn.sporbiz.co.kr/news/photo/202109/20210901_1_bodyimg_20210901570058.png">
+                <div class="card-bodytest">
+                    <h5 class="card=titletest">winter_01</h5>
+                    <button class="liketest">♡️</button>
+                    <p class="card-texttest">게시내용</p>
+                </div>
+
+            </div>
+        </div>
+        <div class="posttest">
+            <div class="postingtest">
+                <img class="postphoto"
+                     src="https://cdn.sporbiz.co.kr/news/photo/202109/20210901_1_bodyimg_20210901570058.png">
+            </div>
+            <div class="card-bodytest">
+                <h5 class="card=titletest">winter_01</h5>
+                <button class="liketest">♡️</button>
+                <p class="card-texttest">게시내용</p>
+            </div>
+        </div>
+        <div class="posttest">
+            <div class="postingtest">
+                <img class="postphoto"
+                     src="https://cdn.sporbiz.co.kr/news/photo/202109/20210901_1_bodyimg_20210901570058.png">
+            </div>
+            <div class="card-bodytest">
+                <h5 class="card=titletest">winter_01</h5>
+                <button class="liketest">♡️</button>
+                <p class="card-texttest">게시내용</p>
+            </div>
+        </div>
+        <div class="posttest">
+            <div class="postingtest">
+                <img class="postphoto"
+                     src="https://cdn.sporbiz.co.kr/news/photo/202109/20210901_1_bodyimg_20210901570058.png">
+            </div>
+            <div class="card-bodytest">
+                <h5 class="card=titletest">winter_01</h5>
+                <button class="liketest">♡️</button>
+                <p class="card-texttest">게시내용</p>
+            </div>
+        </div>
+
+</div>
+-->
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+  <!--정렬-->
+  <form method="GET" action="{% url 'home' %}">
+  <div class="col-4">
+    <select name="sort" id="sort">
+      <option value="recently" id="recently">최신순</option>
+      <option value="likes" id="likes">좋아요순</option>
+      <option value="comments" id="comments">댓글순</option>
+    </select>
+    <button class="btn btn-primary" type="submit" value="">정렬</button>
+  </div>
+
+  <!--pagenation-->
+  <div class="pagination">
+    {% if posts.has_previous %}
+      <button name="page" value="1">First</button>
+      <button name="page" value="{{posts.previous_page_number}}">Previous</button>
+    {% endif %}
+
+    <span>{{posts.number}} / {{posts.paginator.num_pages}}</span>
+
+    {% if posts.has_next %}
+      <button name="page" value="{{posts.next_page_number}}">Next</button>
+      <button name="page" value="{{posts.next_page_number}}">Last</button>
+    {% endif %}
+  </div>
+  </form>
