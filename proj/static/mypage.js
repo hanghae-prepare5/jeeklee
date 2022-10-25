@@ -43,29 +43,18 @@ function showlog(){
 }
 // function to bring login user's post
 function get_user_posts(){
+  let postlist = '';
   $.ajax({
       type: 'GET',
       url: '/mypage/userpost',
       data: {},
       async: false,
       success: function(response) {
-        let postlist = response;
+        console.log(response)
+        postlist = response;
       }
   });
   return postlist
-}
-// function to bring login user's bookmarks
-function get_user_bookmarks(){
-  $.ajax({
-      type: 'GET',
-      url: '/mypage/bookmark',
-      data: {},
-      async: false,
-      success: function(response) {
-        let bookmarks = response;
-      }
-  });
-  return bookmarks
 }
 // function to print commtnet log list
 function to_html_comment(list, id){
@@ -100,7 +89,7 @@ function to_html_like(list, id){
   }
 }
 
-// function to print recent log
+// function to print my post
 function showmp(){
   console.log("function showmp() called");
   // btn style 변경
@@ -109,16 +98,19 @@ function showmp(){
   bmBtn.style.borderTop = "none";
   bmBtn.style.color = "#DBDBDB";
 
-  let test =
-    [
-      {img: 'https://hollywoodlife.com/wp-content/uploads/2013/08/macmiller.png?w=620',likes: '1'},
-      {img: 'https://www.rollingstone.com/wp-content/uploads/2018/09/mac-miller.jpg?w=1581&h=1054&crop=1',likes: '2'},
-      {img: 'https://cdn.vox-cdn.com/thumbor/CArdkowtUvnu7MdMSNiOCd9dbVU=/0x0:3000x2000/920x613/filters:focal(1144x362:1624x842):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/61257057/MacTinyDesk02_EslahAttar_NPR_Ringer.0.jpg',likes: '3'},
-      {img: 'https://w.namu.la/s/f5999e0e1f85ee971731e5079ba21b9d3bd254286ed57691c672535dab1298197594696b35d7653175f49166e943f052ebb07426d789b93ea8611b7461dcdeafe1f66cba1b14e738f538ddc5dc59497be022f201a0f1d14663980612f831cdd5', likes: '4'},
-    ]
+  // let test =
+  //   [
+  //     {img: 'https://hollywoodlife.com/wp-content/uploads/2013/08/macmiller.png?w=620',likes: '1'},
+  //     {img: 'https://www.rollingstone.com/wp-content/uploads/2018/09/mac-miller.jpg?w=1581&h=1054&crop=1',likes: '2'},
+  //     {img: 'https://cdn.vox-cdn.com/thumbor/CArdkowtUvnu7MdMSNiOCd9dbVU=/0x0:3000x2000/920x613/filters:focal(1144x362:1624x842):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/61257057/MacTinyDesk02_EslahAttar_NPR_Ringer.0.jpg',likes: '3'},
+  //     {img: 'https://w.namu.la/s/f5999e0e1f85ee971731e5079ba21b9d3bd254286ed57691c672535dab1298197594696b35d7653175f49166e943f052ebb07426d789b93ea8611b7461dcdeafe1f66cba1b14e738f538ddc5dc59497be022f201a0f1d14663980612f831cdd5', likes: '4'},
+  //   ]
+  //
+  //
+  // to_html_post(test, '#WRAP_POST');
 
-
-  to_html_post(test, '#WRAP_POST');
+  let tmp = get_user_posts();
+  to_html_post(tmp, '#WRAP_POST');
 }
 // function to print bookmarks
 function showbm(){
@@ -138,6 +130,19 @@ function showbm(){
     ]
   to_html_post(test, '#WRAP_POST');
 }
+// function to bring login user's bookmarks
+function get_user_bookmarks(){
+  $.ajax({
+      type: 'GET',
+      url: '/mypage/bookmark',
+      data: {},
+      async: false,
+      success: function(response) {
+        let bookmarks = response;
+      }
+  });
+  return bookmarks
+}
 // function to print post list in html
 function to_html_post(list, id){
   console.log('to_html called');
@@ -147,15 +152,16 @@ function to_html_post(list, id){
   }
   let rows = list;
   for (let i = 0; i<rows.length; i++){
-    let img = rows[i]['img'];
+    let img = rows[i]['image'];
+    let user_pk = rows[i]['user_pk'];
     // console.log(img);
     let tmp = '';
     tmp = `<div class="post">
-            <a href="#">
+            <a href="test?${user_pk}">
               <img src="${img}" alt="">
             </a>
           </div>`;
-    post.insertAdjacentHTML("beforeend", tmp);
+    post.innerHTML += tmp;
   }
 }
 

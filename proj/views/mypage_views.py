@@ -7,13 +7,13 @@ bp = Blueprint('mypage', __name__, url_prefix='/mypage')
 # DB : pymongo, certifi import
 from pymongo import MongoClient
 import certifi
-client = MongoClient("mongodb+srv://admin:admin@cluster0.uuxjj5e.mongodb.net/?retryWrites=true&w=majority", tlsCAFile=certifi.where())
-db = client.teamproj
+client = MongoClient('mongodb+srv://admin:admin@hanghae.hfuwmwd.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=certifi.where())
+db = client.hanghae
 
 @bp.route('/')
 def index():
     # Variables for TEST
-    session['ID'] = "userid_sample"
+    session['ID'] = "test01"
     session['img'] = "https://miro.medium.com/max/640/1*xmotaE0PMsf3eCAM7mQCvA.jpeg"
 
     g.userid = session['ID']
@@ -24,7 +24,7 @@ def index():
 
 @bp.route('/userpost', methods=["GET"])
 def pass_user_posts() :
-    user_posts = list(db.users.find({'ID':session['ID']},{'_id':False}))
+    user_posts = list(db.Postwrite.find({'user_pk':session['ID']},{'_id':False}))
     return jsonify(user_posts)
 
 @bp.route('/bookmark', methods=["GET"])
@@ -37,3 +37,7 @@ def pass_user_bookmarks() :
         result.append(tmp)
 
     return jsonify(result)
+
+@bp.route('/test')
+def test1():
+    return render_template('test1.html')
