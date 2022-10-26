@@ -17,8 +17,7 @@ def Postwrite():
     text_receive = request.form['text_give']
     write_date_receive = request.form['write_date_give']
 
-    postwrite_pk_list = list(db.Postwrite.find({}, {'_id': False}))
-    count = len(postwrite_pk_list) + 1
+
 
     doc = {
         'postwrite_pk': count,

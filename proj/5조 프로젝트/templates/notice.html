@@ -13,6 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
+    <!-- icon Bootstrap 불러오기 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <style>
         #noticepopup {
             position: absolute;
@@ -132,6 +134,7 @@
             align-items: normal;
         }
 
+
         .noticecomment {
             width: 500px;
             max-height: 200px;
@@ -203,11 +206,21 @@
 
     </style>
     <script>
+        var postwrite_pk1 = "4"
+
+        //게시물 데이타가 중복되서 적용되지않게 제한
+        function postaction() {
+            show_post();
+            show_comments_count();
+            show_hart();
+            like_count();
+            show_bookmark();
+        };
 
 
         //게시물 팝업 열기
         $(document).ready(function () {
-            $("#noticewrite>img:first-of-type").click(function () {
+            $("img:first-of-type").click(function () {
                 $("#noticepopup").fadeIn();
                 $("#noticepopup").addClass("black");
             });
@@ -216,23 +229,24 @@
                 $(this).parent().parent().parent().parent().parent().fadeOut();
             });
         });
-        //modal열기
-        var myModal = document.getElementById('myModal')
-        var myInput = document.getElementById('myInput')
 
-        myModal.addEventListener('shown.bs.modal', function () {
-            myInput.focus()
-        })
 
-        function postaction() {
-            show_post();
-        };
-
+        //게시물작성 데이타 불러오기
         function show_post() {
+            $('#noticeuser').empty();
+            $('#noticeuser_comment').empty();
+            $('#noticepostbottom_tag').empty();
+            $('#noticepostbottom_tag_comment').empty();
+            $('#noticetext').empty();
+            $('#noticetext_comment').empty();
+            $('#noticeimage').empty();
+            $('#noticetime').empty();
+            $('#noticetime_comment').empty();
+
             $.ajax({
                 type: "GET",
                 url: "/Post",
-                data: {},
+                data: {postwrite_pk1_give: postwrite_pk1},
                 success: function (response) {
                     console.log(response['post_list'])
                     let rows = response['post_list']
@@ -274,29 +288,264 @@
 
                         let time_comparison = the_present_date.getTime() - write_time.getTime()
 
-                        if ((time_comparison / (1000 * 60)) <= 60) {
+                        if ((time_comparison / (1000 * 60)) < 60) {
                             time = (time_comparison / (1000 * 60))
                             temp_time = `${parseInt(time)}분 전`
                             $('#noticetime').append(temp_time)
                             $('#noticetime_comment').append(temp_time)
-                        } else if ((time_comparison / (1000 * 60 * 60)) <= 24) {
+                        } else if ((time_comparison / (1000 * 60 * 60)) < 24) {
                             time = (time_comparison / (1000 * 60 * 60))
                             temp_time = `${parseInt(time)}시간 전`
                             $('#noticetime').append(temp_time)
                             $('#noticetime_comment').append(temp_time)
-                        } else if ((time_comparison / (1000 * 60 * 60 * 24)) > 24) {
+                        } else {
                             time = (time_comparison / (1000 * 60 * 60 * 24))
                             temp_time = `${parseInt(time)}일 전`
                             $('#noticetime').append(temp_time)
                             $('#noticetime_comment').append(temp_time)
                         }
                     }
+
+                }
+
+            });
+        }
+
+        function save_Comment() {
+            if ($('#floatingTextarea2').val().length === 0) {
+                alert("댓글을 입력하세요!")
+
+            } else {
+                let postwrite_pk2 = postwrite_pk1
+                let comments = $('#floatingTextarea2').val()
+                let comments_date = new Date();
+                $('#floatingTextarea2').val('')
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Comment",
+                    data: {
+                        postwrite_pk_give: postwrite_pk2,
+                        comments_give: comments,
+                        comments_date_give: comments_date
+                    },
+
+                    success: function (response) {
+                        alert(response["msg"])
+                        show_comments()
+                        show_comments_count()
+
+                    },
+
+                })
+            }
+        }
+
+
+        function show_comments() {
+            $('#comments_list').empty();
+            $.ajax({
+                type: "GET",
+                url: "/Comment",
+                data: {postwrite_pk1_give: postwrite_pk1},
+                success: function (response) {
+                    console.log(response['comment_list'])
+                    let rows = response['comment_list']
+                    for (let i = 0; i < rows.length; i++) {
+                        let comments_id = rows[i]['comments_id']['id']
+                        let comments = rows[i]['comments']
+                        let comments_date = rows[i]['comments_date']
+                        let comments_pk = rows[i]['comments_pk']
+
+                        let the_present_date = new Date();
+                        let comments_write_time = new Date(comments_date)
+                        let time_comparison = the_present_date.getTime() - comments_write_time.getTime()
+
+                        if ((time_comparison / (1000 * 60)) < 60) {
+                            time = (time_comparison / (1000 * 60))
+                            temp_time = `${parseInt(time)}분 전`
+                        } else if ((time_comparison / (1000 * 60 * 60)) < 24) {
+                            time = (time_comparison / (1000 * 60 * 60))
+                            temp_time = `${parseInt(time)}시간 전`
+                        } else {
+                            time = (time_comparison / (1000 * 60 * 60 * 24))
+                            temp_time = `${parseInt(time)}일 전`
+                        }
+                        let count = i;
+
+                        let temp_comments = `<div style="margin-bottom: 30px">
+                                                        <div style="display: flex; flex-direction: row;">
+                                                            <div>${comments_id}</div>
+                                                            <div style="color: gray; margin-left: 10px;">${temp_time}</div>
+                                                            <div style="margin-left: auto">
+                                                                <button type="button" class="btn btn-outline-light" onclick="delete_comment(${count})">❌</button>
+                                                                <textarea style="display: none" id="comments_pk${count}">${comments_pk}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="noticecommenttext">
+                                                            <p>
+                                                                ${comments}
+                                                            </p>
+                                                        </div>
+                                                    </div>`
+                        $('#comments_list').append(temp_comments)
+
+                    }
                 }
             });
         }
 
+
+        function show_comments_count() {
+            $('#comment_count').empty();
+            $.ajax({
+                type: "GET",
+                url: "/post/Comment_count",
+                data: {postwrite_pk1_give: postwrite_pk1},
+                success: function (response) {
+                    console.log(response['comment_count'])
+                    let temp_comments_count = `댓글 ${response['comment_count']}개 모두 보기`
+                    $('#comment_count').append(temp_comments_count)
+
+                }
+            });
+        }
+
+        function delete_comment(count) {
+            let postwrite_pk2 = postwrite_pk1
+            let comment_pk = $("#comments_pk" + count).val();
+
+            $.ajax({
+                type: "POST",
+                url: "/comment/delete",
+                data: {postwrite_pk_give: postwrite_pk2, comment_pk_give: comment_pk},
+                success: function (response) {
+                    alert(response['msg'])
+                    show_comments_count()
+                    show_comments()
+                },
+            });
+        }
+
+        function save_Like() {
+            let postwrite_pk2 = postwrite_pk1
+            $.ajax({
+                type: "POST",
+                url: "/like",
+                data: {postwrite_pk_give: postwrite_pk2},
+                success: function (response) {
+                    show_hart()
+                    like_count()
+                },
+            });
+        }
+
+        function show_hart() {
+            $('#onlike').empty();
+            $.ajax({
+                type: "GET",
+                url: "/like",
+                data: {postwrite_pk1_give: postwrite_pk1},
+                success: function (response) {
+                    console.log(response['result'])
+                    let result = ``
+                    if (response['result'] === 1) {
+                        result = `<button type="button" class="btn btn-light" onclick="delete_Like()">❤</button>`
+                    } else
+                        result = `<button type="button" class="btn btn-light" onclick="save_Like()">🤍</button>`
+
+                    $('#onlike').append(result)
+
+                }
+            });
+        }
+
+        function like_count() {
+            $('#like_count').empty();
+            $.ajax({
+                type: "GET",
+                url: "/like/count",
+                data: {postwrite_pk1_give: postwrite_pk1},
+                success: function (response) {
+                    console.log(response['like_count'])
+                    let result = `좋아요 ${response['like_count']}개`
+                    $('#like_count').append(result)
+                }
+            });
+        }
+
+        function delete_Like() {
+            let postwrite_pk2 = postwrite_pk1
+            $.ajax({
+                type: "POST",
+                url: "/like/delete",
+                data: {postwrite_pk_give: postwrite_pk2},
+                success: function (response) {
+                    like_count()
+                    show_hart()
+                },
+            });
+        }
+
+        function bookmark() {
+            let postwrite_pk2 = postwrite_pk1
+            $.ajax({
+                type: "POST",
+                url: "/bookmark",
+                data: {postwrite_pk_give: postwrite_pk2},
+                success: function (response) {
+                    show_bookmark()
+                },
+            });
+        }
+
+        function show_bookmark() {
+            $('#onbookmark').empty();
+            $.ajax({
+                type: "GET",
+                url: "/bookmark",
+                data: {postwrite_pk1_give: postwrite_pk1},
+                success: function (response) {
+                    console.log(response['result'])
+                    let result = ``
+                    if (response['result'] === 1) {
+                        result = `<button type="button" class="btn btn-light" onclick="delete_bookmark()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                             class="bi bi-bookmark-check-fill"
+                                             viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                  d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+                                        </svg>
+                                    </button>`
+                    } else
+                        result = `<button type="button" class="btn btn-light" onclick="bookmark()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark"
+                                             viewBox="0 0 16 16">
+                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                        </svg>
+                                    </button>`
+
+                    $('#onbookmark').append(result)
+
+                }
+            });
+        }
+        //  function delete_bookmark() {
+        //     let postwrite_pk2 = postwrite_pk1
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "/bookmark/delete",
+        //         data: {postwrite_pk_give: postwrite_pk2},
+        //         success: function (response) {
+        //             show_bookmark()
+        //         },
+        //     });
+        // }
+
     </script>
 </head>
+
+
 <body>
 
 
@@ -311,21 +560,30 @@
             </div>
             <div class="noticepostbottom">
                 <div class="noticebtn_bottom">
-                    <button type="button" class="btn btn-light">🤍</button>
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">💬
-                    </button>
+                    <div class="noticebtn_bottom" id="onlike">
+
+                    </div>
+                    <button type="button" style="margin-left: 10px" class="btn btn-light" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal" onclick="show_comments()">💬
+                    </button><!-- Button trigger modal1 -->
+                    <div id="onbookmark" style="margin-left: auto; margin-right: 10px; display: flex; flex-direction: row; align-items: normal;">
+
+                    </div>
                 </div>
-                <div>좋아요갯수</div>
+                <div id="like_count">
+
+                </div>
                 <div class="noticepostbottom_tag" id="noticepostbottom_tag">
 
                 </div>
                 <div class="noticecomment" type="button" id="noticecommentclick" data-bs-toggle="modal"
-                     data-bs-target="#exampleModal"><!-- Button trigger modal -->
+                     data-bs-target="#exampleModal" onclick="show_comments()"><!-- Button trigger modal2 -->
                     <div id="noticetext">
 
                     </div>
-                    <div style="color: gray;">댓글 3개 모두 보기</div>
+                    <div style="color: gray;" id="comment_count">
+
+                    </div>
                 </div>
                 <div class="noticepostbottom_time" style="color: gray" id="noticetime">
 
@@ -365,144 +623,21 @@
                                 </div>
                                 <div style="border-bottom: 1px solid gainsboro;margin-bottom: 10px"></div>
                             </div>
-                            <div style="margin-bottom: 30px">
-                                <div style="display: flex; flex-direction: row;">
-                                    <div>닉네임</div>
-                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
-                                    <div style="margin-left: auto">
-                                        <button type="button" class="btn btn-outline-light">❌</button>
-                                    </div>
-                                </div>
-                                <div class="noticecommenttext">
-                                    <p>
-                                        댓글--------------------------------------------------------
-                                    </p>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 30px">
-                                <div style="display: flex; flex-direction: row;">
-                                    <div>닉네임</div>
-                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
-                                    <div style="margin-left: auto">
-                                        <button type="button" class="btn btn-outline-light">❌</button>
-                                    </div>
-                                </div>
-                                <div class="noticecommenttext">
-                                    <p>
-                                        댓글--------------------------------------------------------
-                                    </p>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 30px">
-                                <div style="display: flex; flex-direction: row;">
-                                    <div>닉네임</div>
-                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
-                                    <div style="margin-left: auto">
-                                        <button type="button" class="btn btn-outline-light">❌</button>
-                                    </div>
-                                </div>
-                                <div class="noticecommenttext">
-                                    <p>
-                                        댓글--------------------------------------------------------
-                                    </p>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 30px">
-                                <div style="display: flex; flex-direction: row;">
-                                    <div>닉네임</div>
-                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
-                                    <div style="margin-left: auto">
-                                        <button type="button" class="btn btn-outline-light">❌</button>
-                                    </div>
-                                </div>
-                                <div class="noticecommenttext">
-                                    <p>
-                                        댓글--------------------------------------------------------
-                                    </p>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 30px">
-                                <div style="display: flex; flex-direction: row;">
-                                    <div>닉네임</div>
-                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
-                                    <div style="margin-left: auto">
-                                        <button type="button" class="btn btn-outline-light">❌</button>
-                                    </div>
-                                </div>
-                                <div class="noticecommenttext">
-                                    <p>
-                                        댓글--------------------------------------------------------
-                                    </p>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 30px">
-                                <div style="display: flex; flex-direction: row;">
-                                    <div>닉네임</div>
-                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
-                                    <div style="margin-left: auto">
-                                        <button type="button" class="btn btn-outline-light">❌</button>
-                                    </div>
-                                </div>
-                                <div class="noticecommenttext">
-                                    <p>
-                                        댓글--------------------------------------------------------
-                                    </p>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 30px">
-                                <div style="display: flex; flex-direction: row;">
-                                    <div>닉네임</div>
-                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
-                                    <div style="margin-left: auto">
-                                        <button type="button" class="btn btn-outline-light">❌</button>
-                                    </div>
-                                </div>
-                                <div class="noticecommenttext">
-                                    <p>
-                                        댓글--------------------------------------------------------
-                                    </p>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 30px">
-                                <div style="display: flex; flex-direction: row;">
-                                    <div>닉네임</div>
-                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
-                                    <div style="margin-left: auto">
-                                        <button type="button" class="btn btn-outline-light">❌</button>
-                                    </div>
-                                </div>
-                                <div class="noticecommenttext">
-                                    <p>
-                                        댓글--------------------------------------------------------
-                                    </p>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 30px">
-                                <div style="display: flex; flex-direction: row;">
-                                    <div>닉네임</div>
-                                    <div style="color: gray; margin-left: 10px;">2시간 전</div>
-                                    <div style="margin-left: auto">
-                                        <button type="button" class="btn btn-outline-light">❌</button>
-                                    </div>
-                                </div>
-                                <div class="noticecommenttext">
-                                    <p>
-                                        댓글--------------------------------------------------------
-                                    </p>
-                                </div>
+                            <div id="comments_list">
+
                             </div>
                         </div>
 
                         <form>
                             <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a comment here"
-                                              id="floatingTextarea2" style="height: 100px"></textarea>
-                                <label for="floatingTextarea2">Comments</label>
+                                <textarea class="form-control" placeholder="Leave a comment here"
+                                          id="floatingTextarea2" style="height: 60px"></textarea>
+                                <label for="floatingTextarea2">댓글 입력...</label>
                             </div>
                         </form>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary">댓글달기</button>
+                            <button type="button" class="btn btn-secondary" onclick="save_Comment()">댓글달기</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -514,8 +649,10 @@
 </div>
 
 <section id="noticewrite">
-    <img src="백지훈.jpg" type="button" style="width: 500px; height: 500px;" onclick="postaction()">
+    <img src="https://w.namu.la/s/59bbf73b123d0f9f693be3c3de9506b24a1f2a3067b4ffd0207a3a08eee32d750ebf1ca3e33084aa3bbcd6916bd0a8a187cc4556b87fa269c25f1a7ff3ea279f1e372d23aa0a6eee8d5932c70d5dac0e7abffa01167a69808aa4f31525eb198262eab6b13087d731f9aceaba1343d08b"
+         type="button" style="width: 500px; height: 500px;" onclick="postaction()">
 </section>
+
 
 </body>
 </html>
