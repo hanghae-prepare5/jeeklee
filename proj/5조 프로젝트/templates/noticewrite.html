@@ -73,7 +73,8 @@
             margin-right: 10px;
 
         }
-        .noticeuser{
+
+        .noticeuser {
             display: flex;
             flex-direction: row;
             justify-content: left;
@@ -251,22 +252,29 @@
 
         function save_Postwrite() {
 
-            // // tags 조건 배열
-            // let tagsget = $('#floatingTextarea').val();
-            // let tagsedit
-            //     = tagsget.split(' ');
-            // let tagss = new Array();
-            // for (let i=0;i<tagsedit.length;i++) {
-            //     if (tagsedit[i].includes('#')) {
-            //            tagss.push(tagsedit[i])
-            //     }
-            // }
+            // // tags 조건으로 어떤값이든 균일하게 변경시키기
+            let tagsget = $('#floatingTextarea').val();
+            let tagsedit1
+                = tagsget.split('');
+            for (var i = 0; i < tagsedit1.length; i++) {
+                if (tagsedit1[i] === ' ') {
+                    tagsedit1.splice(i, 1);
+                    i--;
+                }
+            }
+            let tagsedit2 = tagsedit1.join('')
+            let tagsedit3 = tagsedit2.split('#')
+            for (var i = 0; i < tagsedit3.length; i++) {
+                if (tagsedit3[i] === '') {
+                    tagsedit3.splice(i, 1);
+                    i--;
+                }
+            }
+            let tagsedit4 = tagsedit3.join('-')
 
             /* 폼 전송 */
             // 폼데이터 담기
-
-
-            let tags = $('#floatingTextarea').val()
+            let tags = tagsedit4
             let text = $('#floatingTextarea2').val()
             let write_date = new Date();
             let image = dataURL;
