@@ -44,7 +44,7 @@ def pass_user_comments() :
     for num in range(len(user_posts_pk)):
         postwrite_pk = user_posts_pk[num]['postwrite_pk']
         tmp = db.comment.find_one({'postwrite_pk':postwrite_pk},{'_id':False})
-        db.comment.update_one({'postwrite_pk':postwrite_pk},{'$set':{'comments_flag' : True}})
+        db.comment.update_one({'postwrite_pk':postwrite_pk},{'$set':{'comments_flag' : False}})
         result.append(tmp)
     return jsonify(result)
 
@@ -56,7 +56,7 @@ def pass_user_likes() :
         postwrite_pk = user_posts_pk[num]['postwrite_pk']
         tmp = db.like.find_one({'postwrite_pk':postwrite_pk},{'_id':False})
         result.append(tmp)
-        db.like.update_one({'postwrite_pk':postwrite_pk},{'$set':{'like_flag' : True}})
+        db.like.update_one({'postwrite_pk':postwrite_pk},{'$set':{'like_flag' : False}})
     return jsonify(result)
 
 

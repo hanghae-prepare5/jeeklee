@@ -127,7 +127,6 @@ function to_html_like(list, id){
 }
 
 
-
 // function to print my post
 function showmp(){
   // console.log("function showmp() called");
