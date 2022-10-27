@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify , session
 app = Flask(__name__)
 
 from pymongo import MongoClient
@@ -9,12 +9,20 @@ db = client.hanghae
 def home():
    return render_template('test2.html')
 
-
+#피드게시물표기
 @app.route("/Post", methods=["GET"])
 def Postwrite_get():
-    user_pk_list = list(db.Postwrite.find({}, {'_id': False}))
+    postwrite_pk_list = list(db.Postwrite.find({}, {'_id': False}))
 
-    return jsonify({'post_list': user_pk_list})
+    return jsonify({'post_list': postwrite_pk_list})
+
+@app.route("/like/count", methods=["GET"])
+def like_count_get():
+    postwrite_pk_receive = request.args.get('postwrite_pk1_give')
+    like_list = list(db.Like.find({'postwrite_pk': int(postwrite_pk_receive)}, {'_id': False}))
+    like_count = len(like_list)
+
+    return jsonify({'like_count': like_count})
 
 
 if __name__ == '__main__':
@@ -59,3 +67,13 @@ if __name__ == '__main__':
 
    # Now store/put the image via GridFs object.
 #   fs.put(contents, filename="testphoto")
+
+
+## 좋아요 갯수 표시
+#@app.route("/like/count", methods=["GET"])
+#def like_count_get():
+#    postwrite_pk_receive = request.args.get('postwrite_pk1_give')
+#    like_list = list(db.Like.find({'postwrite_pk': int(postwrite_pk_receive)}, {'_id': False}))
+#    like_count = len(like_list)
+
+#    return jsonify({'like_count': like_count})
