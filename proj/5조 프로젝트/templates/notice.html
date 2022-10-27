@@ -207,7 +207,7 @@
     </style>
     <script>
         //게시물 postwrite_pk값 전역변수 설정
-        var postwrite_pk1 = "4"
+        var postwrite_pk1 = "1"
 
         //메인페이지 혹은 마이페이지에서 포스트 게시물 클릭시 발동!
         function postaction() {
@@ -378,7 +378,7 @@
                                                             <div style="margin-left: auto">
                                                                 <button type="button" class="btn btn-outline-light" id="warning${count}" onclick="on_warning(${count})" >❌</button>
                                                                 <textarea style="display: none" id="comments_pk${count}">${comments_pk}</textarea>
-                                                                <div style="position: absolute; margin-left: -300px; display: none" id="show_warning${count}">
+                                                                <div style="position: absolute; margin-left: -310px; margin-top: -50px; display: none" id="show_warning${count}">
                                                                     <div class="toast${count}" >
                                                                         <div class="toast-header" style="background-color: ghostwhite">
                                                                             <strong class="me-auto">※주의</strong>
@@ -405,7 +405,7 @@
                                                     </div>`
                         $('#comments_list').append(temp_comments)
                     }
-                    show_comments_count()
+
                 }
             });
         }
@@ -581,40 +581,49 @@
 <div id="noticepopup">
     <div class="noticespace">
         <div class="noticepost">
+<!--            //유저프로필-->
             <div class="noticeposttop" id="noticeuser">
 
             </div>
+<!--            //게시물 사진-->
             <div class="noticepicture" id="noticeimage">
 
             </div>
             <div class="noticepostbottom">
                 <div class="noticebtn_bottom">
+<!--                    //게시물 좋아요-->
                     <div class="noticebtn_bottom" id="onlike">
 
                     </div>
                     <button type="button" style="margin-left: 10px" class="btn btn-light" data-bs-toggle="modal"
                             data-bs-target="#exampleModal" onclick="show_comments()">💬
                     </button><!-- Button trigger modal1 -->
+<!--                    //게시물 북마크-->
                     <div id="onbookmark"
                          style="margin-left: auto; margin-right: 10px; display: flex; flex-direction: row; align-items: normal;">
 
                     </div>
                 </div>
+<!--                //좋아요 갯수 표시-->
                 <div id="like_count">
 
                 </div>
+<!--                //게시물 태그 표시-->
                 <div class="noticepostbottom_tag" id="noticepostbottom_tag">
 
                 </div>
                 <div class="noticecomment" type="button" id="noticecommentclick" data-bs-toggle="modal"
                      data-bs-target="#exampleModal" onclick="show_comments()"><!-- Button trigger modal2 -->
+<!--                    //게시물 택스트 표시-->
                     <div id="noticetext">
 
                     </div>
+<!--                    //댓글 갯수 표시-->
                     <div style="color: gray;" id="comment_count">
 
                     </div>
                 </div>
+<!--                //게시물 경과시간표시-->
                 <div class="noticepostbottom_time" style="color: gray" id="noticetime">
 
                 </div>
@@ -635,24 +644,29 @@
                         </div>
                         <div class="modal-body">
                             <div class="noticecommentprofile">
+<!--                                //모달 유저프로필-->
                                 <div class="noticeuser" id="noticeuser_comment">
 
                                 </div>
+<!--                                //게시물 경과시간표시-->
                                 <div style="color: gray; margin-left: 10px;" id="noticetime_comment">
 
                                 </div>
                             </div>
                             <div>
                                 <div class="noticecommenttext">
+<!--                                    //게시물 택스트표시-->
                                     <div id="noticetext_comment">
 
                                     </div>
+<!--                                    //게시물 태그 표시-->
                                     <p class="noticepostbottom_tag" id="noticepostbottom_tag_comment">
 
                                     </p>
                                 </div>
                                 <div style="border-bottom: 1px solid gainsboro;margin-bottom: 10px"></div>
                             </div>
+<!--                            //게시물 댓글 표시-->
                             <div id="comments_list">
 
                             </div>

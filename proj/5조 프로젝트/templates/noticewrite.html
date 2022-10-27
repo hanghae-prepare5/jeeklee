@@ -253,9 +253,7 @@
         function save_Postwrite() {
 
             // // tags 조건으로 어떤값이든 균일하게 변경시키기
-            let tagsget = $('#floatingTextarea').val();
-            let tagsedit1
-                = tagsget.split('');
+           let tagsedit1 = $('#floatingTextarea').val();
             for (var i = 0; i < tagsedit1.length; i++) {
                 if (tagsedit1[i] === ' ') {
                     tagsedit1.splice(i, 1);
@@ -263,18 +261,21 @@
                 }
             }
             let tagsedit2 = tagsedit1.join('')
-            let tagsedit3 = tagsedit2.split('#')
-            for (var i = 0; i < tagsedit3.length; i++) {
-                if (tagsedit3[i] === '') {
-                    tagsedit3.splice(i, 1);
+
+            let tagsedit3 = tagsedit2.split(',')
+            let tagsedit4 = tagsedit3.join('')
+            let tagsedit5 = tagsedit4.split('#')
+            for (var i = 0; i < tagsedit5.length; i++) {
+                if (tagsedit5[i] === '') {
+                    tagsedit5.splice(i, 1);
                     i--;
                 }
             }
-            let tagsedit4 = tagsedit3.join('-')
+            let tagsedit6 = tagsedit5.join('-')
 
             /* 폼 전송 */
             // 폼데이터 담기
-            let tags = tagsedit4
+            let tags = tagsedit6
             let text = $('#floatingTextarea2').val()
             let write_date = new Date();
             let image = dataURL;
@@ -327,6 +328,7 @@
     <div>
         <div class="noticepost">
             <div class="noticeposttop">
+                <!--                //유저프로필and닉네임-->
                 <div id="noticeuser" class="noticeuser">
 
                 </div>
@@ -343,6 +345,7 @@
                     <div class="fileuproadhide">
                         <input id="chooseFile" type="file" onchange="addFile(this);" multiple/>
                     </div>
+                    <!--                    //파일첨부리스트-->
                     <div class="file-list">
 
                     </div>
@@ -355,7 +358,7 @@
                     <div class="form-floating">
                         <textarea class="form-control" placeholder="Leave a comment here"
                                   id="floatingTextarea"></textarea>
-                        <label for="floatingTextarea">tag(반드시 태그입력 후 띄어쓰고 태그입력ex.[#부산 #인천])</label>
+                        <label for="floatingTextarea">tag(반드시 #붙혀서 입력 ex.[#부산 #인천])</label>
                     </div>
                 </div>
                 <div>

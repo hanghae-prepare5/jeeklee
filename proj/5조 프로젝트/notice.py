@@ -34,7 +34,7 @@ def Comment():
         'comments': comments_receive,
         'comments_flag': 0,
         # 접속유저 pk(세션)
-        'comments_id': 5,
+        'comments_id': db.User.find_one({'user_pk': 5}, {'_id': False}),
         'comments_date': comments_date_receive,
     }
     db.Comment.insert_one(doc)
@@ -71,14 +71,15 @@ def comment_delete():
 
     # 포스트작성자권한
     postwrite_pk1 = db.Postwrite.find_one({'postwrite_pk': int(postwrite_pk_receive)}, {'_id': False})
-    print(postwrite_pk1['user_pk'])
+    postwrite_pk2=postwrite_pk1['user_pk']
+    print(postwrite_pk2['user_pk'])
 
     # 댓글작성자권한
     if (db.Comment.find_one({'comments_pk': int(comment_pk_receive),'comment_id':user_id['user_pk']})):
         db.Comment.delete_one({'comments_pk': int(comment_pk_receive)})
         return jsonify({'msg': '댓글 삭제!'})
     # 포스트작성자권한
-    elif (user_id['user_pk'] == postwrite_pk1['user_pk']):
+    elif (user_id['user_pk'] == postwrite_pk2['user_pk']):
         db.Comment.delete_one({'comments_pk': int(comment_pk_receive)})
         return jsonify({'msg': '댓글 삭제!'})
     else:

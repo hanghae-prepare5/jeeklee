@@ -23,7 +23,7 @@ def Postwrite():
     doc = {
         'postwrite_pk': count,
         # 접속유저 pk(세션)
-        'user_pk': 5,
+        'user_pk': db.User.find_one({'user_pk': 5}, {'_id': False}),
         'tags': tags_receive.split('-'),
         'text': text_receive,
         'image': image_receive,
