@@ -6,14 +6,14 @@ const bmBtn = document.getElementById('BOOKMARK_BTN');
 
 // function activates when DOMtree is organized
 $(document).ready(function() {
-  console.log('login.js called');
+  // console.log('login.js called');
   showlog();
   showmp();
 });
 
 // function to print recent log
 function showlog(){
-  console.log("function showlog() called");
+  // console.log("function showlog() called");
   let post = document.querySelector("#LOG");
   while(post.firstChild){
       post.removeChild(post.firstChild);
@@ -50,6 +50,7 @@ function get_user_posts(){
       data: {},
       async: false,
       success: function(response) {
+        console.log("User Post list");
         console.log(response)
         postlist = response;
       }
@@ -91,7 +92,7 @@ function to_html_like(list, id){
 
 // function to print my post
 function showmp(){
-  console.log("function showmp() called");
+  // console.log("function showmp() called");
   // btn style 변경
   mpBtn.style.borderTop = "1px solid #262626";
   mpBtn.style.color = "#262626";
@@ -114,31 +115,37 @@ function showmp(){
 }
 // function to print bookmarks
 function showbm(){
-  console.log("function showbm() called");
+  // console.log("function showbm() called");
   // btn style 변경
   bmBtn.style.borderTop = "1px solid #262626";
   bmBtn.style.color = "#262626";
   mpBtn.style.borderTop = "none";
   mpBtn.style.color = "#DBDBDB";
 
-  let test =
-    [
-      {img: 'http://image.yes24.com/momo/TopCate956/MidCate001/95500703.jpg',likes: '3'},
-      {img: 'https://image.xportsnews.com/contents/images/upload/article/2021/1024/1635052092889091.jpg',likes: '1'},
-      {img: 'https://image.kmib.co.kr/online_image/2018/1125/611816110012868248_1.jpg',likes: '2'},
-      {img: 'https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/107847148_2553451304872718_1540664845642208434_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Rgfxk1aCk-sAX9FDxcm&_nc_ht=scontent-ssn1-1.xx&oh=00_AT8GrTZtxoJz51DnGO5RM_ZS3hX_GEv3anewvGl_ms1X6w&oe=6376C3CF', likes: '4'},
-    ]
-  to_html_post(test, '#WRAP_POST');
+  // let test =
+  //   [
+  //     {img: 'http://image.yes24.com/momo/TopCate956/MidCate001/95500703.jpg',likes: '3'},
+  //     {img: 'https://image.xportsnews.com/contents/images/upload/article/2021/1024/1635052092889091.jpg',likes: '1'},
+  //     {img: 'https://image.kmib.co.kr/online_image/2018/1125/611816110012868248_1.jpg',likes: '2'},
+  //     {img: 'https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/107847148_2553451304872718_1540664845642208434_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Rgfxk1aCk-sAX9FDxcm&_nc_ht=scontent-ssn1-1.xx&oh=00_AT8GrTZtxoJz51DnGO5RM_ZS3hX_GEv3anewvGl_ms1X6w&oe=6376C3CF', likes: '4'},
+  //   ]
+  // to_html_post(test, '#WRAP_POST');
+
+  let tmp = get_user_bookmarks();
+  to_html_post(tmp, '#WRAP_POST');
 }
 // function to bring login user's bookmarks
 function get_user_bookmarks(){
+  let bookmarks = '';
   $.ajax({
       type: 'GET',
       url: '/mypage/bookmark',
       data: {},
       async: false,
       success: function(response) {
-        let bookmarks = response;
+        console.log("Bookmark list");
+        console.log(response);
+        bookmarks = response;
       }
   });
   return bookmarks

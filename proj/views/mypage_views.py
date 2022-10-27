@@ -29,15 +29,10 @@ def pass_user_posts() :
 
 @bp.route('/bookmark', methods=["GET"])
 def pass_user_bookmarks() :
-    user = db.users.find_one({'name':session['ID']})
-    bookmarks = user['bookmarks']
+    user = db.users.find_one({'ID':session['ID']})
+    bookmarks = user['bookmark']
     result = []
     for num in range(len(bookmarks)):
-        tmp = db.users.find_one({'_id':bookmarks[num]})
+        tmp = db.Postwrite.find_one({'postwrite_pk':bookmarks[num]},{'_id':False})
         result.append(tmp)
-
     return jsonify(result)
-
-@bp.route('/test')
-def test1():
-    return render_template('test1.html')
