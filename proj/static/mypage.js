@@ -38,8 +38,10 @@ function showlog(){
       comment_user: ['sample19']
       },
     ]
-  to_html_comment(test, "#LOG");
-  to_html_like(test, "#LOG");
+  let comments = get_user_comments();
+  let likes = get_user_likes();
+  to_html_comment(comments, "#LOG");
+  to_html_like(likes, "#LOG");
 }
 // function to bring login user's post
 function get_user_posts(){
@@ -57,18 +59,51 @@ function get_user_posts(){
   });
   return postlist
 }
+// function to bring log of comment
+function get_user_comments(){
+  let commentlist = '';
+  $.ajax({
+      type: 'GET',
+      url: '/mypage/comment',
+      data: {},
+      async: false,
+      success: function(response) {
+        console.log("Comment list");
+        console.log(response)
+        commentlist = response;
+      }
+  });
+  return commentlist
+}
+// function to bring log of like
+function get_user_likes(){
+  let likelist = '';
+  $.ajax({
+      type: 'GET',
+      url: '/mypage/like',
+      data: {},
+      async: false,
+      success: function(response) {
+        console.log("Like list");
+        console.log(response)
+        likelist = response;
+      }
+  });
+  return likelist
+}
 // function to print commtnet log list
 function to_html_comment(list, id){
   // console.log('to_html called');
   let post = document.querySelector(id);
   let rows = list;
   for (let i = 0; i<rows.length; i++){
-    if (rows[i]['comment_flag']==1){
-      let user = rows[i]['comment_user'][0];
-      let number = rows[i]['comment_user'].length - 1;
+    if (rows[i]['comments_flag']==true){
+      let number = rows[i]['comments_id'].length - 1;
+      let user = rows[i]['comments_id'][number];
+      let postwrite_pk = rows[i]['postwrite_pk'];
 
       let tmp = '';
-      tmp = `<li><a href="#">${user}님 외 ${number}명이 회원님의 게시물에 댓글을 남겼습니다.</a></li>`
+      tmp = `<li><a href="postpage?${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물에 댓글을 남겼습니다.</a></li>`
       post.insertAdjacentHTML("beforeend", tmp);
     }
   }
@@ -79,16 +114,19 @@ function to_html_like(list, id){
   let post = document.querySelector(id);
   let rows = list;
   for (let i = 0; i<rows.length; i++){
-    if (rows[i]['like_flag']==1){
-      let user = rows[i]['like_user'][0];
-      let number = rows[i]['like_user'].length - 1;
+    if (rows[i]['like_flag']==true){
+      let number = rows[i]['like_id'].length - 1;
+      let user = rows[i]['like_id'][number];
+      let postwrite_pk = rows[i]['postwrite_pk'];
 
       let tmp = '';
-      tmp = `<li><a href="#">${user}님 외 ${number}명이 회원님의 게시물을 좋아합니다.</a></li>`
+      tmp = `<li><a href="postpage?${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물을 좋아합니다.</a></li>`
       post.insertAdjacentHTML("beforeend", tmp);
     }
   }
 }
+
+
 
 // function to print my post
 function showmp(){
@@ -160,11 +198,10 @@ function to_html_post(list, id){
   let rows = list;
   for (let i = 0; i<rows.length; i++){
     let img = rows[i]['image'];
-    let user_pk = rows[i]['user_pk'];
-    // console.log(img);
+    let postwrite_pk = rows[i]['postwrite_pk'];
     let tmp = '';
     tmp = `<div class="post">
-            <a href="test?${user_pk}">
+            <a href="postpage?${postwrite_pk}">
               <img src="${img}" alt="">
             </a>
           </div>`;
