@@ -21,8 +21,8 @@ def postwrite():
 
     doc = {
         'postwrite_pk': num+1,
-        'user_id': session['id'],
-        'tags': tags_receive.split(' '),
+        'user_pk': session['id'],
+        'tags': tags_receive.split('-'),
         'text': text_receive,
         'image': image_receive,
         'write_date': write_date_receive,
@@ -34,5 +34,6 @@ def postwrite():
 
 @bp.route("/", methods=["GET"])
 def bucket_get():
+    session['id'] = 'minho0806'
     user_list = list(db.user.find({'id': session['id']}, {'_id': False}))
     return jsonify({'user': user_list})

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--AJAX 설정-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- font 불러오기 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+    <!-- CSS 연결 -->
+    <link rel="stylesheet" href="{{url_for('static', filename='register.css')}}"/>
+    <title>HH5_OOTD</title>
+</head>
+<body>
+<div class="signup_wrapper">
+    <h1>회원가입</h1>
+    <form class="signup_form" action="#">
+        <input type="text" id="REGI_ID" name="id" placeholder="ID">
+        <div id="VERI_ID" class="msg"></div>
+        <input type="password" id="REGI_PW1" name="id" placeholder="PASSWORD">
+        <div id="VERI_PW1" class="msg"></div>
+        <input type="password" id="REGI_PW2" name="id" placeholder="RE-ENTER PASSWORD">
+        <div id="VERI_PW2" class="msg"></div>
+        <!-- 프로필 이미지 불러오기  -->
+        <form action="/upload" method="post" id="uploadForm">
+            <div>프로필 사진 설정</div>
+            <input type="file" accept="image/*" onchange="readURL(this);">
+            <input type="submit" class="btn btn-primary btn_location" value="submit">
+        </form>
+        <!-- 프로필 이미지 박스  -->
+        <div class="box" style="background: #BDBDBD;">
+            <img class="profile" id="preview" src="">
+        </div>
+        <button id="REGI_BTN" class="signup_btn" type="button" disabled>가입하기</button>
+    </form>
+    <div class="login">
+        <a href="{{ url_for('login.index') }}">로그인</a>
+    </div>
+
+</div>
+<!-- sha256을 사용하기 위해 콜(암호화) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='register.js') }}"></script>
+</body>
+
+</html>

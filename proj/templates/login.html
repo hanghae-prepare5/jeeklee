@@ -2,35 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>HH5_OOTD</title>
+
     <!--AJAX 설정-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <!-- font 불러오기 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
-
     <!-- CSS 연결 -->
     <link rel="stylesheet" href="{{url_for('static', filename='login.css')}}"/>
-
-    <script src="jquery-3.4.1.js"></script>
+    <title>HH5_OOTD</title>
 </head>
 
 <body>
 <div class="login_wrapper">
-    <h1>저희 팀 제목 OR 로고</h1>
-    <form action="#">
-        <input type="text" placeholder="ID">
-        <input type="password" placeholder="PASSWORD">
+    <h1>OOTD_GRAM</h1>
+    <form class="login_form" action="#">
+        <input type="text" id="LOGIN_ID" name="id" placeholder="ID">
+        <div id="VERI_ID" class="msg"></div>
+        <input type="password" id="LOGIN_PW" name="id" placeholder="PASSWORD">
+        <div id="VERI_PW" class="msg"></div>
+        <button id="LOGIN_BTN" type="button" disabled>로그인</button>
     </form>
-    <button>로그인</button>
     <div class="signup">
-        <a href="./signup.html">
-            회원가입
-        </a>
+        <a href="{{ url_for('login.register') }}">회원가입</a>
     </div>
 </div>
-  <!-- sha256을 사용하기 위해 콜(암호화) -->
+
+<!-- sha256을 사용하기 위해 콜(암호화) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='login.js') }}"></script>
 </body>
+
 </html>
