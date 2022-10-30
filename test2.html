@@ -70,7 +70,7 @@
         width: 135px;
         height: 135px;
         border-radius: 100%;
-        border:none;
+        border: none;
 
 
     }
@@ -107,7 +107,7 @@
     }
 
     /*정렬버튼 상단 줄*/
-    .classificaftion{
+    .classificaftion {
 
         width: 100%;
         border-top: solid 2px whitesmoke;
@@ -116,12 +116,13 @@
     }
 
     /*로그아웃*/
-    .Logout{
+    .Logout {
         background-color: ghostwhite;
-        margin-left:95%;
+        margin-left: 95%;
         border: gray;
 
-     }
+    }
+
     /*게시버튼*/
     .upload {
 
@@ -131,19 +132,27 @@
         background-color: white;
 
         border: none;
-        font-size: 28px;}
-         a:link { color: red; text-decoration: none;}
-         a:visited { color: black; text-decoration: none;}
-         a:hover { color: blue; text-decoration: underline;}
+        font-size: 28px;
+    }
 
+    a:link {
+        color: red;
+        text-decoration: none;
+    }
 
+    a:visited {
+        color: black;
+        text-decoration: none;
+    }
 
-
+    a:hover {
+        color: blue;
+        text-decoration: underline;
+    }
 
 
     /*게시물박스*/
     .posts-box {
-
 
 
     }
@@ -153,13 +162,10 @@
         float: left;
         margin-right: 2%;
         margin-left: 8%;
-        margin-top:15px;
+        margin-top: 15px;
         margin-bottom: 15px;
         display: flex;
-        flex-wrap:wrap;
-
-
-
+        flex-wrap: wrap;
 
 
     }
@@ -179,19 +185,24 @@
 
 
     }
-
+    .timelog{
+        margin-left: 450px;
+    }
 
 </style>
 
 <script>
     //로그인창 input안에 들어간 아이디 피드 이름으로 표시
-    function printName()  {  const name = document.getElementById('name').value;  document.getElementById("result").innerText = name;}
-
+    function printName() {
+        const name = document.getElementById('name').value;
+        document.getElementById("result").innerText = name;
+    }
 
 
     //피드 게시물표기
     $(document).ready(function () {
         show_post();
+
     });
 
     function show_post() {
@@ -201,15 +212,13 @@
             data: {},
             success: function (response) {
                 let rows = response['post_list']
-                    console.log(rows)
+                console.log(rows)
                 for (let i = 0; i < rows.length; i++) {
                     let id = rows[i]['user_pk']
                     let text = rows[i]['text']
                     let tags = rows[i]['tags']
                     let image = rows[i]['image']
                     let time = rows[i]['write_date']
-
-
 
 
                     let temp_post = `<div id="post" class="post">
@@ -222,27 +231,42 @@
                                     <button class="like">♡️<h9 id="like_count"></h9></button>
                                     <p class="card-text">${text}</p>
                                     <p class="card-text">  ${tags}   </p>
-                                    <p> ${time}  </p>
+                                    <p class="timelog" id="time${i + 1}"> </p>
                                 </div></div></div>`
+
                     $('#post').append(temp_post)
+                    let temp_time = ``
+                    let the_present_date = new Date();
+                    let write_time = new Date(time)
+
+                    let time_comparison = the_present_date.getTime() - write_time.getTime()
+
+                    if ((time_comparison / (1000 * 60)) < 60) {
+                        time = (time_comparison / (1000 * 60))
+                        temp_time = `${parseInt(time)}분 전`
+                        $(`#time${i + 1}`).append(temp_time)
+
+
+                    } else if ((time_comparison / (1000 * 60 * 60)) < 24) {
+                        time = (time_comparison / (1000 * 60 * 60))
+                        temp_time = `${parseInt(time)}시간 전`
+
+                        $(`#time${i + 1}`).append(temp_time)
+
+
+                    } else {
+                        time = (time_comparison / (1000 * 60 * 60 * 24))
+                        temp_time = `${parseInt(time)}일 전`
+
+                        $(`#time${i + 1}`).append(temp_time)
+
+                    }
+
+
                 }
             }
         });
     }
-             function like_count() {
-            $('#like_count').empty();
-            $.ajax({
-                type: "GET",
-                url: "/like/count",
-                data: {postwrite_pk1_give: postwrite_pk1},
-                success: function (response) {
-                    console.log(response['like_count'])
-                    let result = `${response['like_count']}`
-                    $('#like_count').append(result)
-                        }
-            });
-        }
-
 
 
 </script>
@@ -262,10 +286,12 @@
     </div>
     <!--유저아이디 및 프로필-->
     <div>
-        <h1 id="result" class="userid"> <!-- 입력받은 아이디 값  --> </h1> <!--로그인시 사용자가 입력한 id값 출력 --> <!-- <input id='name' onkeyup='printName()'/> 아이디 입력창  -->
+        <h1 id="result" class="userid"> <!-- 입력받은 아이디 값  --> </h1> <!--로그인시 사용자가 입력한 id값 출력 -->
+        <!-- <input id='name' onkeyup='printName()'/> 아이디 입력창  -->
         <!-- comments_profile / 마이페이지 이동 -->
         <button class="profile" type="button"><a href="#" title="mypage"> <img class="profile-photo"
-                                                                                       src="https://newsimg.sedaily.com/2020/11/24/1ZAJ728KBG_1.jpg"><!--로그인 회원 프로필-->
+                                                                               src="https://newsimg.sedaily.com/2020/11/24/1ZAJ728KBG_1.jpg">
+            <!--로그인 회원 프로필-->
             <!--프로필-->
         </a></button>
 
@@ -279,16 +305,17 @@
             <button onclick="window.location.reload()" type="button" class="btn btn-success">NEW</button>
             <button type="button" class="btn btn-danger">POPULAR</button>
             <!--게시물 작성 페이지 이동-->
-            <button class="upload" class="btn btn-dark"style type="text/css"><a href="###" title="upload"> ➕ </a></button>
+            <button class="upload" class="btn btn-dark" style type="text/css"><a href="###" title="upload"> ➕ </a>
+            </button>
         </div>
     </div>
     <!--게시물박스-->
-<div class="posts-box">
-    <div id="post" class="post">
+    <div class="posts-box">
+        <div id="post" class="post">
 
 
+        </div>
     </div>
-</div>
 
 
 </div>
