@@ -7,6 +7,12 @@ from flask import Blueprint, url_for, session, g
 
 bp = Blueprint('postwrite', __name__, url_prefix='/postwrite')
 
+
+@bp.route('/page', methods=["POST","GET"])
+def page():
+    return render_template('postwrite.html')
+
+
 @bp.route('/', methods=["POST"])
 def postwrite():
     image_receive = request.form['image_give']
@@ -26,6 +32,7 @@ def postwrite():
         'text': text_receive,
         'image': image_receive,
         'write_date': write_date_receive,
+        'like':0
     }
     db.postwrite.insert_one(doc)
 

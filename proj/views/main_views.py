@@ -9,9 +9,10 @@ bp = Blueprint('main', __name__, url_prefix='/')
 
 @bp.route('/')
 def home():
-   if 'id' in session :
-       return render_template('main.html')
-   return render_template('login.html')
+    return render_template('main.html')
+   # if 'id' in session :
+   #     return render_template('main.html')
+   # return render_template('login.html')
 
 #피드게시물표기
 @bp.route("/main", methods=["GET"])
@@ -27,6 +28,7 @@ def like_count_get():
     like_count = len(like_list)
 
     return jsonify({'like_count': like_count})
+
 
 
 

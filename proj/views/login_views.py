@@ -5,7 +5,7 @@ from pymongo import MongoClient
 client = MongoClient('mongodb+srv://mino:mino@hanghae.hfuwmwd.mongodb.net/?retryWrites=true&w=majority')
 db = client.hanghae
 
-bp = Blueprint('login', __name__, url_prefix='/')
+bp = Blueprint('login', __name__, url_prefix='/login')
 
 
 @bp.route('/')

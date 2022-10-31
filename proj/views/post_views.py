@@ -2,13 +2,14 @@ from pymongo import MongoClient
 client = MongoClient('mongodb+srv://mino:mino@hanghae.hfuwmwd.mongodb.net/?retryWrites=true&w=majority')
 db = client.hanghae
 
-from flask import Flask, render_template, request, jsonify, session, Blueprint, url_for
+from flask import Flask, render_template, request, jsonify, session, Blueprint, url_for, g
 
 bp = Blueprint('post', __name__, url_prefix='/post')
 
-@bp.route('/')
-def home():
-    return render_template('post.html')
+@bp.route('/<post>', methods=["GET","POST"])
+def home(post):
+    post_pk = post
+    return render_template('post.html', post_pk = post_pk)
 
 # 포스트 불러오기
 @bp.route("/get", methods=["GET"])
@@ -16,7 +17,7 @@ def post_get():
     postwrite_pk_receive = request.args.get('postwrite_pk1_give')
     postwrite_list = list(db.postwrite.find({'postwrite_pk': int(postwrite_pk_receive)}, {'_id': False}))
 
-    return jsonify({'post_list': postwrite_list})
+    return jsonify({'post_list': postwrite_list}), render_template('post.html')
 
 # 댓글 데이터 저장
 @bp.route('/comment', methods=["POST"])
@@ -89,7 +90,7 @@ def comment_delete():
 def like():
     postwrite_pk_receive = request.form['postwrite_pk_give']
 
-    # pk용 카운트 만들기
+    # pk용 카운트 만들기, 좋아요 데이터 저장
     box = list(db.counts.find({}))
     num = box[0]['like_count']
     db.counts.update_one({}, {'$set': {'like_count': num + 1}})
@@ -102,7 +103,11 @@ def like():
         'like_id': session['id']
     }
     db.like.insert_one(doc)
-    db.Counts.update_one({'count_pk': 0}, {'$set': {'like_count': count}})
+
+    # 좋아요 갯수 추가
+
+    post = db.postwrite.find_one({'postwrite_pk': int(postwrite_pk_receive)})
+    db.postwrite.update_one({'postwrite_pk':int(postwrite_pk_receive)},{'$set':{'like':post['like']+1}})
 
     return jsonify({'msg': '좋아요!'})
 

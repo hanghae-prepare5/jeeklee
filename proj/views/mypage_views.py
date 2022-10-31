@@ -7,13 +7,13 @@ bp = Blueprint('mypage', __name__, url_prefix='/mypage')
 # DB : pymongo, certifi import
 from pymongo import MongoClient
 import certifi
-client = MongoClient("mongodb+srv://mino:mino@cluster0.fy9ver8.mongodb.net/?retryWrites=true&w=majority", tlsCAFile=certifi.where())
+client = MongoClient("mongodb+srv://mino:mino@hanghae.hfuwmwd.mongodb.net/?retryWrites=true&w=majority", tlsCAFile=certifi.where())
 db = client.hanghae
 
 @bp.route('/')
 def index():
     # Variables for TEST
-    session['id'] = "testid_02"
+    session['id'] = "minho0806"
     session['img'] = "https://miro.medium.com/max/640/1*xmotaE0PMsf3eCAM7mQCvA.jpeg"
 
     g.userid = session['id']
@@ -24,6 +24,8 @@ def index():
 
 @bp.route('/userpost', methods=["GET"])
 def pass_user_posts() :
+    session['id'] = "minho0806"
+
     user_posts = list(db.postwrite.find({'user_pk':session['id']},{'_id':False}))
     return jsonify(user_posts)
 

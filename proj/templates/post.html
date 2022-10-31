@@ -207,7 +207,7 @@
     </style>
     <script>
         //게시물 postwrite_pk값 전역변수 설정
-        var postwrite_pk1 = "1"
+        var postwrite_pk1 = {{ post_pk }};
 
         //메인페이지 혹은 마이페이지에서 포스트 게시물 클릭시 발동!
         function postaction() {
@@ -218,19 +218,16 @@
             show_bookmark();
         };
 
-
         //게시물 팝업 열기
         $(document).ready(function () {
-            $("img:first-of-type").click(function () {
-                $("#noticepopup").fadeIn();
-                $("#noticepopup").addClass("black");
-            });
+            $("#noticepopup").fadeIn();
+            $("#noticepopup").addClass("black");
+            postaction();
             //게시물 팝업 닫기
             $("#popupclose").click(function () {
                 $(this).parent().parent().parent().parent().parent().fadeOut();
             });
         });
-
 
         //게시물작성 데이타 불러오기
         function show_post() {
@@ -252,8 +249,8 @@
                     console.log(response['post_list'])
                     let rows = response['post_list']
                     for (let i = 0; i < rows.length; i++) {
-                        let id = rows[i]['user_pk']['id']
-                        let profile = rows[i]['user_pk']['profile']
+                        let id = rows[i]['user_pk']
+                        let profile = rows[i]['user_pk']
                         let tags = rows[i]['tags']
                         let text = rows[i]['text']
                         let image = rows[i]['image']
@@ -279,7 +276,7 @@
                         $('#noticetext').append(temp_text)
                         $('#noticetext_comment').append(temp_text)
 
-                        let temp_image = `<img src="${image}" class="noticepicture_size">`
+                        let temp_image = `<img src=${image} class="noticepicture_size">`
                         $('#noticeimage').append(temp_image)
 
 
@@ -692,10 +689,10 @@
 </div>
 </div>
 
-<section id="noticewrite">
-    <img src="https://w.namu.la/s/59bbf73b123d0f9f693be3c3de9506b24a1f2a3067b4ffd0207a3a08eee32d750ebf1ca3e33084aa3bbcd6916bd0a8a187cc4556b87fa269c25f1a7ff3ea279f1e372d23aa0a6eee8d5932c70d5dac0e7abffa01167a69808aa4f31525eb198262eab6b13087d731f9aceaba1343d08b"
-         type="button" style="width: 500px; height: 500px;" onclick="postaction()">
-</section>
+{#<section id="noticewrite">#}
+{#    <img src="https://w.namu.la/s/59bbf73b123d0f9f693be3c3de9506b24a1f2a3067b4ffd0207a3a08eee32d750ebf1ca3e33084aa3bbcd6916bd0a8a187cc4556b87fa269c25f1a7ff3ea279f1e372d23aa0a6eee8d5932c70d5dac0e7abffa01167a69808aa4f31525eb198262eab6b13087d731f9aceaba1343d08b"#}
+{#         type="button" style="width: 500px; height: 500px;" onclick="postaction()">#}
+{#</section>#}
 
 </body>
 </html>

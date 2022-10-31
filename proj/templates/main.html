@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" ,>
 
 
@@ -187,15 +187,19 @@
                     let tags = rows[i]['tags']
                     let image = rows[i]['image']
                     let time = rows[i]['write_date']
+                    let like = rows[i]['like']
+                    let post = rows[i]['postwrite_pk']
 
                     let temp_post = `<div id="post" class="post">
                                     <div class="card">
                                 <div class="postimg">
-                                    <img class="card-img-top" type="button" src=${image}
-                                          alt="...">  </div>
+                                    <a href='/post/${post}?post=${post}'>
+                                        <img class="card-img-top" src=${image}
+                                           alt="...">  </div>
+                                    </a>
                                 <div class="card-body">
                                     <h5 class="card-title">${id}</h5>
-                                    <button class="like">♡️<h9>47</h9></button>
+                                    <button class="like">♡️<h9>${like}</h9></button>
                                     <p class="card-text">${text}</p>
                                     <p class="card-text">  ${tags}   </p>
                                     <p> ${time} </p>
@@ -227,7 +231,7 @@
     <div>
         <h1 class="userid"> User_ID </h1> <!--comments_id -->
         <!-- comments_profile / 마이페이지 이동 -->
-        <button onclick="location.href='test.html'" class="profile" type="button"><img class="profile-photo"
+        <button onclick="location.href='mypage'" class="profile" type="button"><img class="profile-photo"
                                                                                        src="https://newsimg.sedaily.com/2020/11/24/1ZAJ728KBG_1.jpg">
             <!--프로필-->
         </button>
@@ -240,7 +244,7 @@
             <button type="button" class="btn btn-success">NEW</button>
             <button type="button" class="btn btn-danger">POPULAR</button>
             <!--게시물 작성 페이지 이동-->
-            <button onclick="location.href='test.html'" class="upload" type="button" class="btn btn-dark">➕</button>
+            <button onclick="location.href='postwrite/page'" class="upload" type="button" class="btn btn-dark">➕</button>
         </div>
     </div>
     <!--게시물박스-->

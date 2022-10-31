@@ -1,19 +1,701 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title></title>
+    <meta charset="UTF-8">
+    <title>게시물</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <!-- icon Bootstrap 불러오기 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <style>
+        #noticepopup {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        .black {
+            background: rgba(0, 0, 0, 0.6);;
+        }
+
+        body {
+            background-color: gray;
+        }
+
+        .noticespace {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .noticepost {
+
+            width: 504px;
+            max-height: 1000px;
+            height: 100%;
+
+
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            align-items: normal;
+
+            border: 2px solid black;
+            border-radius: 3%;
+            margin: auto;
+
+            background-color: white;
+        }
+
+        .noticeposttop {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+
+            margin: 10px;
+        }
+
+
+        .noticeprofile {
+            width: 70px;
+            height: 70px;
+
+            border-radius: 100%;
+            border: 1px solid black;
+
+
+            background-position: center;
+            background-size: cover;
+
+            margin-right: 10px;
+
+        }
+
+        .noticeuser {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+        }
+
+        .noticepicture {
+            background-color: white;
+
+            width: 500px;
+            height: 502px;
+
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .noticepicture_size {
+            width: 500px;
+            height: 500px;
+        }
+
+
+        .noticepostbottom {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: right;
+            align-items: normal;
+
+            margin: 10px;
+        }
+
+        .noticebtn_out {
+            margin-top: 10px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .noticebtn_bottom {
+            display: flex;
+            flex-direction: row;
+            align-items: normal;
+        }
+
+
+        .noticecomment {
+            width: 500px;
+            max-height: 200px;
+            min-height: 100px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            align-items: normal;
+
+            margin-left: -10px;
+            padding: 10px;
+        }
+
+        .noticepostbottom_tag {
+            display: flex;
+            flex-direction: row;
+            align-items: normal;
+        }
+
+        .noticepostbottom_tag > a {
+            margin-left: 10px;
+        }
+
+        .noticepostbottom_time {
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            align-items: normal;
+
+        }
+
+        .modal-content {
+            overflow-y: initial !important
+        }
+
+        .modal-body {
+            height: 10000px;
+            overflow-y: auto;
+        }
+
+        .noticecommentprofile {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+        }
+
+        .noticecomment_profile {
+            width: 50px;
+            height: 50px;
+
+            border-radius: 100%;
+            border: 1px solid black;
+
+
+            background-position: center;
+            background-size: cover;
+
+            margin-right: 10px;
+        }
+
+        .noticecommenttext {
+            max-height: 500px;
+            max-width: 465px;
+
+        }
+
+
+    </style>
+    <script>
+        //게시물 postwrite_pk값 전역변수 설정
+        var postwrite_pk1 = "1"
+
+        //메인페이지 혹은 마이페이지에서 포스트 게시물 클릭시 발동!
+        function postaction() {
+            show_post();
+            show_comments_count();
+            show_hart();
+            like_count();
+            show_bookmark();
+        };
+
+
+        //게시물 팝업 열기
+        $(document).ready(function () {
+            $("img:first-of-type").click(function () {
+                $("#noticepopup").fadeIn();
+                $("#noticepopup").addClass("black");
+            });
+            //게시물 팝업 닫기
+            $("#popupclose").click(function () {
+                $(this).parent().parent().parent().parent().parent().fadeOut();
+            });
+        });
+
+
+        //게시물작성 데이타 불러오기
+        function show_post() {
+            $('#noticeuser').empty();
+            $('#noticeuser_comment').empty();
+            $('#noticepostbottom_tag').empty();
+            $('#noticepostbottom_tag_comment').empty();
+            $('#noticetext').empty();
+            $('#noticetext_comment').empty();
+            $('#noticeimage').empty();
+            $('#noticetime').empty();
+            $('#noticetime_comment').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/Post",
+                data: {postwrite_pk1_give: postwrite_pk1},
+                success: function (response) {
+                    console.log(response['post_list'])
+                    let rows = response['post_list']
+                    for (let i = 0; i < rows.length; i++) {
+                        let id = rows[i]['user_pk']['id']
+                        let profile = rows[i]['user_pk']['profile']
+                        let tags = rows[i]['tags']
+                        let text = rows[i]['text']
+                        let image = rows[i]['image']
+                        let write_date = rows[i]['write_date']
+
+
+                        let temp_user = `<img src="${profile}" class="noticeprofile">
+                                         <div>${id}</div>`
+                        $('#noticeuser').append(temp_user)
+                        let temp_user_comment = `<img src="${profile}" class="noticecomment_profile">
+                                         <div>${id}</div>`
+                        $('#noticeuser_comment').append(temp_user_comment)
+
+
+                        for (let i = 0; i < tags.length; i++) {
+                            let temp_tag = `<a href="#">#${tags[i]}</a>`
+
+                            $('#noticepostbottom_tag').append(temp_tag)
+                            $('#noticepostbottom_tag_comment').append(temp_tag)
+                        }
+
+                        let temp_text = `<p>${text}</p>`
+                        $('#noticetext').append(temp_text)
+                        $('#noticetext_comment').append(temp_text)
+
+                        let temp_image = `<img src="${image}" class="noticepicture_size">`
+                        $('#noticeimage').append(temp_image)
+
+
+                        let temp_time = ``
+                        let the_present_date = new Date();
+                        let write_time = new Date(write_date)
+
+                        let time_comparison = the_present_date.getTime() - write_time.getTime()
+
+                        if ((time_comparison / (1000 * 60)) < 60) {
+                            time = (time_comparison / (1000 * 60))
+                            temp_time = `${parseInt(time)}분 전`
+                            $('#noticetime').append(temp_time)
+                            $('#noticetime_comment').append(temp_time)
+                        } else if ((time_comparison / (1000 * 60 * 60)) < 24) {
+                            time = (time_comparison / (1000 * 60 * 60))
+                            temp_time = `${parseInt(time)}시간 전`
+                            $('#noticetime').append(temp_time)
+                            $('#noticetime_comment').append(temp_time)
+                        } else {
+                            time = (time_comparison / (1000 * 60 * 60 * 24))
+                            temp_time = `${parseInt(time)}일 전`
+                            $('#noticetime').append(temp_time)
+                            $('#noticetime_comment').append(temp_time)
+                        }
+                    }
+
+                }
+
+            });
+        }
+        // 댓글 데이터 저장
+        function save_Comment() {
+            if ($('#floatingTextarea2').val().length === 0) {
+                alert("댓글을 입력하세요!")
+
+            } else {
+                let postwrite_pk2 = postwrite_pk1
+                let comments = $('#floatingTextarea2').val()
+                let comments_date = new Date();
+                $('#floatingTextarea2').val('')
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Comment",
+                    data: {
+                        postwrite_pk_give: postwrite_pk2,
+                        comments_give: comments,
+                        comments_date_give: comments_date
+                    },
+                    success: function (response) {
+                        show_comments()
+                        show_comments_count()
+                    },
+                })
+            }
+        }
+
+        // 댓글 데이터 목록 가져오기
+        function show_comments() {
+            $('#comments_list').empty();
+            $.ajax({
+                type: "GET",
+                url: "/Comment",
+                data: {postwrite_pk1_give: postwrite_pk1},
+                success: function (response) {
+                    console.log(response['comment_list'])
+                    let rows = response['comment_list']
+
+                    for (let i = 0; i < rows.length; i++) {
+                        let comments_id = rows[i]['comments_id']['id']
+                        let comments = rows[i]['comments']
+                        let comments_date = rows[i]['comments_date']
+                        let comments_pk = rows[i]['comments_pk']
+
+                        let the_present_date = new Date();
+                        let comments_write_time = new Date(comments_date)
+                        let time_comparison = the_present_date.getTime() - comments_write_time.getTime()
+
+                        if ((time_comparison / (1000 * 60)) < 60) {
+                            time = (time_comparison / (1000 * 60))
+                            temp_time = `${parseInt(time)}분 전`
+                        } else if ((time_comparison / (1000 * 60 * 60)) < 24) {
+                            time = (time_comparison / (1000 * 60 * 60))
+                            temp_time = `${parseInt(time)}시간 전`
+                        } else {
+                            time = (time_comparison / (1000 * 60 * 60 * 24))
+                            temp_time = `${parseInt(time)}일 전`
+                        }
+                        let count = i;
+
+                        let temp_comments = `<div style="margin-bottom: 30px">
+                                                        <div style="display: flex; flex-direction: row;">
+                                                            <div>${comments_id}</div>
+                                                            <div style="color: gray; margin-left: 10px;">${temp_time}</div>
+                                                            <div style="margin-left: auto">
+                                                                <button type="button" class="btn btn-outline-light" id="warning${count}" onclick="on_warning(${count})" >❌</button>
+                                                                <textarea style="display: none" id="comments_pk${count}">${comments_pk}</textarea>
+                                                                <div style="position: absolute; margin-left: -310px; margin-top: -50px; display: none" id="show_warning${count}">
+                                                                    <div class="toast${count}" >
+                                                                        <div class="toast-header" style="background-color: ghostwhite">
+                                                                            <strong class="me-auto">※주의</strong>
+                                                                            <button type="button" class="btn-close" onclick="off_on_warning(${count})"></button>
+                                                                        </div>
+                                                                        <div class="toast-body" style="background-color: ghostwhite">
+                                                                            <p>이 댓글을 정말 삭제하시겠습니까?</p>
+                                                                            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+                                                                                <button type="button" class="btn btn-outline-danger" onclick="delete_comment(${count})">삭제</button>
+                                                                                <button type="button" class="btn btn-outline-dark" style="margin-left: 70px"
+                                                                                        onclick="off_on_warning(${count})">닫기
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="noticecommenttext">
+                                                            <p>
+                                                                ${comments}
+                                                            </p>
+                                                        </div>
+                                                    </div>`
+                        $('#comments_list').append(temp_comments)
+                    }
+
+                }
+            });
+        }
+
+        //삭제 toast창
+        function on_warning(count) {
+            $("#show_warning"+count).fadeIn();
+        }
+        function off_on_warning(count) {
+            $("#show_warning"+count).fadeOut();
+        }
+
+        //댓글 갯수 표시
+        function show_comments_count() {
+            $('#comment_count').empty();
+            $.ajax({
+                type: "GET",
+                url: "/post/Comment_count",
+                data: {postwrite_pk1_give: postwrite_pk1},
+                success: function (response) {
+                    console.log(response['comment_count'])
+                    let temp_comments_count = `댓글 ${response['comment_count']}개 모두 보기`
+                    $('#comment_count').append(temp_comments_count)
+                }
+            });
+        }
+
+        //댓글 삭제
+        function delete_comment(count) {
+            let postwrite_pk2 = postwrite_pk1
+            let comment_pk = $("#comments_pk" + count).val();
+            $("#show_warning"+count).fadeOut();
+            $.ajax({
+                type: "POST",
+                url: "/comment/delete",
+                data: {postwrite_pk_give: postwrite_pk2, comment_pk_give: comment_pk},
+                success: function (response) {
+                    show_comments_count()
+                    show_comments()
+                },
+            });
+        }
+
+        //좋아요 데이터 저장
+        function save_Like() {
+            let postwrite_pk2 = postwrite_pk1
+            $.ajax({
+                type: "POST",
+                url: "/like",
+                data: {postwrite_pk_give: postwrite_pk2},
+                success: function (response) {
+                    show_hart()
+                    like_count()
+                },
+            });
+        }
+
+        //좋아요 눌럿으면 채운하트 아니면 빈하트
+        function show_hart() {
+            $('#onlike').empty();
+            $.ajax({
+                type: "GET",
+                url: "/like",
+                data: {postwrite_pk1_give: postwrite_pk1},
+                success: function (response) {
+                    console.log(response['result'])
+                    let result = ``
+                    if (response['result'] === 1) {
+                        result = `<button type="button" class="btn btn-light" onclick="delete_Like()">❤</button>`
+                    } else
+                        result = `<button type="button" class="btn btn-light" onclick="save_Like()">🤍</button>`
+
+                    $('#onlike').append(result)
+
+                }
+            });
+        }
+
+        //좋아요 갯수 표시
+        function like_count() {
+            $('#like_count').empty();
+            $.ajax({
+                type: "GET",
+                url: "/like/count",
+                data: {postwrite_pk1_give: postwrite_pk1},
+                success: function (response) {
+                    console.log(response['like_count'])
+                    let result = `좋아요 ${response['like_count']}개`
+                    $('#like_count').append(result)
+                }
+            });
+        }
+
+        //좋아요 취소
+        function delete_Like() {
+            let postwrite_pk2 = postwrite_pk1
+            $.ajax({
+                type: "POST",
+                url: "/like/delete",
+                data: {postwrite_pk_give: postwrite_pk2},
+                success: function (response) {
+                    like_count()
+                    show_hart()
+                },
+            });
+        }
+
+        //북마크 데이터 저장
+        function bookmark() {
+            let postwrite_pk2 = postwrite_pk1
+            $.ajax({
+                type: "POST",
+                url: "/bookmark",
+                data: {postwrite_pk_give: postwrite_pk2},
+                success: function (response) {
+                    show_bookmark()
+                },
+            });
+        }
+
+        //북마크 눌렀으면 채운 북마크 아니면 빈 북마크
+        function show_bookmark() {
+            $('#onbookmark').empty();
+            $.ajax({
+                type: "GET",
+                url: "/bookmark",
+                data: {postwrite_pk1_give: postwrite_pk1},
+                success: function (response) {
+                    console.log(response['result'])
+                    let result = ``
+                    if (response['result'] === 1) {
+                        result = `<button type="button" class="btn btn-light" onclick="delete_bookmark()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                             class="bi bi-bookmark-check-fill"
+                                             viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                  d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+                                        </svg>
+                                    </button>`
+                    } else
+                        result = `<button type="button" class="btn btn-light" onclick="bookmark()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark"
+                                             viewBox="0 0 16 16">
+                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                        </svg>
+                                    </button>`
+
+                    $('#onbookmark').append(result)
+
+                }
+            });
+        }
+
+        //북마크 삭제
+         function delete_bookmark() {
+            let postwrite_pk2 = postwrite_pk1
+            $.ajax({
+                type: "POST",
+                url: "/bookmark/delete",
+                data: {postwrite_pk_give: postwrite_pk2},
+                success: function (response) {
+                    show_bookmark()
+                },
+            });
+        }
+    </script>
 </head>
 
-<body>
-  test를 위한 페이지입니다.
-  <script type="text/javascript">
-    const searchParams = new URLSearchParams(location.search);
-    for (const param of searchParams) {
-      console.log(param);
-    }
-  </script>
-</body>
 
+<body>
+
+
+<div id="noticepopup">
+    <div class="noticespace">
+        <div class="noticepost">
+<!--            //유저프로필-->
+            <div class="noticeposttop" id="noticeuser">
+
+            </div>
+<!--            //게시물 사진-->
+            <div class="noticepicture" id="noticeimage">
+
+            </div>
+            <div class="noticepostbottom">
+                <div class="noticebtn_bottom">
+<!--                    //게시물 좋아요-->
+                    <div class="noticebtn_bottom" id="onlike">
+
+                    </div>
+                    <button type="button" style="margin-left: 10px" class="btn btn-light" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal" onclick="show_comments()">💬
+                    </button><!-- Button trigger modal1 -->
+<!--                    //게시물 북마크-->
+                    <div id="onbookmark"
+                         style="margin-left: auto; margin-right: 10px; display: flex; flex-direction: row; align-items: normal;">
+
+                    </div>
+                </div>
+<!--                //좋아요 갯수 표시-->
+                <div id="like_count">
+
+                </div>
+<!--                //게시물 태그 표시-->
+                <div class="noticepostbottom_tag" id="noticepostbottom_tag">
+
+                </div>
+                <div class="noticecomment" type="button" id="noticecommentclick" data-bs-toggle="modal"
+                     data-bs-target="#exampleModal" onclick="show_comments()"><!-- Button trigger modal2 -->
+<!--                    //게시물 택스트 표시-->
+                    <div id="noticetext">
+
+                    </div>
+<!--                    //댓글 갯수 표시-->
+                    <div style="color: gray;" id="comment_count">
+
+                    </div>
+                </div>
+<!--                //게시물 경과시간표시-->
+                <div class="noticepostbottom_time" style="color: gray" id="noticetime">
+
+                </div>
+                <div class="noticebtn_out">
+                    <button type="button" class="btn btn-outline-dark" id="popupclose">나가기</button>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <!-- Scrollable modal -->
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">댓글</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="noticecommentprofile">
+<!--                                //모달 유저프로필-->
+                                <div class="noticeuser" id="noticeuser_comment">
+
+                                </div>
+<!--                                //게시물 경과시간표시-->
+                                <div style="color: gray; margin-left: 10px;" id="noticetime_comment">
+
+                                </div>
+                            </div>
+                            <div>
+                                <div class="noticecommenttext">
+<!--                                    //게시물 택스트표시-->
+                                    <div id="noticetext_comment">
+
+                                    </div>
+<!--                                    //게시물 태그 표시-->
+                                    <p class="noticepostbottom_tag" id="noticepostbottom_tag_comment">
+
+                                    </p>
+                                </div>
+                                <div style="border-bottom: 1px solid gainsboro;margin-bottom: 10px"></div>
+                            </div>
+<!--                            //게시물 댓글 표시-->
+                            <div id="comments_list">
+
+                            </div>
+                        </div>
+
+                        <form>
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Leave a comment here"
+                                          id="floatingTextarea2" style="height: 60px"></textarea>
+                                <label for="floatingTextarea2">댓글 입력...</label>
+                            </div>
+                        </form>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="save_Comment()">댓글달기</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<section id="noticewrite">
+    <img src="https://w.namu.la/s/59bbf73b123d0f9f693be3c3de9506b24a1f2a3067b4ffd0207a3a08eee32d750ebf1ca3e33084aa3bbcd6916bd0a8a187cc4556b87fa269c25f1a7ff3ea279f1e372d23aa0a6eee8d5932c70d5dac0e7abffa01167a69808aa4f31525eb198262eab6b13087d731f9aceaba1343d08b"
+         type="button" style="width: 500px; height: 500px;" onclick="postaction()">
+</section>
+
+</body>
 </html>

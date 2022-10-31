@@ -13,6 +13,9 @@ bp = Blueprint('auth', __name__, url_prefix='/register')
 def register():
     return render_template('register.html')
 
+@bp.route('/test')
+def test():
+    return render_template('test1.html')
 
 @bp.route("/upload", methods=['POST'])
 def upload():
