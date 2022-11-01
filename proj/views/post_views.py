@@ -17,7 +17,7 @@ def post_get():
     postwrite_pk_receive = request.args.get('postwrite_pk1_give')
     postwrite_list = list(db.postwrite.find({'postwrite_pk': int(postwrite_pk_receive)}, {'_id': False}))
 
-    return jsonify({'post_list': postwrite_list}), render_template('post.html')
+    return jsonify({'post_list': postwrite_list})
 
 # 댓글 데이터 저장
 @bp.route('/comment', methods=["POST"])
@@ -136,6 +136,10 @@ def like_delete():
     postwrite_pk_receive = request.form['postwrite_pk_give']
 
     db.like.delete_one({'like_id': session['id'],'postwrite_pk': int(postwrite_pk_receive)})
+
+    post = db.postwrite.find_one({'postwrite_pk': int(postwrite_pk_receive)})
+    db.postwrite.update_one({'postwrite_pk':int(postwrite_pk_receive)},{'$set':{'like':post['like']-1}})
+
     return jsonify({'msg': '좋아요 취소!'})
 
 # 북마크 데이터 저장
