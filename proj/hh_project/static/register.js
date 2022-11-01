@@ -39,10 +39,22 @@ function get_userinfo() {
     return rows;
 }
 
+// 프로필이미지 base64 인코딩
+function encodeImageFileAsURL(element) {
+    var dataURL;
+    var file = element.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+        dataURL = reader.result;
+    }
+    reader.readAsDataURL(file);
+}
+
 // 암호화 등록, 프로필이미지, 데이터 POST
 function post_userinfo() {
     let user_id = regiId.value;
     let user_pw = sha256(regiPw2.value);
+    let user_image = dataURL;
 
     $.ajax({
         type: "POST",
@@ -51,6 +63,7 @@ function post_userinfo() {
         data: {
             id_give: user_id,
             pw_give: user_pw,
+            image_give: user_image
         },
         success: function (response) {
             alert(response["msg"])
@@ -107,6 +120,7 @@ function verify() {
         regiBtn.style.backgroundColor = "#8E8E8E";
         regiBtn.disabled = true;
     }
+
 }
 
 // 프로필 사진 미리보기

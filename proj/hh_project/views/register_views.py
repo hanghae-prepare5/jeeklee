@@ -1,6 +1,4 @@
 from flask import Blueprint, render_template, request, jsonify
-import gridfs
-# DB : pymongo, certifi import
 from pymongo import MongoClient
 
 client = MongoClient('mongodb+srv://mino:mino@hanghae.hfuwmwd.mongodb.net/?retryWrites=true&w=majority')
@@ -19,11 +17,13 @@ def register_post():
     # receive data from html
     id_receive = request.form['id_give']
     pw_receive = request.form['pw_give']
+    image_receive = request.form['image_give']
 
     # DB data set
     doc = {
         'ID': id_receive,
         'PW': pw_receive,
+        'image': image_receive,
         'postwrite_pk': []
 
     }

@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for
-# DB : pymongo, certifi import
 from pymongo import MongoClient
 
 client = MongoClient('mongodb+srv://mino:mino@hanghae.hfuwmwd.mongodb.net/?retryWrites=true&w=majority')
