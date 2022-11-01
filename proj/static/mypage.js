@@ -98,13 +98,26 @@ function to_html_comment(list, id){
   let rows = list;
   for (let i = 0; i<rows.length; i++){
     if (rows[i]['comments_flag']==true){
-      let number = rows[i]['comments_id'].length - 1;
-      let user = rows[i]['comments_id'];
       let postwrite_pk = rows[i]['postwrite_pk'];
-
-      let tmp = '';
+      let number = 0;
+      let user = '';
+      for (let j = i; j<rows.length; j++){
+          if(postwrite_pk == rows[j]['postwrite_pk']){
+              number = number +1;
+              rows[j]['comments_flag']=false;
+              user = rows[j]['comments_id'];
+          }
+      }
+      let tmp = ``;
       tmp = `<li><a href="/post/${postwrite_pk}?post=${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물에 댓글을 남겼습니다.</a></li>`
-      post.insertAdjacentHTML("beforeend", tmp);
+      post.insertAdjacentHTML("beforeend",tmp);
+      // let number = rows[i]['comments_id'].length - 1;
+      // let user = rows[i]['comments_id'];
+      // let postwrite_pk = rows[i]['postwrite_pk'];
+      //
+      // let tmp = '';
+      // tmp = `<li><a href="/post/${postwrite_pk}?post=${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물에 댓글을 남겼습니다.</a></li>`
+      // post.insertAdjacentHTML("beforeend", tmp);
     }
   }
 }
@@ -115,13 +128,19 @@ function to_html_like(list, id){
   let rows = list;
   for (let i = 0; i<rows.length; i++){
     if (rows[i]['like_flag']==true){
-      let number = rows[i]['like_id'].length - 1;
-      let user = rows[i]['like_id'];
-      let postwrite_pk = rows[i]['postwrite_pk'];
-
-      let tmp = '';
-      tmp = `<li><a href="/post/${postwrite_pk}?post=${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물을 좋아합니다.</a></li>`
-      post.insertAdjacentHTML("beforeend", tmp);
+        let postwrite_pk = rows[i]['postwrite_pk'];
+        let number = 0;
+        let user = '';
+        for (let j = i; j<rows.length; j++){
+            if(postwrite_pk == rows[j]['postwrite_pk']){
+                number = number +1;
+                rows[j]['like_flag']=false;
+                user = rows[j]['like_id'];
+            }
+        }
+        let tmp = ``;
+        tmp = `<li><a href="/post/${postwrite_pk}?post=${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물을 좋아합니다.</a></li>`
+        post.insertAdjacentHTML("beforeend",tmp);
     }
   }
 }

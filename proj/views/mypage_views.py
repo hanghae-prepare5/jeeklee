@@ -13,7 +13,7 @@ db = client.hanghae
 @bp.route('/')
 def index():
     # Variables for TEST
-    session['id'] = "minho0806"
+    session['id'] = "minho080"
     session['img'] = "https://miro.medium.com/max/640/1*xmotaE0PMsf3eCAM7mQCvA.jpeg"
 
     g.userid = session['id']
@@ -24,16 +24,16 @@ def index():
 
 @bp.route('/userpost', methods=["GET"])
 def pass_user_posts() :
-    session['id'] = "minho0806"
+    session['id'] = "minho080"
 
     user_posts = list(db.postwrite.find({'user_pk':session['id']},{'_id':False}))
     return jsonify(user_posts)
 
 @bp.route('/bookmark', methods=["GET"])
 def pass_user_bookmarks() :
-    session['id'] = 'minho0806'
+    session['id'] = 'minho080'
     postwrite_list = list(db.bookmark.find({'bookmark_id':session['id']}, {'_id':False}))
-    result = [];
+    result = []
     for num in range(len(postwrite_list)):
         postwrite_pk = postwrite_list[num]['postwrite_pk']
         tmp = db.postwrite.find_one({'postwrite_pk':postwrite_pk},{'_id':False})
@@ -42,10 +42,10 @@ def pass_user_bookmarks() :
 
 @bp.route('/comment', methods=["GET"])
 def pass_user_comments() :
-    session['id'] = 'minho0806'
+    session['id'] = 'minho080'
 
     user_posts_pk = list(db.postwrite.find({'user_pk':session['id']},{'_id':False, 'postwrite_pk':True}))
-    result = [];
+    result = []
     for num in range(len(user_posts_pk)):
         postwrite_pk = user_posts_pk[num]['postwrite_pk']
         tmp = db.comment.find_one({'postwrite_pk':postwrite_pk},{'_id':False})
@@ -55,10 +55,10 @@ def pass_user_comments() :
 
 @bp.route('/like', methods=["GET","POST"])
 def pass_user_likes() :
-    session['id'] = 'minho0806'
+    session['id'] = 'minho080'
 
     user_posts_pk = list(db.postwrite.find({'user_pk':session['id']},{'_id':False, 'postwrite_pk':True}))
-    result = [];
+    result = []
     for num in range(len(user_posts_pk)):
         postwrite_pk = user_posts_pk[num]['postwrite_pk']
         tmp = db.like.find_one({'postwrite_pk':postwrite_pk},{'_id':False})

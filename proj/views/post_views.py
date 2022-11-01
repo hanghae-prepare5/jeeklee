@@ -26,7 +26,7 @@ def comment():
     comments_receive = request.form['comments_give']
     comments_date_receive = request.form['comments_date_give']
 
-    session['id'] = 'minho0806'
+    session['id'] = 'minho080'
 
     # pk용 카운트 만들기
     box = list(db.counts.find({}))
@@ -69,7 +69,7 @@ def comment_delete():
     postwrite_pk_receive = request.form['postwrite_pk_give']
     comment_pk_receive = request.form['comment_pk_give']
 
-    session['id'] = 'minho0806'
+    session['id'] = 'minho080'
 
 
     # 포스트작성자권한
@@ -93,7 +93,7 @@ def comment_delete():
 def like():
     postwrite_pk_receive = request.form['postwrite_pk_give']
 
-    session['id'] = 'minho0806'
+    session['id'] = 'minho080'
 
     # pk용 카운트 만들기, 좋아요 데이터 저장
     box = list(db.counts.find({}))
@@ -121,7 +121,7 @@ def like():
 def like_get():
     postwrite_pk_receive = request.args.get('postwrite_pk1_give')
 
-    session['id'] = 'minho0806'
+    session['id'] = 'minho080'
 
     if db.like.find_one({'like_id': session['id'],'postwrite_pk': int(postwrite_pk_receive)}):
         return jsonify({'result': 1})
@@ -142,7 +142,7 @@ def like_count_get():
 def like_delete():
     postwrite_pk_receive = request.form['postwrite_pk_give']
 
-    session['id'] = 'minho0806'
+    session['id'] = 'minho080'
 
     db.like.delete_one({'like_id': session['id'],'postwrite_pk': int(postwrite_pk_receive)})
 
@@ -156,7 +156,7 @@ def like_delete():
 def bookmark():
     postwrite_pk_receive = request.form['postwrite_pk_give']
 
-    session['id'] = 'minho0806'
+    session['id'] = 'minho080'
 
     # pk용 카운트 만들기
     box = list(db.counts.find({}))
@@ -171,11 +171,6 @@ def bookmark():
     }
     db.bookmark.insert_one(doc)
 
-    # 북마크 데이터 user 콜렉션에 저장
-    user = db.user.find_one({'id': session['id']})
-    bookmark_save = user['postwrite_pk'].append(int(postwrite_pk_receive))
-    db.user.update_one({'id':session['id']},{'$set':{'postwrite_pk':bookmark_save}})
-
     return jsonify({'msg': '북마크!'})
 
 # 북마크 눌렀으면 채운 북마크 아니면 빈 북마크
@@ -183,7 +178,7 @@ def bookmark():
 def bookmark_get():
     postwrite_pk_receive = request.args.get('postwrite_pk1_give')
 
-    session['id'] ='minho0806'
+    session['id'] ='minho080'
 
     if db.bookmark.find_one({'bookmark_id': session['id'], 'postwrite_pk': int(postwrite_pk_receive)}):
         return jsonify({'result': 1})
@@ -194,7 +189,7 @@ def bookmark_get():
 def bookmark_delete():
     postwrite_pk_receive = request.form['postwrite_pk_give']
 
-    session['id'] = 'minho0806'
+    session['id'] = 'minho080'
 
     db.bookmark.delete_one({'bookmark_id': session['id'],'postwrite_pk':int(postwrite_pk_receive)})
     return jsonify({'msg': '북마크 취소!'})

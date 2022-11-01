@@ -41,6 +41,6 @@ def postwrite():
 
 @bp.route("/", methods=["GET"])
 def bucket_get():
-    session['id'] = 'minho0806'
+    session['id'] = 'minho080'
     user_list = list(db.user.find({'id': session['id']}, {'_id': False}))
     return jsonify({'user': user_list})
