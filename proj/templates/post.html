@@ -23,12 +23,8 @@
             display: none;
         }
 
-        .black {
-            background: rgba(0, 0, 0, 0.6);;
-        }
-
         body {
-            background-color: gray;
+            background-color: ghostwhite;
         }
 
         .noticespace {
@@ -221,7 +217,6 @@
         //게시물 팝업 열기
         $(document).ready(function () {
             $("#noticepopup").fadeIn();
-            $("#noticepopup").addClass("black");
             postaction();
             //게시물 팝업 닫기
             $("#popupclose").click(function () {
