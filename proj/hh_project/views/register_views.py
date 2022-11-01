@@ -14,18 +14,6 @@ def register():
     return render_template('register.html')
 
 
-@bp.route("/upload", methods=['POST'])
-def upload():
-    ## file upload ##
-    img = request.files['image']
-
-    ## GridFs를 통해 파일을 분할하여 DB에 저장하게 된다
-    fs = gridfs.GridFS(db)
-    fs.put(img, filename='user1')
-
-    return jsonify({'msg': '프로필 설정이 완료되었습니다.'})
-
-
 @bp.route('/post', methods=["POST"])
 def register_post():
     # receive data from html

@@ -43,10 +43,6 @@ function get_userinfo() {
 function post_userinfo() {
     let user_id = regiId.value;
     let user_pw = sha256(regiPw2.value);
-    let user_file = $('#file')[0]
-    let form_data = new FormData()
-
-    form_data.append("file_give", file)
 
     $.ajax({
         type: "POST",
