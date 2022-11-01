@@ -70,7 +70,7 @@
         width: 135px;
         height: 135px;
         border-radius: 100%;
-        border:none;
+        border: none;
 
 
     }
@@ -130,7 +130,6 @@
     .posts-box {
 
 
-
     }
 
     /*게시물*/
@@ -138,13 +137,10 @@
         float: left;
         margin-right: 2%;
         margin-left: 8%;
-        margin-top:15px;
+        margin-top: 15px;
         margin-bottom: 15px;
         display: flex;
-        flex-wrap:wrap;
-
-
-
+        flex-wrap: wrap;
 
 
     }
@@ -166,6 +162,133 @@
     }
 
 
+    /*게시물작성css*/
+    #noticepopup {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: none;
+    }
+
+    .black {
+        background: rgba(0, 0, 0, 0.6);
+    }
+
+    .noticepost {
+        width: 504px;
+        height: 850px;
+
+
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        align-items: normal;
+
+        border: 2px solid black;
+        border-radius: 3%;
+        margin: auto;
+
+        background-color: white;
+    }
+
+    .noticeposttop {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        align-items: center;
+
+        margin: 10px;
+    }
+
+    .noticeposttop_btn {
+        margin-left: auto;
+        margin-bottom: auto;
+    }
+
+    .noticeprofile {
+        width: 70px;
+        height: 70px;
+
+        border-radius: 100%;
+        border: 1px solid black;
+
+        background-position: center;
+        background-size: cover;
+
+        margin-right: 10px;
+
+    }
+
+    .noticeuser {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        align-items: center;
+    }
+
+    .noticepicture {
+        background-color: white;
+
+
+        width: 500px;
+        height: 502px;
+
+
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .noticepostbottom {
+
+        display: flex;
+        flex-direction: column;
+        justify-content: right;
+        align-items: normal;
+
+        margin: 10px;
+    }
+
+    .noticebtn_upload {
+        margin-top: 10px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .fileuproadhide {
+
+        display: none;
+    }
+
+    .filebox {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .imagepopup {
+        position: absolute;
+
+        width: 500px;
+        height: 500px;
+
+        display: none;
+        margin-bottom: 38px;
+    }
+
+    .imagepopupsize {
+        width: 500px;
+        height: 500px;
+    }
+
+
 </style>
 
 <script>
@@ -180,7 +303,7 @@
             data: {},
             success: function (response) {
                 let rows = response['post_list']
-                    console.log(rows)
+                console.log(rows)
                 for (let i = 0; i < rows.length; i++) {
                     let id = rows[i]['user_pk']
                     let text = rows[i]['text']
@@ -213,53 +336,276 @@
         });
     }
 
+    //게시물작성 JS
+
+    //게시물작성 팝업 열기
+    $(document).ready(function () {
+        $("#noticewrite").click(function () {
+            $("#noticepopup").fadeIn();
+            $("#noticepopup").addClass("black");
+        });
+        //게시물작성 팝업 닫기
+        $("#popupclose").click(function () {
+            $(this).parent().parent().parent().parent().fadeOut();
+        });
+    });
+    //사진 팝업 열기
+    $(document).ready(function () {
+        $(document).on("click", ".btn-open", function () {
+            $("#imagepopup").fadeIn();
+        });
+    });
+
+    //사진 팝업 닫기
+    function image() {
+        $("#imagepopup").fadeOut()
+    }
+
+    var fileNo = 0;
+    var filesArr = new Array();
+
+    var dataURL
+
+    /* 첨부파일 추가 */
+    function addFile(obj) {
+        var maxFileCnt = 1;   // 첨부파일 최대 개수
+        var attFileCnt = document.querySelectorAll('.filebox').length;    // 기존 추가된 첨부파일 개수
+        var remainFileCnt = maxFileCnt - attFileCnt;    // 추가로 첨부가능한 개수
+        var curFileCnt = obj.files.length;  // 현재 선택된 첨부파일 개수
+
+        // 첨부파일 개수 확인
+        if (curFileCnt > remainFileCnt) {
+            alert("첨부파일은 최대 " + maxFileCnt + "개 까지 첨부 가능합니다.");
+        } else {
+            for (const file of obj.files) {
+                // 첨부파일 검증
+                if (validation(file)) {
+                    // 파일 배열에 담기
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        filesArr.push(file);
+                        // 이미지 파일 이미지화
+                        dataURL = reader.result;
+                        var imagepopupshow = document.getElementById('imagepopupshow');
+                        imagepopupshow.src = dataURL;
+
+                    };
+                    reader.readAsDataURL(file);
+
+                    // 목록 추가
+                    let htmlData = '';
+                    htmlData += '<div id="file' + fileNo + '" class="filebox">';
+                    htmlData += '   <a href="#" class="btn-open">' + file.name + '</a>';
+                    htmlData += '   <a  onclick="deleteFile(' + fileNo + ');"><button type="button" class="btn-close" aria-label="Close"></button></a>';
+                    htmlData += '   <div class="imagepopup" id="imagepopup" type="button" onclick="image()">';
+                    htmlData += '       <img id="imagepopupshow" class="imagepopupsize">';
+                    htmlData += '   </div>';
+                    htmlData += '</div>';
+                    $('.file-list').append(htmlData);
+                    fileNo++;
+                } else {
+                    continue;
+                }
+
+            }
+        }
+        // 초기화
+        document.querySelector("input[type=file]").value = "";
+    }
+
+    console.log($('#imagepopupshow'))
+
+
+    /* 첨부파일 검증 */
+    function validation(obj) {
+        const fileTypes = ['application/pdf', 'image/gif', 'image/jpeg', 'image/png', 'image/bmp', 'image/tif', 'application/haansofthwp', 'application/x-hwp'];
+        if (obj.name.length > 100) {
+            alert("파일명이 100자 이상인 파일은 제외되었습니다.");
+            return false;
+        } else if (obj.size > (100 * 1024 * 1024)) {
+            alert("최대 파일 용량인 100MB를 초과한 파일은 제외되었습니다.");
+            return false;
+        } else if (obj.name.lastIndexOf('.') == -1) {
+            alert("확장자가 없는 파일은 제외되었습니다.");
+            return false;
+        } else if (!fileTypes.includes(obj.type)) {
+            alert("첨부가 불가능한 파일은 제외되었습니다.");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /* 첨부파일 삭제 */
+    function deleteFile(num) {
+        document.querySelector("#file" + num).remove();
+        filesArr[num].is_delete = true;
+    }
+
+
+    function save_Postwrite() {
+
+        // // tags 조건으로 어떤값이든 균일하게 변경시키기
+        let tagsedit1 = $('#floatingTextarea').val();
+        for (var i = 0; i < tagsedit1.length; i++) {
+            if (tagsedit1[i] === ' ') {
+                tagsedit1.splice(i, 1);
+                i--;
+            }
+        }
+        let tagsedit2 = tagsedit1.join('')
+
+        let tagsedit3 = tagsedit2.split(',')
+        let tagsedit4 = tagsedit3.join('')
+        let tagsedit5 = tagsedit4.split('#')
+        for (var i = 0; i < tagsedit5.length; i++) {
+            if (tagsedit5[i] === '') {
+                tagsedit5.splice(i, 1);
+                i--;
+            }
+        }
+        let tagsedit6 = tagsedit5.join('-')
+
+        /* 폼 전송 */
+        // 폼데이터 담기
+        let tags = tagsedit6
+        let text = $('#floatingTextarea2').val()
+        let write_date = new Date();
+        let image = dataURL;
+
+        $.ajax({
+            type: "POST",
+            url: "/Postwrite",
+            data: {image_give: image, tags_give: tags, text_give: text, write_date_give: write_date},
+
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload()
+            },
+        });
+    }
+
+    $(document).ready(function () {
+        show_profile();
+    });
+
+    function show_profile() {
+        $.ajax({
+            type: "GET",
+            url: "/Postwrite",
+            data: {},
+            success: function (response) {
+                console.log(response['User'])
+                let rows = response['User']
+                for (let i = 0; i < rows.length; i++) {
+                    let id = rows[i]['id']
+                    let profile = rows[i]['profile']
+
+
+                    let temp_html = `<img src="${profile}" class="noticeprofile">
+                                         <div>${id}</div>`
+
+                    $('#noticeuser').append(temp_html)
+                }
+            }
+        });
+    }
+
 
 </script>
 
 
 <body>
-<div class="all">
-    <!--로고-->
-    <div style="float:top;" class='top'>
-        <h1 class='logo'>OOTD_GRAM</h1>
-    </div>
-    <!--뒤로가기 버튼-->
-    <div>
-        <button onclick="history.back()" type="button" class="back-btn">🔙</button>
-    </div>
-    <!--유저아이디 및 프로필-->
-    <div>
-        <h1 class="userid"> User_ID </h1> <!--comments_id -->
-        <!-- comments_profile / 마이페이지 이동 -->
-        <button onclick="location.href='mypage'" class="profile" type="button"><img class="profile-photo"
-                                                                                       src="https://newsimg.sedaily.com/2020/11/24/1ZAJ728KBG_1.jpg">
-            <!--프로필-->
-        </button>
-    </div>
-    <div class="middle"> <!--사이공백-->
-    </div>
+<div style="display: flex;flex-direction: column;justify-content: normal;align-items: normal ;">
+    <div class="all">
+        <!--로고-->
+        <div style="float:top;" class='top'>
+            <h1 class='logo'>OOTD_GRAM</h1>
+        </div>
+        <!--뒤로가기 버튼-->
+        <div>
+            <button onclick="history.back()" type="button" class="back-btn">🔙</button>
+        </div>
+        <!--유저아이디 및 프로필-->
+        <div>
+            <h1 class="userid"> User_ID </h1> <!--comments_id -->
+            <!-- comments_profile / 마이페이지 이동 -->
+            <button onclick="location.href='mypage'" class="profile" type="button"><img class="profile-photo"
+                                                                                        src="https://newsimg.sedaily.com/2020/11/24/1ZAJ728KBG_1.jpg">
+                <!--프로필-->
+            </button>
+        </div>
+        <div class="middle"> <!--사이공백-->
+        </div>
 
-    <div class="classificaftion">
-        <div class="npbutton"> <!--정렬버튼-->
-            <button type="button" class="btn btn-success">NEW</button>
-            <button type="button" class="btn btn-danger">POPULAR</button>
-            <!--게시물 작성 페이지 이동-->
-            <button onclick="location.href='postwrite/page'" class="upload" type="button" class="btn btn-dark">➕</button>
+        <div class="classificaftion">
+            <div class="npbutton"> <!--정렬버튼-->
+                <button type="button" class="btn btn-success">NEW</button>
+                <button type="button" class="btn btn-danger">POPULAR</button>
+                <!--게시물 작성 페이지 이동-->
+                <button id="noticewrite" class="upload" type="button" class="btn btn-dark">➕</button>
+            </div>
+        </div>
+        <!--게시물박스-->
+        <div class="posts-box">
+            <div id="post" class="post">
+
+            </div>
         </div>
     </div>
-    <!--게시물박스-->
-<div class="posts-box">
-    <div id="post" class="post">
 
+    <!--게시물작성 html-->
+    <div id="noticepopup">
+        <div>
+            <div class="noticepost">
+                <div class="noticeposttop">
+                    <!--                //유저프로필and닉네임-->
+                    <div id="noticeuser" class="noticeuser">
+
+                    </div>
+                    <div id="popupclose" class="noticeposttop_btn">
+                        <button type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                </div>
+
+                <div class="noticepicture">
+                    <form method="POST" onsubmit="return false;" enctype="multipart/form-data">
+                        <label for="chooseFile">
+                            <div type="button" class="btn btn-outline-primary">사진첨부</div>
+                        </label>
+                        <div class="fileuproadhide">
+                            <input id="chooseFile" type="file" onchange="addFile(this);" multiple/>
+                        </div>
+                        <!--                    //파일첨부리스트-->
+                        <div class="file-list">
+
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="noticepostbottom">
+                    <div>
+                        <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a comment here"
+                                  id="floatingTextarea"></textarea>
+                            <label for="floatingTextarea">tag(반드시 #붙혀서 입력 ex.[#부산 #인천])</label>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                  style="height: 100px"></textarea>
+                            <label for="floatingTextarea2">게시글 입력</label>
+                        </div>
+                    </div>
+                    <div class="noticebtn_upload">
+                        <button type="button" class="btn btn-outline-dark" onclick="save_Postwrite()">게시하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
-
-</div>
-
-
-</div>
-
 </div>
 </body>
 </html>
