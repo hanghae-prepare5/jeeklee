@@ -31,6 +31,7 @@ def pass_user_posts() :
 
 @bp.route('/bookmark', methods=["GET"])
 def pass_user_bookmarks() :
+    session['id'] = 'minho0806'
     postwrite_list = list(db.bookmark.find({'bookmark_id':session['id']}, {'_id':False}))
     result = [];
     for num in range(len(postwrite_list)):
@@ -41,7 +42,9 @@ def pass_user_bookmarks() :
 
 @bp.route('/comment', methods=["GET"])
 def pass_user_comments() :
-    user_posts_pk = list(db.postwrite.find({'user_id':session['id']},{'_id':False, 'postwrite_pk':True}))
+    session['id'] = 'minho0806'
+
+    user_posts_pk = list(db.postwrite.find({'user_pk':session['id']},{'_id':False, 'postwrite_pk':True}))
     result = [];
     for num in range(len(user_posts_pk)):
         postwrite_pk = user_posts_pk[num]['postwrite_pk']
@@ -52,7 +55,9 @@ def pass_user_comments() :
 
 @bp.route('/like', methods=["GET","POST"])
 def pass_user_likes() :
-    user_posts_pk = list(db.postwrite.find({'user_id':session['ID']},{'_id':False, 'postwrite_pk':True}))
+    session['id'] = 'minho0806'
+
+    user_posts_pk = list(db.postwrite.find({'user_pk':session['id']},{'_id':False, 'postwrite_pk':True}))
     result = [];
     for num in range(len(user_posts_pk)):
         postwrite_pk = user_posts_pk[num]['postwrite_pk']

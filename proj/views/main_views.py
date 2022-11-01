@@ -9,7 +9,9 @@ bp = Blueprint('main', __name__, url_prefix='/')
 
 @bp.route('/')
 def home():
-    return render_template('main.html')
+    session['id'] ='minho0806'
+
+    return render_template('main.html', user_id = session['id'])
    # if 'id' in session :
    #     return render_template('main.html')
    # return render_template('login.html')

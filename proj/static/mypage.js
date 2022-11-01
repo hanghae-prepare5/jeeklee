@@ -6,14 +6,14 @@ const bmBtn = document.getElementById('BOOKMARK_BTN');
 
 // function activates when DOMtree is organized
 $(document).ready(function() {
-  console.log('login.js called');
+  // console.log('login.js called');
   showlog();
   showmp();
 });
 
 // function to print recent log
 function showlog(){
-  console.log("function showlog() called");
+  // console.log("function showlog() called");
   let post = document.querySelector("#LOG");
   while(post.firstChild){
       post.removeChild(post.firstChild);
@@ -38,8 +38,10 @@ function showlog(){
       comment_user: ['sample19']
       },
     ]
-  to_html_comment(test, "#LOG");
-  to_html_like(test, "#LOG");
+  let comments = get_user_comments();
+  let likes = get_user_likes();
+  to_html_comment(comments, "#LOG");
+  to_html_like(likes, "#LOG");
 }
 // function to bring login user's post
 function get_user_posts(){
@@ -50,11 +52,44 @@ function get_user_posts(){
       data: {},
       async: false,
       success: function(response) {
+        console.log("User Post list");
         console.log(response)
         postlist = response;
       }
   });
   return postlist
+}
+// function to bring log of comment
+function get_user_comments(){
+  let commentlist = '';
+  $.ajax({
+      type: 'GET',
+      url: '/mypage/comment',
+      data: {},
+      async: false,
+      success: function(response) {
+        console.log("Comment list");
+        console.log(response)
+        commentlist = response;
+      }
+  });
+  return commentlist
+}
+// function to bring log of like
+function get_user_likes(){
+  let likelist = '';
+  $.ajax({
+      type: 'GET',
+      url: '/mypage/like',
+      data: {},
+      async: false,
+      success: function(response) {
+        console.log("Like list");
+        console.log(response)
+        likelist = response;
+      }
+  });
+  return likelist
 }
 // function to print commtnet log list
 function to_html_comment(list, id){
@@ -62,12 +97,13 @@ function to_html_comment(list, id){
   let post = document.querySelector(id);
   let rows = list;
   for (let i = 0; i<rows.length; i++){
-    if (rows[i]['comment_flag']==1){
-      let user = rows[i]['comment_user'][0];
-      let number = rows[i]['comment_user'].length - 1;
+    if (rows[i]['comments_flag']==true){
+      let number = rows[i]['comments_id'].length - 1;
+      let user = rows[i]['comments_id'];
+      let postwrite_pk = rows[i]['postwrite_pk'];
 
       let tmp = '';
-      tmp = `<li><a href="#">${user}님 외 ${number}명이 회원님의 게시물에 댓글을 남겼습니다.</a></li>`
+      tmp = `<li><a href="/post/${postwrite_pk}?post=${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물에 댓글을 남겼습니다.</a></li>`
       post.insertAdjacentHTML("beforeend", tmp);
     }
   }
@@ -78,20 +114,22 @@ function to_html_like(list, id){
   let post = document.querySelector(id);
   let rows = list;
   for (let i = 0; i<rows.length; i++){
-    if (rows[i]['like_flag']==1){
-      let user = rows[i]['like_user'][0];
-      let number = rows[i]['like_user'].length - 1;
+    if (rows[i]['like_flag']==true){
+      let number = rows[i]['like_id'].length - 1;
+      let user = rows[i]['like_id'];
+      let postwrite_pk = rows[i]['postwrite_pk'];
 
       let tmp = '';
-      tmp = `<li><a href="#">${user}님 외 ${number}명이 회원님의 게시물을 좋아합니다.</a></li>`
+      tmp = `<li><a href="/post/${postwrite_pk}?post=${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물을 좋아합니다.</a></li>`
       post.insertAdjacentHTML("beforeend", tmp);
     }
   }
 }
 
+
 // function to print my post
 function showmp(){
-  console.log("function showmp() called");
+  // console.log("function showmp() called");
   // btn style 변경
   mpBtn.style.borderTop = "1px solid #262626";
   mpBtn.style.color = "#262626";
@@ -114,31 +152,37 @@ function showmp(){
 }
 // function to print bookmarks
 function showbm(){
-  console.log("function showbm() called");
+  // console.log("function showbm() called");
   // btn style 변경
   bmBtn.style.borderTop = "1px solid #262626";
   bmBtn.style.color = "#262626";
   mpBtn.style.borderTop = "none";
   mpBtn.style.color = "#DBDBDB";
 
-  let test =
-    [
-      {img: 'http://image.yes24.com/momo/TopCate956/MidCate001/95500703.jpg',likes: '3'},
-      {img: 'https://image.xportsnews.com/contents/images/upload/article/2021/1024/1635052092889091.jpg',likes: '1'},
-      {img: 'https://image.kmib.co.kr/online_image/2018/1125/611816110012868248_1.jpg',likes: '2'},
-      {img: 'https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/107847148_2553451304872718_1540664845642208434_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Rgfxk1aCk-sAX9FDxcm&_nc_ht=scontent-ssn1-1.xx&oh=00_AT8GrTZtxoJz51DnGO5RM_ZS3hX_GEv3anewvGl_ms1X6w&oe=6376C3CF', likes: '4'},
-    ]
-  to_html_post(test, '#WRAP_POST');
+  // let test =
+  //   [
+  //     {img: 'http://image.yes24.com/momo/TopCate956/MidCate001/95500703.jpg',likes: '3'},
+  //     {img: 'https://image.xportsnews.com/contents/images/upload/article/2021/1024/1635052092889091.jpg',likes: '1'},
+  //     {img: 'https://image.kmib.co.kr/online_image/2018/1125/611816110012868248_1.jpg',likes: '2'},
+  //     {img: 'https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/107847148_2553451304872718_1540664845642208434_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=Rgfxk1aCk-sAX9FDxcm&_nc_ht=scontent-ssn1-1.xx&oh=00_AT8GrTZtxoJz51DnGO5RM_ZS3hX_GEv3anewvGl_ms1X6w&oe=6376C3CF', likes: '4'},
+  //   ]
+  // to_html_post(test, '#WRAP_POST');
+
+  let tmp = get_user_bookmarks();
+  to_html_post(tmp, '#WRAP_POST');
 }
 // function to bring login user's bookmarks
 function get_user_bookmarks(){
+  let bookmarks = '';
   $.ajax({
       type: 'GET',
       url: '/mypage/bookmark',
       data: {},
       async: false,
       success: function(response) {
-        let bookmarks = response;
+        console.log("Bookmark list");
+        console.log(response);
+        bookmarks = response;
       }
   });
   return bookmarks
@@ -153,11 +197,10 @@ function to_html_post(list, id){
   let rows = list;
   for (let i = 0; i<rows.length; i++){
     let img = rows[i]['image'];
-    let user_pk = rows[i]['user_pk'];
-    // console.log(img);
+    let postwrite_pk = rows[i]['postwrite_pk'];
     let tmp = '';
     tmp = `<div class="post">
-            <a href="test?${user_pk}">
+            <a href="/post/${postwrite_pk}?post=${postwrite_pk}">
               <img src="${img}" alt="">
             </a>
           </div>`;

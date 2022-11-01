@@ -347,7 +347,7 @@
                     let rows = response['comment_list']
 
                     for (let i = 0; i < rows.length; i++) {
-                        let comments_id = rows[i]['comments_id']['id']
+                        let comments_id = rows[i]['comments_id']
                         let comments = rows[i]['comments']
                         let comments_date = rows[i]['comments_date']
                         let comments_pk = rows[i]['comments_pk']

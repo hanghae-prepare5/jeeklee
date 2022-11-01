@@ -146,10 +146,9 @@
     <script>
         //게시물작성 팝업 열기
         $(document).ready(function () {
-            $("#postwrite>button:first-of-type").click(function () {
-                $("#noticepopup").fadeIn();
-                $("#noticepopup").addClass("black");
-            });
+            $("#noticepopup").fadeIn();
+            $("#noticepopup").addClass("black");
+
             //게시물작성 팝업 닫기
             $("#popupclose").click(function () {
                 $(this).parent().parent().parent().parent().fadeOut();
@@ -251,32 +250,11 @@
 
         function save_Postwrite() {
 
-            // // tags 조건으로 어떤값이든 균일하게 변경시키기
-            let tagsedit1 = $('#floatingTextarea').val();
-            for (var i = 0; i < tagsedit1.length; i++) {
-                if (tagsedit1[i] === ' ') {
-                    tagsedit1.splice(i, 1);
-                    i--;
-                }
-            }
-            let tagsedit2 = tagsedit1.join('')
-
-            let tagsedit3 = tagsedit2.split(',')
-            let tagsedit4 = tagsedit3.join('')
-            let tagsedit5 = tagsedit4.split('#')
-            for (var i = 0; i < tagsedit5.length; i++) {
-                if (tagsedit5[i] === '') {
-                    tagsedit5.splice(i, 1);
-                    i--;
-                }
-            }
-            let tagsedit6 = tagsedit5.join('-')
-
             /* 폼 전송 */
             // 폼데이터 담기
 
 
-            let tags = tagsedit6
+            let tags = $('#floatingTextarea').val()
             let text = $('#floatingTextarea2').val()
             let write_date = new Date();
             let image = dataURL;
@@ -357,7 +335,7 @@
                     <div class="form-floating">
                         <textarea class="form-control" placeholder="Leave a comment here"
                                   id="floatingTextarea"></textarea>
-                        <label for="floatingTextarea">tag(반드시 태그입력 후 띄어쓰고 태그입력ex.[#부산 #인천])</label>
+                        <label for="floatingTextarea">tag(반드시 #쓰고 태그 입력 ex.[#부산 #인천])</label>
                     </div>
                 </div>
                 <div>
@@ -375,9 +353,9 @@
     </div>
 </div>
 
-<section id="postwrite">
-    <button>게시물 작성하기</button>
-</section>
+{#<section id="postwrite">#}
+{#    <button>게시물 작성하기</button>#}
+{#</section>#}
 
 </body>
 </html>

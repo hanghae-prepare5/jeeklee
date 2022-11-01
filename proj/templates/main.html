@@ -164,6 +164,192 @@
 
 
     }
+    #noticepopup {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: none;
+    }
+
+    .black {
+        background: rgba(0, 0, 0, 0.6);;
+    }
+
+    body {
+        background-color: gray;
+    }
+
+    .noticespace {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .noticepost {
+
+        width: 504px;
+        max-height: 1000px;
+        height: 100%;
+
+
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        align-items: normal;
+
+        border: 2px solid black;
+        border-radius: 3%;
+        margin: auto;
+
+        background-color: white;
+    }
+
+    .noticeposttop {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        align-items: center;
+
+        margin: 10px;
+    }
+
+
+    .noticeprofile {
+        width: 70px;
+        height: 70px;
+
+        border-radius: 100%;
+        border: 1px solid black;
+
+
+        background-position: center;
+        background-size: cover;
+
+        margin-right: 10px;
+
+    }
+
+    .noticeuser {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        align-items: center;
+    }
+
+    .noticepicture {
+        background-color: white;
+
+        width: 500px;
+        height: 502px;
+
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .noticepicture_size {
+        width: 500px;
+        height: 500px;
+    }
+
+
+    .noticepostbottom {
+
+        display: flex;
+        flex-direction: column;
+        justify-content: right;
+        align-items: normal;
+
+        margin: 10px;
+    }
+
+    .noticebtn_out {
+        margin-top: 10px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .noticebtn_bottom {
+        display: flex;
+        flex-direction: row;
+        align-items: normal;
+    }
+
+
+    .noticecomment {
+        width: 500px;
+        max-height: 200px;
+        min-height: 100px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        align-items: normal;
+
+        margin-left: -10px;
+        padding: 10px;
+    }
+
+    .noticepostbottom_tag {
+        display: flex;
+        flex-direction: row;
+        align-items: normal;
+    }
+
+    .noticepostbottom_tag > a {
+        margin-left: 10px;
+    }
+
+    .noticepostbottom_time {
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        align-items: normal;
+
+    }
+
+    .modal-content {
+        overflow-y: initial !important
+    }
+
+    .modal-body {
+        height: 10000px;
+        overflow-y: auto;
+    }
+
+    .noticecommentprofile {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        align-items: center;
+    }
+
+    .noticecomment_profile {
+        width: 50px;
+        height: 50px;
+
+        border-radius: 100%;
+        border: 1px solid black;
+
+
+        background-position: center;
+        background-size: cover;
+
+        margin-right: 10px;
+    }
+
+    .noticecommenttext {
+        max-height: 500px;
+        max-width: 465px;
+
+    }
 
 
 </style>
@@ -186,9 +372,24 @@
                     let text = rows[i]['text']
                     let tags = rows[i]['tags']
                     let image = rows[i]['image']
-                    let time = rows[i]['write_date']
+                    let write_time = rows[i]['write_date']
                     let like = rows[i]['like']
                     let post = rows[i]['postwrite_pk']
+
+                    let the_present_date = new Date();
+                    let posts_write_time = new Date(write_time)
+                    let time_comparison = the_present_date.getTime() - posts_write_time.getTime()
+
+                    if ((time_comparison / (1000 * 60)) < 60) {
+                        time = (time_comparison / (1000 * 60))
+                        temp_time = `${parseInt(time)}분 전`
+                    } else if ((time_comparison / (1000 * 60 * 60)) < 24) {
+                        time = (time_comparison / (1000 * 60 * 60))
+                        temp_time = `${parseInt(time)}시간 전`
+                    } else {
+                        time = (time_comparison / (1000 * 60 * 60 * 24))
+                        temp_time = `${parseInt(time)}일 전`
+                    }
 
                     let temp_post = `<div id="post" class="post">
                                     <div class="card">
@@ -202,12 +403,9 @@
                                     <button class="like">♡️<h9>${like}</h9></button>
                                     <p class="card-text">${text}</p>
                                     <p class="card-text">  ${tags}   </p>
-                                    <p> ${time} </p>
-                                </div></div></div>
-                            `
+                                    <p> ${temp_time} </p>
+                                </div></div></div>`
                     $('#post').append(temp_post)
-
-
                 }
             }
         });
@@ -224,12 +422,12 @@
         <h1 class='logo'>OOTD_GRAM</h1>
     </div>
     <!--뒤로가기 버튼-->
-    <div>
-        <button onclick="history.back()" type="button" class="back-btn">🔙</button>
-    </div>
+{#    <div>#}
+{#        <button onclick="history.back()" type="button" class="back-btn">🔙</button>#}
+{#    </div>#}
     <!--유저아이디 및 프로필-->
     <div>
-        <h1 class="userid"> User_ID </h1> <!--comments_id -->
+        <h1 class="userid"> {{ user_id }} </h1> <!--comments_id -->
         <!-- comments_profile / 마이페이지 이동 -->
         <button onclick="location.href='mypage'" class="profile" type="button"><img class="profile-photo"
                                                                                        src="https://newsimg.sedaily.com/2020/11/24/1ZAJ728KBG_1.jpg">
