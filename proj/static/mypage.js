@@ -97,20 +97,22 @@ function to_html_comment(list, id){
   let post = document.querySelector(id);
   let rows = list;
   for (let i = 0; i<rows.length; i++){
-    if (rows[i]['comments_flag']==true){
-      let postwrite_pk = rows[i]['postwrite_pk'];
-      let number = 0;
-      let user = '';
-      for (let j = i; j<rows.length; j++){
-        if(postwrite_pk == rows[j]['postwrite_pk']){
-          number = number + 1;
-          rows[j]['comments_flag']=false;
-          user = rows[j]['comments_id'];
+    for(let k = 0; k < rows[i].length; k++){
+      if (rows[i][k]['comments_flag']==true){
+        let postwrite_pk = rows[i][k]['postwrite_pk'];
+        let number = 0;
+        let user = '';
+        for (let j = k; j<rows[i].length; j++){
+          if(postwrite_pk == rows[i][j]['postwrite_pk']){
+            number = number + 1;
+            rows[i][j]['comments_flag']=false;
+            user = rows[i][j]['comments_id'];
+          }
         }
+        let tmp = '';
+        tmp = `<li><a href="postpage?${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물에 댓글을 남겼습니다.</a></li>`
+        post.insertAdjacentHTML("beforeend", tmp);
       }
-      let tmp = '';
-      tmp = `<li><a href="postpage?${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물에 댓글을 남겼습니다.</a></li>`
-      post.insertAdjacentHTML("beforeend", tmp);
     }
   }
 }
@@ -120,20 +122,22 @@ function to_html_like(list, id){
   let post = document.querySelector(id);
   let rows = list;
   for (let i = 0; i<rows.length; i++){
-    if (rows[i]['like_flag']==true){
-      let postwrite_pk = rows[i]['postwrite_pk'];
-      let number = 0;
-      let user = '';
-      for (let j = i; j<rows.length; j++){
-        if(postwrite_pk == rows[j]['postwrite_pk']){
-          number = number + 1;
-          rows[j]['like_flag']=false;
-          user = rows[j]['like_id'];
+    for(let k = 0; k < rows[i].length; k++){
+      if (rows[i][k]['like_flag']==true){
+        let postwrite_pk = rows[i][k]['postwrite_pk'];
+        let number = 0;
+        let user = '';
+        for (let j = k; j<rows[i].length; j++){
+          if(postwrite_pk == rows[i][j]['postwrite_pk']){
+            number = number + 1;
+            rows[i][j]['like_flag']=false;
+            user = rows[i][j]['like_id'];
+          }
         }
+        let tmp = '';
+        tmp = `<li><a href="postpage?${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물을 좋아합니다.</a></li>`
+        post.insertAdjacentHTML("beforeend", tmp);
       }
-      let tmp = '';
-      tmp = `<li><a href="postpage?${postwrite_pk}">${user}님 외 ${number}명이 회원님의 게시물을 좋아합니다.</a></li>`
-      post.insertAdjacentHTML("beforeend", tmp);
     }
   }
 }
