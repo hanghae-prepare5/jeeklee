@@ -23,6 +23,10 @@ function moveToLogin() {
     console.log('move to login page');
     location.replace("/");
 }
+//회원가입 시 영어만
+function onlyAlphabet(ele) {
+	  ele.value = ele.value.replace(/[^\\!-z]/gi,"");
+  }
 
 // 유저정보 함수
 function get_userinfo() {
@@ -76,7 +80,7 @@ function post_userinfo() {
 // 회원가입 정보 확인
 function verify() {
     // ID 형식 확인
-    if (regiId.value.length >= 5) {
+    if (regiId.value.length >= 5 && regiId.value.length <= 15) {
         regiId.style.backgroundColor = "#FAFAFA";
         veriId.style.color = "#0095F6";
         veriId.innerText = '사용 가능한 ID 형식입니다.';
@@ -89,7 +93,7 @@ function verify() {
     }
 
     // PW 형식 확인
-    if (regiPw1.value.length >= 3) {
+    if (regiPw1.value.length >= 5 && regiPw1.value.length <= 15) {
         regiPw1.style.backgroundColor = "#FAFAFA";
         veriPw1.style.color = "#0095F6";
         veriPw1.innerText = '사용 가능한 PW입니다.';

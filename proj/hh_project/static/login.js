@@ -28,11 +28,14 @@ function moveToMain() {
         }
     })
 }
-
+//로그인 시 영어만
+function onlyAlphabet(ele) {
+	  ele.value = ele.value.replace(/[^\\!-z]/gi,"");
+  }
 // function to veryfi login info
 function verify() {
     // ID 확인
-    if (loginId.value.length >= 3) {
+    if (loginId.value.length >= 5 && loginId.value.length <= 15) {
         loginId.style.backgroundColor = "#FAFAFA";
         veriId.style.color = "#0095F6";
         veriId.innerText = ' ';
@@ -45,7 +48,7 @@ function verify() {
     }
 
     // PW 확인
-    if (loginPw.value.length >= 5) {
+    if (loginPw.value.length >= 5 && loginPw.value.length <= 15) {
         loginPw.style.backgroundColor = "#FAFAFA";
         veriPw.style.color = "#0095F6";
         veriPw.innerText = ' ';

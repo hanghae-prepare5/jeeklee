@@ -14,11 +14,11 @@
 <div class="signup_wrapper">
     <h1>회원가입</h1>
     <form class="signup_form" action="#">
-        <input type="text" id="REGI_ID" name="id" placeholder="ID">
+        <input type="text" id="REGI_ID" name="id" onkeydown="onlyAlphabet(this)" placeholder="ID">
         <div id="VERI_ID" class="msg"></div>
-        <input type="password" id="REGI_PW1" name="id" placeholder="PASSWORD">
+        <input type="password" id="REGI_PW1" name="id" onkeydown="onlyAlphabet(this)" placeholder="PASSWORD">
         <div id="VERI_PW1" class="msg"></div>
-        <input type="password" id="REGI_PW2" name="id" placeholder="RE-ENTER PASSWORD">
+        <input type="password" id="REGI_PW2" name="id" onkeydown="onlyAlphabet(this)" placeholder="RE-ENTER PASSWORD">
         <div id="VERI_PW2" class="msg"></div>
         <!-- 프로필 이미지 불러오기  -->
         <form action="/upload" method="post" id="uploadForm">
