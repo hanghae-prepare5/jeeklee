@@ -39,9 +39,11 @@ function get_userinfo() {
     return rows;
 }
 
+var dataURL;
+
 // 프로필이미지 base64 인코딩
 function encodeImageFileAsURL(element) {
-    var dataURL;
+
     var file = element.files[0];
     var reader = new FileReader();
     reader.onloadend = function () {
