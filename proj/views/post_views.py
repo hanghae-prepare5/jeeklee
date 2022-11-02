@@ -21,6 +21,10 @@ def post_get():
     postwrite_pk_receive = request.args.get('postwrite_pk1_give')
     postwrite_list = list(db.postwrite.find({'postwrite_pk': int(postwrite_pk_receive)}, {'_id': False}))
 
+    user = db.postwrite.find_one({'postwrite_pk':int(postwrite_pk_receive)})['user_pk']
+    profile = db.user.find_one({'id':user})['profile']
+    postwrite_list.append(profile)
+
     return jsonify({'post_list': postwrite_list})
 
 # 댓글 데이터 저장
@@ -92,7 +96,7 @@ def comment_delete():
         db.comment.delete_one({'comments_pk': int(comment_pk_receive)})
         return jsonify({'msg': '댓글 삭제!'})
     # 포스트작성자권한
-    elif (session['id'] == postwrite_pk2['user_pk']):
+    elif (session['id'] == postwrite_pk2):
         db.comment.delete_one({'comments_pk': int(comment_pk_receive)})
         return jsonify({'msg': '댓글 삭제!'})
     else:

@@ -241,63 +241,62 @@
                 url: "/post/get",
                 data: {postwrite_pk1_give: postwrite_pk1},
                 success: function (response) {
-                    console.log(response['post_list'])
-                    let rows = response['post_list']
-                    for (let i = 0; i < rows.length; i++) {
-                        let id = rows[i]['user_pk']
-                        let profile = rows[i]['user_pk']
-                        let tags = rows[i]['tags']
-                        let text = rows[i]['text']
-                        let image = rows[i]['image']
-                        let write_date = rows[i]['write_date']
+                    console.log(response['post_list'][0])
+                    console.log(response['post_list'][1])
+                    let rows = response['post_list'][0]
+                    let profile = response['post_list'][1]
+                    let id = rows['user_pk']
+                    let tags = rows['tags']
+                    let text = rows['text']
+                    let image = rows['image']
+                    let write_date = rows['write_date']
 
-
-                        let temp_user = `<img src="${profile}" class="noticeprofile">
+                    let temp_user = `<img src="${profile}" class="noticeprofile">
+                                    <div>${id}</div>`
+                    $('#noticeuser').append(temp_user)
+                    let temp_user_comment = `<img src="${profile}" class="noticecomment_profile">
                                          <div>${id}</div>`
-                        $('#noticeuser').append(temp_user)
-                        let temp_user_comment = `<img src="${profile}" class="noticecomment_profile">
-                                         <div>${id}</div>`
-                        $('#noticeuser_comment').append(temp_user_comment)
+                    $('#noticeuser_comment').append(temp_user_comment)
 
 
-                        for (let i = 0; i < tags.length; i++) {
-                            let temp_tag = `<a href="#">#${tags[i]}</a>`
+                    for (let i = 0; i < tags.length; i++) {
+                        let temp_tag = `<a href="#">#${tags[i]}</a>`
 
-                            $('#noticepostbottom_tag').append(temp_tag)
-                            $('#noticepostbottom_tag_comment').append(temp_tag)
-                        }
-
-                        let temp_text = `<p>${text}</p>`
-                        $('#noticetext').append(temp_text)
-                        $('#noticetext_comment').append(temp_text)
-
-                        let temp_image = `<img src=${image} class="noticepicture_size">`
-                        $('#noticeimage').append(temp_image)
-
-
-                        let temp_time = ``
-                        let the_present_date = new Date();
-                        let write_time = new Date(write_date)
-
-                        let time_comparison = the_present_date.getTime() - write_time.getTime()
-
-                        if ((time_comparison / (1000 * 60)) < 60) {
-                            time = (time_comparison / (1000 * 60))
-                            temp_time = `${parseInt(time)}분 전`
-                            $('#noticetime').append(temp_time)
-                            $('#noticetime_comment').append(temp_time)
-                        } else if ((time_comparison / (1000 * 60 * 60)) < 24) {
-                            time = (time_comparison / (1000 * 60 * 60))
-                            temp_time = `${parseInt(time)}시간 전`
-                            $('#noticetime').append(temp_time)
-                            $('#noticetime_comment').append(temp_time)
-                        } else {
-                            time = (time_comparison / (1000 * 60 * 60 * 24))
-                            temp_time = `${parseInt(time)}일 전`
-                            $('#noticetime').append(temp_time)
-                            $('#noticetime_comment').append(temp_time)
-                        }
+                        $('#noticepostbottom_tag').append(temp_tag)
+                        $('#noticepostbottom_tag_comment').append(temp_tag)
                     }
+
+                    let temp_text = `<p>${text}</p>`
+                    $('#noticetext').append(temp_text)
+                    $('#noticetext_comment').append(temp_text)
+
+                    let temp_image = `<img src=${image} class="noticepicture_size">`
+                    $('#noticeimage').append(temp_image)
+
+
+                    let temp_time = ``
+                    let the_present_date = new Date();
+                    let write_time = new Date(write_date)
+
+                    let time_comparison = the_present_date.getTime() - write_time.getTime()
+
+                    if ((time_comparison / (1000 * 60)) < 60) {
+                        time = (time_comparison / (1000 * 60))
+                        temp_time = `${parseInt(time)}분 전`
+                        $('#noticetime').append(temp_time)
+                        $('#noticetime_comment').append(temp_time)
+                    } else if ((time_comparison / (1000 * 60 * 60)) < 24) {
+                        time = (time_comparison / (1000 * 60 * 60))
+                        temp_time = `${parseInt(time)}시간 전`
+                        $('#noticetime').append(temp_time)
+                        $('#noticetime_comment').append(temp_time)
+                    } else {
+                        time = (time_comparison / (1000 * 60 * 60 * 24))
+                        temp_time = `${parseInt(time)}일 전`
+                        $('#noticetime').append(temp_time)
+                        $('#noticetime_comment').append(temp_time)
+                    }
+
 
                 }
 
@@ -435,6 +434,7 @@
                 url: "/post/comment/delete",
                 data: {postwrite_pk_give: postwrite_pk2, comment_pk_give: comment_pk},
                 success: function (response) {
+                    alert(response['msg'])
                     show_comments_count()
                     show_comments()
                 },
@@ -575,7 +575,6 @@
         <div class="noticepost">
 <!--            //유저프로필-->
             <div class="noticeposttop" id="noticeuser">
-
             </div>
 <!--            //게시물 사진-->
             <div class="noticepicture" id="noticeimage">

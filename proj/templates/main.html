@@ -126,6 +126,13 @@
         font-size: 28px;
     }
 
+    /*로그아웃*/
+    .Logout {
+        background-color: ghostwhite;
+        margin-left: 95%;
+        border: gray;
+    }
+
     /*게시물박스*/
     .posts-box {
 
@@ -180,7 +187,7 @@
             success: function (response) {
                 let rows = response['post_list']
                     console.log(rows)
-                for (let i = 0; i < rows.length; i++) {
+                for (let i = rows.length-1; i >= 0; i--) {
                     let id = rows[i]['user_pk']
                     let text = rows[i]['text']
                     let tags = rows[i]['tags']
@@ -232,6 +239,7 @@
 <div class="all">
     <!--로고-->
     <div style="float:top;" class='top'>
+        <button onclick="location.href='login/logout'" class="Logout">Logout</button>
         <h1 class='logo'>항해99 GRAM</h1>
     </div>
     <!--뒤로가기 버튼-->
