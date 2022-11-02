@@ -12,26 +12,25 @@ db = client.hanghae
 
 @bp.route('/')
 def index():
-    # Variables for TEST
-    session['id'] = "minho080"
-    session['img'] = "https://miro.medium.com/max/640/1*xmotaE0PMsf3eCAM7mQCvA.jpeg"
-
+    if session.get('id') is None:
+        return render_template('login.html') # 로그인 정보가 없을 때 로그인 페이지로 돌아가게 경로 설정
     g.userid = session['id']
-    g.userimg = session['img']
-    if session['id'] == '':
-        return render_template('login.index') # 로그인 정보가 없을 때 로그인 페이지로 돌아가게 경로 설정
+    image = db.user.find_one({'id':session['id']})['profile']
+    g.userimg = image
     return render_template('mypage.html')
 
 @bp.route('/userpost', methods=["GET"])
 def pass_user_posts() :
-    session['id'] = "minho080"
+    if session.get('id') is None:
+        return render_template('login.html')
 
     user_posts = list(db.postwrite.find({'user_pk':session['id']},{'_id':False}))
     return jsonify(user_posts)
 
 @bp.route('/bookmark', methods=["GET"])
 def pass_user_bookmarks() :
-    session['id'] = 'minho080'
+    if session.get('id') is None:
+        return render_template('login.html')
     postwrite_list = list(db.bookmark.find({'bookmark_id':session['id']}, {'_id':False}))
     result = []
     for num in range(len(postwrite_list)):
@@ -42,7 +41,8 @@ def pass_user_bookmarks() :
 
 @bp.route('/comment', methods=["GET"])
 def pass_user_comments() :
-    session['id'] = 'minho080'
+    if session.get('id') is None:
+        return render_template('login.html')
 
     user_posts_pk = list(db.postwrite.find({'user_pk':session['id']},{'_id':False, 'postwrite_pk':True}))
     result = []
@@ -56,7 +56,8 @@ def pass_user_comments() :
 
 @bp.route('/like', methods=["GET","POST"])
 def pass_user_likes() :
-    session['id'] = 'minho080'
+    if session.get('id') is None:
+        return render_template('login.html')
 
     user_posts_pk = list(db.postwrite.find({'user_pk':session['id']},{'_id':False, 'postwrite_pk':True}))
     result = []
@@ -71,4 +72,6 @@ def pass_user_likes() :
 
 @bp.route('/postpage')
 def postpage() :
+    if session.get('id') is None:
+        return render_template('login.html')
     return render_template('postpage.html')

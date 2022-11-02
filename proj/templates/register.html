@@ -14,17 +14,16 @@
 <div class="signup_wrapper">
     <h1>회원가입</h1>
     <form class="signup_form" action="#">
-        <input type="text" id="REGI_ID" name="id" placeholder="ID">
+        <input type="text" id="REGI_ID" name="id" onkeydown="onlyAlphabet(this)" placeholder="ID">
         <div id="VERI_ID" class="msg"></div>
-        <input type="password" id="REGI_PW1" name="id" placeholder="PASSWORD">
+        <input type="password" id="REGI_PW1" name="id" onkeydown="onlyAlphabet(this)" placeholder="PASSWORD">
         <div id="VERI_PW1" class="msg"></div>
-        <input type="password" id="REGI_PW2" name="id" placeholder="RE-ENTER PASSWORD">
+        <input type="password" id="REGI_PW2" name="id" onkeydown="onlyAlphabet(this)" placeholder="RE-ENTER PASSWORD">
         <div id="VERI_PW2" class="msg"></div>
         <!-- 프로필 이미지 불러오기  -->
         <form action="/upload" method="post" id="uploadForm">
-            <div>프로필 사진 설정</div>
-            <input type="file" accept="image/*" onchange="readURL(this);">
-            <input type="submit" class="btn btn-primary btn_location" value="submit">
+            <div>프로필 사진 설정</div>                                          <!-- base64 인코딩, 미리보기 2가지-->
+            <input type="file" accept="image/*" id="REGI_IMAGE" onchange="encodeImageFileAsURL(this);readURL(this)">
         </form>
         <!-- 프로필 이미지 박스  -->
         <div class="box" style="background: #BDBDBD;">

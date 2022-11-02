@@ -23,6 +23,10 @@ function moveToLogin() {
     console.log('move to login page');
     location.replace("/");
 }
+//회원가입 시 영어만
+function onlyAlphabet(ele) {
+	  ele.value = ele.value.replace(/[^\\!-z]/gi,"");
+  }
 
 // 유저정보 함수
 function get_userinfo() {
@@ -39,14 +43,24 @@ function get_userinfo() {
     return rows;
 }
 
+var dataURL;
+
+// 프로필이미지 base64 인코딩
+function encodeImageFileAsURL(element) {
+
+    var file = element.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+        dataURL = reader.result;
+    }
+    reader.readAsDataURL(file);
+}
+
 // 암호화 등록, 프로필이미지, 데이터 POST
 function post_userinfo() {
     let user_id = regiId.value;
     let user_pw = sha256(regiPw2.value);
-    let user_file = $('#file')[0]
-    let form_data = new FormData()
-
-    form_data.append("file_give", file)
+    let user_image = dataURL;
 
     $.ajax({
         type: "POST",
@@ -55,6 +69,7 @@ function post_userinfo() {
         data: {
             id_give: user_id,
             pw_give: user_pw,
+            image_give: user_image
         },
         success: function (response) {
             alert(response["msg"])
@@ -65,7 +80,7 @@ function post_userinfo() {
 // 회원가입 정보 확인
 function verify() {
     // ID 형식 확인
-    if (regiId.value.length >= 5) {
+    if (regiId.value.length >= 5 && regiId.value.length <= 15) {
         regiId.style.backgroundColor = "#FAFAFA";
         veriId.style.color = "#0095F6";
         veriId.innerText = '사용 가능한 ID 형식입니다.';
@@ -78,7 +93,7 @@ function verify() {
     }
 
     // PW 형식 확인
-    if (regiPw1.value.length >= 3) {
+    if (regiPw1.value.length >= 5 && regiPw1.value.length <= 15) {
         regiPw1.style.backgroundColor = "#FAFAFA";
         veriPw1.style.color = "#0095F6";
         veriPw1.innerText = '사용 가능한 PW입니다.';
@@ -111,6 +126,7 @@ function verify() {
         regiBtn.style.backgroundColor = "#8E8E8E";
         regiBtn.disabled = true;
     }
+
 }
 
 // 프로필 사진 미리보기
@@ -130,7 +146,7 @@ function readURL(input) {
 function user_register() {
     let users = get_userinfo();
     for (let i = 0; i < users.length; i++) {
-        let tmp_id = users[i]['ID'];
+        let tmp_id = users[i]['id'];
         if (tmp_id == regiId.value) {
             alert('이미 존재하는 계정입니다.');
             window.location.reload();

@@ -9,9 +9,10 @@ bp = Blueprint('main', __name__, url_prefix='/')
 
 @bp.route('/')
 def home():
-    session['id'] ='minho080'
-
-    return render_template('main.html', user_id = session['id'])
+    if session.get('id') is None:
+        return render_template('login.html')
+    image = db.user.find_one({'id': session['id']})['profile']
+    return render_template('main.html', user_id=session['id'], profile =image)
    # if 'id' in session :
    #     return render_template('main.html')
    # return render_template('login.html')
@@ -19,12 +20,18 @@ def home():
 #피드게시물표기
 @bp.route("/main", methods=["GET"])
 def postwrite_get():
+    if session.get('id') is None:
+        return render_template('login.html')
+
     postwrite_pk_list = list(db.postwrite.find({}, {'_id': False}))
 
     return jsonify({'post_list': postwrite_pk_list})
 
 @bp.route("/like/count", methods=["GET"])
 def like_count_get():
+    if session.get('id') is None:
+        return render_template('login.html')
+
     postwrite_pk_receive = request.args.get('postwrite_pk1_give')
     like_list = list(db.like.find({'postwrite_pk': int(postwrite_pk_receive)}, {'_id': False}))
     like_count = len(like_list)

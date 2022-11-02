@@ -10,11 +10,17 @@ bp = Blueprint('postwrite', __name__, url_prefix='/postwrite')
 
 @bp.route('/page', methods=["POST","GET"])
 def page():
+    if session.get('id') is None:
+        return render_template('login.html')
+
     return render_template('postwrite.html')
 
 
 @bp.route('/', methods=["POST"])
 def postwrite():
+    if session.get('id') is None:
+        return render_template('login.html')
+
     image_receive = request.form['image_give']
     tags_receive = request.form['tags_give']
     text_receive = request.form['text_give']
@@ -41,6 +47,8 @@ def postwrite():
 
 @bp.route("/", methods=["GET"])
 def bucket_get():
-    session['id'] = 'minho080'
+    if session.get('id') is None:
+        return render_template('login.html')
+
     user_list = list(db.user.find({'id': session['id']}, {'_id': False}))
     return jsonify({'user': user_list})
