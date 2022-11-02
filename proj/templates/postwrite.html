@@ -82,7 +82,7 @@
 
 
             width: 500px;
-            height: 502px;
+            height: 500px;
 
 
             border-top: 1px solid black;
@@ -127,15 +127,15 @@
         .imagepopup {
             position: absolute;
 
-            width: 500px;
+            width: 502px;
             height: 500px;
 
             display: none;
-            margin-bottom: 38px;
+            margin-bottom: 88px;
         }
 
         .imagepopupsize {
-            width: 500px;
+            width: 502px;
             height: 500px;
         }
 
@@ -314,7 +314,9 @@
             <div class="noticepicture">
                 <form method="POST" onsubmit="return false;" enctype="multipart/form-data">
                     <label for="chooseFile">
-                        <div type="button" class="btn btn-outline-primary">사진첨부</div>
+                        <div style="margin-left:60px" type="button" class="btn btn-outline-primary">사진첨부</div>
+                        <div style="margin-left:45px">※사진첨부 필수</div>
+                        <div>※사진이름 클릭시 사진 확인</div>
                     </label>
                     <div class="fileuproadhide">
                         <input id="chooseFile" type="file" onchange="addFile(this);" multiple/>
@@ -331,14 +333,14 @@
                     <div class="form-floating">
                         <textarea class="form-control" placeholder="Leave a comment here"
                                   id="floatingTextarea"></textarea>
-                        <label for="floatingTextarea">tag(반드시 #쓰고 태그 입력 ex.[#부산 #인천])</label>
+                        <label for="floatingTextarea">tag(반드시 #쓰고 태그 입력 후 띄어쓰기 ex.[#부산 #인천])</label>
                     </div>
                 </div>
                 <div>
                     <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                        <textarea maxlength="300" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
                                   style="height: 100px"></textarea>
-                        <label for="floatingTextarea2">게시글 입력</label>
+                        <label for="floatingTextarea2">게시글 입력(※최대 300자)</label>
                     </div>
                 </div>
                 <div class="noticebtn_upload">

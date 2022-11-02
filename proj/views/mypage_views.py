@@ -48,9 +48,10 @@ def pass_user_comments() :
     result = []
     for num in range(len(user_posts_pk)):
         postwrite_pk = user_posts_pk[num]['postwrite_pk']
-        tmp = db.comment.find_one({'postwrite_pk':postwrite_pk},{'_id':False})
-        db.comment.update_one({'postwrite_pk':postwrite_pk},{'$set':{'comments_flag' : False}})
-        result.append(tmp)
+        tmp = list(db.comment.find({'postwrite_pk':postwrite_pk},{'_id':False}))
+        if tmp:
+            db.comment.update_many({'postwrite_pk':postwrite_pk},{'$set':{'comments_flag' : False}})
+            result.append(tmp)
     return jsonify(result)
 
 @bp.route('/like', methods=["GET","POST"])
@@ -61,9 +62,10 @@ def pass_user_likes() :
     result = []
     for num in range(len(user_posts_pk)):
         postwrite_pk = user_posts_pk[num]['postwrite_pk']
-        tmp = db.like.find_one({'postwrite_pk':postwrite_pk},{'_id':False})
-        result.append(tmp)
-        db.like.update_one({'postwrite_pk':postwrite_pk},{'$set':{'like_flag' : False}})
+        tmp = list(db.like.find({'postwrite_pk':postwrite_pk},{'_id':False}))
+        if tmp:
+            result.append(tmp)
+            db.like.update_many({'postwrite_pk':postwrite_pk},{'$set':{'like_flag' : False}})
     return jsonify(result)
 
 

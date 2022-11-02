@@ -37,7 +37,7 @@
         .noticepost {
 
             width: 504px;
-            max-height: 1000px;
+            max-height: 1200px;
             height: 100%;
 
 
@@ -101,8 +101,8 @@
         }
 
         .noticepicture_size {
-            width: 500px;
-            height: 500px;
+            width: 502px;
+            height: 502px;
         }
 
 
@@ -133,7 +133,7 @@
 
         .noticecomment {
             width: 500px;
-            max-height: 200px;
+            max-height: 300px;
             min-height: 100px;
 
             display: flex;
@@ -584,7 +584,7 @@
             <div class="noticepostbottom">
                 <div class="noticebtn_bottom">
 <!--                    //게시물 좋아요-->
-                    <div class="noticebtn_bottom" id="onlike">
+                    <div style="width:50px; height:40px" class="noticebtn_bottom" id="onlike">
 
                     </div>
                     <button type="button" style="margin-left: 10px" class="btn btn-light" data-bs-toggle="modal"
@@ -597,7 +597,7 @@
                     </div>
                 </div>
 <!--                //좋아요 갯수 표시-->
-                <div id="like_count">
+                <div style="height:20px" id="like_count">
 
                 </div>
 <!--                //게시물 태그 표시-->
@@ -666,9 +666,9 @@
 
                         <form>
                             <div class="form-floating">
-                                <textarea class="form-control" placeholder="Leave a comment here"
+                                <textarea maxlength="200" class="form-control" placeholder="Leave a comment here"
                                           id="floatingTextarea2" style="height: 60px"></textarea>
-                                <label for="floatingTextarea2">댓글 입력...</label>
+                                <label for="floatingTextarea2">댓글 입력...                         (※최대 200자)</label>
                             </div>
                         </form>
 
