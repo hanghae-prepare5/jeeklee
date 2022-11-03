@@ -16,7 +16,7 @@ def page():
     return render_template('postwrite.html')
 
 
-@bp.route('/', methods=["POST"])
+@bp.route('/notice', methods=["POST"])
 def postwrite():
     if session.get('id') is None:
         return render_template('login.html')
