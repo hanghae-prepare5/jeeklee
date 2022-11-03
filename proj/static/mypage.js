@@ -100,7 +100,7 @@ function to_html_comment(list, id){
       for(let k =0; k<rows[i].length; k++){
           if (rows[i][k]['comments_flag']==true){
               let postwrite_pk = rows[i][k]['postwrite_pk'];
-              let number = 0;
+              let number = -1;
               let user = '';
               for (let j=k; j<rows[i].length; j++){
                   if(postwrite_pk == rows[i][j]['postwrite_pk']){
@@ -125,7 +125,7 @@ function to_html_like(list, id){
       for(let k =0; k<rows[i].length; k++) {
           if (rows[i][k]['like_flag'] == true) {
               let postwrite_pk = rows[i][k]['postwrite_pk'];
-              let number = 0;
+              let number = -1;
               let user = '';
               for (let j = k; j < rows[i].length; j++) {
                   if (postwrite_pk == rows[i][j]['postwrite_pk']) {

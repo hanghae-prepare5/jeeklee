@@ -298,9 +298,33 @@
 
             /* 폼 전송 */
             // 폼데이터 담기
+            let tagsget = $('#floatingTextarea').val();
 
 
-            let tags = $('#floatingTextarea').val()
+            let tagsedit1
+                = tagsget.split('');
+
+            for (var i = 0; i < tagsedit1.length; i++) {
+                if (tagsedit1[i] === ' ') {
+                    tagsedit1.splice(i, 1);
+                    i--;
+                }
+            }
+            let tagsedit2 = tagsedit1.join('')
+
+            let tagsedit3 = tagsedit2.split(',')
+            let tagsedit4 = tagsedit3.join('')
+            let tagsedit5 = tagsedit4.split('#')
+            for (var i = 0; i < tagsedit5.length; i++) {
+                if (tagsedit5[i] === '') {
+                    tagsedit5.splice(i, 1);
+                    i--;
+                }
+            }
+            let tagsedit6 = tagsedit5.join('-')
+
+
+            let tags = tagsedit6
             let text = $('#floatingTextarea2').val()
             let write_date = new Date();
             let image = dataURL;
@@ -312,7 +336,7 @@
 
                 success: function (response) {
                     alert(response["msg"])
-                    window.location.reload()
+                    location.href='/'
                 },
             });
         }
