@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>게시물</title>
+    <title>게시물 - 항해99 GRAM</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,6 +16,51 @@
     <!-- icon Bootstrap 불러오기 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <style>
+        a {
+            text-decoration: none;
+            color: #262626;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .header {
+            background-color: white;
+            width: 100vw;
+            height: 7vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #DBDBDB;
+            position: fixed;
+        }
+
+        .wrap_nav {
+            /* background-color: yellow; */
+            width: 70%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .wrap_nav > h1 {
+            float: left;
+            margin: 0vh 2vh;
+            font-size: 3vh;
+        }
+
+        .wrap_nav > nav {
+            float: right;
+        }
+
+        .gnb > li {
+            float: left;
+            margin: 0vh 2vh;
+            font-size: 3vh;
+        }
+
         #noticepopup {
             position: absolute;
             width: 100%;
@@ -220,7 +265,8 @@
             postaction();
             //게시물 팝업 닫기
             $("#popupclose").click(function () {
-                $(this).parent().parent().parent().parent().parent().fadeOut();
+                //$(this).parent().parent().parent().parent().parent().
+                window.history.back();
             });
         });
 
@@ -568,7 +614,18 @@
 
 
 <body>
-
+<article class="header">
+    <div class="wrap_nav">
+        <h1><a href="/">항해99 GRAM</a></h1>
+        <nav>
+            <ul class="gnb">
+                <li><a href="/" title="main_page"><i class="bi bi-house-door"></i></a></li>
+                <li><a href="/postwrite/page" title="post_page"><i class="bi bi-plus-square"></i></a></li>
+                <li><a href="/login/logout" title="logout"><i class="bi bi-x-circle"></i></a></li>
+            </ul>
+        </nav>
+    </div>
+</article>
 
 <div id="noticepopup">
     <div class="noticespace">
